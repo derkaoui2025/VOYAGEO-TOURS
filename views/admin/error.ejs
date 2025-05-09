@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <%- include('./partials/sidebar') %>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Header -->
+            <%- include('./partials/header') %>
+
+            <!-- Content -->
+            <main class="admin-content">
+                <!-- Admin Error Page -->
+                <div class="error-container text-center">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle fa-5x text-danger mb-4"></i>
+                    </div>
+                    
+                    <h1 class="error-title">Error</h1>
+                    
+                    <div class="error-message mb-4">
+                        <p><%= message || 'An unexpected error occurred.' %></p>
+                    </div>
+                    
+                    <div class="error-actions">
+                        <a href="/admin/dashboard" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Back to Dashboard
+                        </a>
+                        <button onclick="history.back()" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Go Back
+                        </button>
+                    </div>
+                </div>
+                
+                <style>
+                    .error-container {
+                        padding: 5rem 2rem;
+                        max-width: 60rem;
+                        margin: 0 auto;
+                    }
+                    
+                    .error-title {
+                        font-size: 3.6rem;
+                        font-weight: 700;
+                        margin-bottom: 2rem;
+                        color: var(--danger-color);
+                    }
+                    
+                    .error-message {
+                        font-size: 1.8rem;
+                        color: #666;
+                    }
+                    
+                    .error-actions {
+                        margin-top: 3rem;
+                    }
+                    
+                    .error-actions .btn {
+                        margin: 0 1rem;
+                    }
+                </style>
+            </main>
+
+            <!-- Footer -->
+            <%- include('./partials/footer') %>
+        </div>
+    </div>
+</body>
+</html> 

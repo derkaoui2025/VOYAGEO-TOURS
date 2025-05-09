@@ -1,0 +1,201 @@
+<!-- meta tags -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+<meta name="keywords" content="Morocco tours, Morocco travel, Sahara Desert, Marrakech, Morocco vacation, Morocco experiences">
+<meta name="author" content="Voyageo Tours">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://voyageo-tours.com/">
+<meta property="og:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
+<meta property="og:description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+<meta property="og:image" content="/images/morocco-share.jpg">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://voyageo-tours.com/">
+<meta property="twitter:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
+<meta property="twitter:description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+<meta property="twitter:image" content="/images/morocco-share.jpg">
+
+<!-- Favicon and App Icons -->
+<link rel="icon" type="image/svg+xml" href="/images/icons/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/images/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+<link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png">
+<link rel="manifest" href="/images/icons/site.webmanifest">
+
+<!-- Web Application -->
+<meta name="theme-color" content="#f39c12">
+<meta name="application-name" content="Voyageo Tours">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Voyageo Tours">
+
+<!-- title -->
+<title><%= pageTitle %> | Voyageo Tours Morocco</title>
+
+<!-- Google Fonts - Optimized for Web Performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Animate.css CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/footer.css">
+<link rel="stylesheet" href="/css/tour-details.css">
+
+<!-- Preload critical resources -->
+<link rel="preload" href="/images/logo.png" as="image">
+<link rel="preload" href="/videos/morocco-low.mp4" as="video" type="video/mp4" media="(min-width: 768px)">
+
+<!-- Preconnect to external domains -->
+<link rel="preconnect" href="https://res.cloudinary.com">
+
+<!-- Tailwind Config -->
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#3498db',
+          secondary: '#2c3e50',
+          accent: '#e74c3c',
+          success: '#2ecc71',
+          warning: '#f39c12',
+          light: '#f8f9fa',
+          dark: '#343a40'
+        },
+        fontFamily: {
+          montserrat: ['Montserrat', 'sans-serif'],
+          opensans: ['Open Sans', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+<!-- Custom Styles for Customize Page -->
+<style>
+  /* Global Voyage Tours Custom Styles */
+  .form-container {
+    @apply bg-white rounded-lg shadow-lg p-6 md:p-8 mb-8;
+  }
+  
+  .form-header {
+    @apply text-center mb-6 pb-6 border-b border-gray-200;
+  }
+  
+  .form-section {
+    @apply mb-8 pb-6 border-b border-gray-200;
+  }
+  
+  .section-title {
+    @apply text-lg font-semibold text-secondary mb-6 flex items-center;
+  }
+  
+  .form-label {
+    @apply font-medium mb-2 text-secondary block;
+  }
+  
+  .form-control {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300;
+  }
+  
+  .btn-custom-primary {
+    @apply bg-primary hover:bg-primary/80 text-white font-medium py-3 px-6 rounded-md transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg;
+  }
+  
+  .required-asterisk {
+    @apply text-accent ml-1;
+  }
+  
+  .captcha-container {
+    @apply bg-light rounded-md p-4 border border-gray-300;
+  }
+  
+  .info-text {
+    @apply text-sm text-gray-600 mt-1;
+  }
+  
+  .field-icon {
+    @apply text-primary mr-2;
+  }
+  
+  .invalid-feedback {
+    @apply hidden text-accent text-sm mt-1;
+  }
+  
+  .is-invalid {
+    @apply border-accent !important;
+  }
+  
+  .is-valid {
+    @apply border-success !important;
+  }
+  
+  .info-card {
+    @apply h-full rounded-lg border-0 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-lg;
+  }
+  
+  .icon-pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+</style>
+
+<!-- JSON-LD for rich results -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Voyageo Tours Morocco",
+  "url": "https://voyageo-tours.com",
+  "logo": "https://voyageo-tours.com/images/logo.png",
+  "description": "Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Marrakech Avenue",
+    "addressLocality": "Marrakech",
+    "addressRegion": "Marrakech-Safi",
+    "postalCode": "40000",
+    "addressCountry": "Morocco"
+  },
+  "telephone": "+212-500-123456",
+  "email": "info@voyageo-tours.com",
+  "sameAs": [
+    "https://www.facebook.com/voyageotours",
+    "https://www.instagram.com/voyageotours/",
+    "https://twitter.com/voyageotours"
+  ]
+}
+</script>
+
+<!-- Conditional scripts for modern browsers -->
+<script>
+  // Check if the browser supports the fetch API
+  const modernBrowser = 'fetch' in window && 'IntersectionObserver' in window;
+  
+  // Dynamically load polyfills only for older browsers
+  if (!modernBrowser) {
+    const polyfillScript = document.createElement('script');
+    polyfillScript.src = 'https://polyfill.io/v3/polyfill.min.js?features=fetch,IntersectionObserver';
+    document.head.appendChild(polyfillScript);
+  }
+</script> 

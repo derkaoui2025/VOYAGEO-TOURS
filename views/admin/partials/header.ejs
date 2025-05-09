@@ -1,0 +1,76 @@
+<header class="sticky top-0 z-50 h-[60px] flex items-center justify-between px-6 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center">
+        <button id="mobile-sidebar-toggle" class="lg:hidden flex items-center justify-center text-2xl text-primary p-2 rounded-md hover:bg-gray-100">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="relative ml-0 lg:ml-4">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <input type="text" placeholder="Search..." class="pl-10 py-2 border border-gray-200 rounded-md w-full md:w-[200px] focus:outline-none focus:ring-1 focus:ring-primary">
+        </div>
+    </div>
+    
+    <div class="flex items-center">
+        <div class="flex items-center">
+            <button class="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 ml-2 text-text-secondary hover:text-primary">
+                <i class="fas fa-bell text-lg"></i>
+                <span class="absolute top-0 right-0 flex items-center justify-center w-[18px] h-[18px] text-xs text-white bg-danger rounded-full">3</span>
+            </button>
+            <button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 ml-2 text-text-secondary hover:text-primary">
+                <i class="fas fa-cog text-lg"></i>
+            </button>
+        </div>
+        
+        <div class="relative ml-4">
+            <button class="user-toggle flex items-center hover:bg-gray-100 rounded-md px-2 py-1">
+                <img src="https://ui-avatars.com/api/?name=<%= session.adminUsername || 'Admin' %>&background=ff9900&color=fff" alt="Admin" class="w-8 h-8 rounded-full mr-2">
+                <span class="hidden md:inline text-base font-medium"><%= session.adminUsername || 'Admin' %></span>
+                <i class="fas fa-chevron-down ml-1 text-xs text-gray-500"></i>
+            </button>
+            <div class="dropdown-menu hidden absolute right-0 top-[45px] bg-white shadow-lg rounded-lg w-[200px] border border-gray-200 z-50">
+                <a href="/admin/profile" class="flex items-center px-4 py-3 text-text-primary hover:bg-light no-underline rounded-t-lg">
+                    <i class="fas fa-user-circle w-4 mr-3 text-center"></i> Profile
+                </a>
+                <a href="/admin/settings" class="flex items-center px-4 py-3 text-text-primary hover:bg-light no-underline">
+                    <i class="fas fa-cog w-4 mr-3 text-center"></i> Settings
+                </a>
+                <div class="h-[1px] bg-gray-200 my-1"></div>
+                <a href="/admin/logout" class="flex items-center px-4 py-3 text-text-primary hover:bg-light no-underline rounded-b-lg">
+                    <i class="fas fa-sign-out-alt w-4 mr-3 text-center"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle user dropdown
+        const userDropdown = document.querySelector('.user-toggle').parentElement;
+        const userToggle = document.querySelector('.user-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        
+        if (userToggle) {
+            userToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('hidden');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!userDropdown.contains(e.target)) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Mobile sidebar toggle
+        const mobileToggle = document.getElementById('mobile-sidebar-toggle');
+        const sidebarEl = document.querySelector('.admin-sidebar');
+        
+        if (mobileToggle && sidebarEl) {
+            mobileToggle.addEventListener('click', function() {
+                document.body.classList.toggle('sidebar-mobile-open');
+            });
+        }
+    });
+</script> 

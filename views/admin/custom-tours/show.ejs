@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <div class="p-4">
+        <!-- Admin Custom Tour Detail Page -->
+        <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold">Custom Tour Request</h1>
+                <p class="text-sm opacity-60">
+                    <i class="far fa-calendar-alt mr-1"></i> Submitted on <%= new Date(customTour.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                </p>
+            </div>
+            <div>
+                <a href="/admin/custom-tours" class="btn btn-outline btn-sm">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Requests
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+            <!-- Main details (2 columns on large screens) -->
+            <div class="card bg-base-100 shadow-sm lg:col-span-2">
+                <div class="card-body p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="card-title text-lg">
+                            <i class="fas fa-info-circle text-purple mr-2"></i> Request Details
+                        </h2>
+                        <% 
+                        let badgeClass = "badge badge-lg"; 
+                        switch(customTour.status) {
+                            case 'pending': badgeClass += " badge-warning"; break;
+                            case 'reviewed': badgeClass += " badge-info"; break;
+                            case 'contacted': badgeClass += " badge-primary"; break;
+                            case 'completed': badgeClass += " badge-success"; break;
+                            case 'rejected': badgeClass += " badge-error"; break;
+                        }
+                        %>
+                        <span class="<%= badgeClass %>">
+                            <%= customTour.status.charAt(0).toUpperCase() + customTour.status.slice(1) %>
+                        </span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 class="text-base font-medium mb-3 flex items-center">
+                                <i class="fas fa-user text-purple mr-2"></i> Personal Information
+                            </h3>
+                            <div class="space-y-2">
+                                <div>
+                                    <span class="text-sm opacity-60">Name:</span>
+                                    <span class="font-medium"><%= customTour.fullName %></span>
+                                </div>
+                                <div>
+                                    <span class="text-sm opacity-60">Email:</span>
+                                    <a href="mailto:<%= customTour.email %>" class="link link-hover font-medium"><%= customTour.email %></a>
+                                </div>
+                                <div>
+                                    <span class="text-sm opacity-60">Phone:</span>
+                                    <a href="tel:<%= customTour.phone %>" class="link link-hover font-medium"><%= customTour.phone %></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-base font-medium mb-3 flex items-center">
+                                <i class="fas fa-calendar-alt text-purple mr-2"></i> Tour Information
+                            </h3>
+                            <div class="space-y-2">
+                                <div>
+                                    <span class="text-sm opacity-60">Start Date:</span>
+                                    <span class="font-medium"><%= new Date(customTour.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                                </div>
+                                <div>
+                                    <span class="text-sm opacity-60">Duration:</span>
+                                    <span class="font-medium"><%= customTour.duration %> days</span>
+                                </div>
+                                <div>
+                                    <span class="text-sm opacity-60">Group Size:</span>
+                                    <span class="font-medium"><%= customTour.groupSize %> people</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-base font-medium mb-3 flex items-center">
+                            <i class="fas fa-clipboard-list text-purple mr-2"></i> Request Details
+                        </h3>
+                        <div class="bg-base-200 p-4 rounded-lg" id="requestDetailsContainer">
+                            <p class="whitespace-pre-wrap"><%= customTour.requestDetails %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar actions -->
+            <div class="space-y-4 md:space-y-6">
+                <div class="card bg-base-100 shadow-sm">
+                    <div class="card-body p-4">
+                        <h3 class="text-base font-medium mb-3 flex items-center">
+                            <i class="fas fa-tasks text-purple mr-2"></i> Actions
+                        </h3>
+                        <form action="/admin/custom-tours/<%= customTour._id %>/status" method="POST" class="mb-4" id="statusForm">
+                            <div class="form-control mb-3">
+                                <label for="status" class="label">
+                                    <span class="label-text">Update Status</span>
+                                </label>
+                                <select name="status" id="status" class="select select-bordered w-full">
+                                    <option value="pending" <%= customTour.status === 'pending' ? 'selected' : '' %>>🟠 Pending</option>
+                                    <option value="reviewed" <%= customTour.status === 'reviewed' ? 'selected' : '' %>>🔵 Reviewed</option>
+                                    <option value="contacted" <%= customTour.status === 'contacted' ? 'selected' : '' %>>🟢 Contacted</option>
+                                    <option value="completed" <%= customTour.status === 'completed' ? 'selected' : '' %>>✅ Completed</option>
+                                    <option value="rejected" <%= customTour.status === 'rejected' ? 'selected' : '' %>>🔴 Rejected</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full flex items-center justify-center" id="updateStatusBtn">
+                                <i class="fas fa-save mr-2"></i> Update Status
+                            </button>
+                        </form>
+                        
+                        <div class="divider"></div>
+                        
+                        <div class="space-y-3">
+                            <a href="mailto:<%= customTour.email %>" class="btn btn-info w-full flex items-center justify-center">
+                                <i class="fas fa-envelope mr-2"></i> Email Customer
+                            </a>
+                            <a href="tel:<%= customTour.phone %>" class="btn btn-success w-full flex items-center justify-center">
+                                <i class="fas fa-phone mr-2"></i> Call Customer
+                            </a>
+                            <button type="button" class="btn btn-error w-full flex items-center justify-center" onclick="document.getElementById('deleteModal').showModal()">
+                                <i class="fas fa-trash mr-2"></i> Delete Request
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card bg-base-100 shadow-sm">
+                    <div class="card-body p-4">
+                        <h3 class="text-base font-medium mb-3 flex items-center">
+                            <i class="fas fa-sticky-note text-purple mr-2"></i> Notes
+                        </h3>
+                        <p class="text-sm opacity-60 mb-3" id="notesPlaceholder">Add private notes about this request.</p>
+                        <textarea class="textarea textarea-bordered w-full mb-3" rows="5" placeholder="Add notes about this request..." id="requestNotes"></textarea>
+                        <div class="flex justify-end">
+                            <button class="btn btn-primary btn-sm" id="saveNotesBtn">
+                                <i class="fas fa-save mr-1"></i> Save Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <dialog id="deleteModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4">Confirm Deletion</h3>
+            <div class="text-center mb-4 text-error">
+                <i class="fas fa-exclamation-triangle text-4xl"></i>
+            </div>
+            <p>Are you sure you want to delete this custom tour request from <strong><%= customTour.fullName %></strong>?</p>
+            <p class="text-error text-sm mt-2">This action cannot be undone.</p>
+            <div class="modal-action">
+                <button class="btn" onclick="document.getElementById('deleteModal').close()">Cancel</button>
+                <form action="/admin/custom-tours/<%= customTour._id %>/delete" method="POST">
+                    <button type="submit" class="btn btn-error">
+                        <i class="fas fa-trash mr-1"></i> Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="toast toast-end hidden">
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span id="successToastMessage">Operation completed successfully.</span>
+        </div>
+    </div>
+
+    <%- include('../partials/scripts') %>
+    
+    <script>
+    $(document).ready(function() {
+        // Status form handling with jQuery
+        $('#statusForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            const form = $(this);
+            const statusValue = $('#status').val();
+            const statusText = $('#status option:selected').text();
+            
+            // Animate button during submission
+            $('#updateStatusBtn').html('<i class="fas fa-spinner fa-spin mr-2"></i> Updating...');
+            $('#updateStatusBtn').addClass('loading');
+            
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(response) {
+                    // Update UI without page reload
+                    let badgeClass = 'badge badge-lg';
+                    
+                    if (statusValue === 'pending') badgeClass += ' badge-warning';
+                    else if (statusValue === 'reviewed') badgeClass += ' badge-info';
+                    else if (statusValue === 'contacted') badgeClass += ' badge-primary';
+                    else if (statusValue === 'completed') badgeClass += ' badge-success';
+                    else if (statusValue === 'rejected') badgeClass += ' badge-error';
+                    
+                    // Update the badge
+                    $('.card-title').next('span').attr('class', badgeClass)
+                        .text(statusText.split(' ')[1]); // Remove the emoji
+                    
+                    // Show success toast
+                    $('#successToastMessage').text('Status updated successfully');
+                    $('#successToast').removeClass('hidden');
+                    setTimeout(() => {
+                        $('#successToast').addClass('hidden');
+                    }, 3000);
+                    
+                    // Reset button
+                    $('#updateStatusBtn').html('<i class="fas fa-save mr-2"></i> Update Status');
+                    $('#updateStatusBtn').removeClass('loading');
+                },
+                error: function() {
+                    // Reset button and show error
+                    $('#updateStatusBtn').html('<i class="fas fa-save mr-2"></i> Update Status');
+                    $('#updateStatusBtn').removeClass('loading');
+                    alert('Error updating status. Please try again.');
+                }
+            });
+        });
+        
+        // Notes functionality
+        const savedNotes = localStorage.getItem('customTourNotes_<%= customTour._id %>');
+        if (savedNotes) {
+            $('#requestNotes').val(savedNotes);
+            $('#notesPlaceholder').hide();
+        }
+        
+        $('#saveNotesBtn').on('click', function() {
+            const notes = $('#requestNotes').val();
+            localStorage.setItem('customTourNotes_<%= customTour._id %>', notes);
+            
+            // Animation feedback
+            $(this).html('<i class="fas fa-check mr-1"></i> Saved');
+            setTimeout(() => {
+                $(this).html('<i class="fas fa-save mr-1"></i> Save Notes');
+            }, 2000);
+            
+            // Show success toast
+            $('#successToastMessage').text('Notes saved successfully');
+            $('#successToast').removeClass('hidden');
+            setTimeout(() => {
+                $('#successToast').addClass('hidden');
+            }, 3000);
+            
+            if (notes.trim() === '') {
+                $('#notesPlaceholder').show();
+            } else {
+                $('#notesPlaceholder').hide();
+            }
+        });
+    });
+    </script>
+</body>
+</html> 

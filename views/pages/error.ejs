@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+    <style>
+        .error-content {
+            padding: 10rem 0;
+            text-align: center;
+        }
+        
+        .error-icon {
+            font-size: 8rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+        
+        .error-message {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .error-description {
+            font-size: 1.8rem;
+            max-width: 60rem;
+            margin: 0 auto 4rem;
+        }
+        
+        .error-details {
+            margin-top: 3rem;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            text-align: left;
+            max-width: 80rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .error-details pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 1.4rem;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <%- include('../partials/hero') %>
+    
+    <section class="section">
+        <div class="container">
+            <div class="error-content animate">
+                <div class="error-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+                <h1 class="error-message"><%= message || 'Something Went Wrong' %></h1>
+                <p class="error-description">
+                    We apologize for the inconvenience. Our team has been notified and is working on resolving the issue.
+                </p>
+                <div class="error-actions">
+                    <a href="/" class="btn btn-primary">Back to Home</a>
+                    <a href="/contact" class="btn btn-secondary">Contact Support</a>
+                </div>
+                
+                <% if (error && process.env.NODE_ENV === 'development') { %>
+                <div class="error-details">
+                    <h3>Error Details (Development Only):</h3>
+                    <pre><%= error %></pre>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer') %>
+</body>
+</html> 

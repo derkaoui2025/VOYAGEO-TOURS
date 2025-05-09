@@ -1,0 +1,22 @@
+<!-- Hero Section -->
+<section class="hero" <% if (typeof headerImagePath !== 'undefined') { %>style="background-image: url('<%= headerImagePath %>'); background-size: cover; background-position: center;"<% } %>>
+    <% if (typeof headerImagePath === 'undefined') { %>
+    <!-- Video Background with performance optimization -->
+    <video class="hero-video" autoplay loop muted playsinline preload="metadata">
+        <!-- Video sources will be added via JavaScript for better performance -->
+    </video>
+    <% } %>
+    
+    <!-- Overlay -->
+    <div class="hero-overlay"></div>
+    
+    <!-- Hero Content -->
+    <div class="hero-content">
+        <h1><%= heroTitle %></h1>
+        <p><%= heroSubtitle %></p>
+        <div class="hero-btns">
+            <a href="/tours" class="btn btn-primary">Explore Tours</a>
+            <a href="/customize" class="btn btn-outline">Customize Your Trip</a>
+        </div>
+    </div>
+</section> 

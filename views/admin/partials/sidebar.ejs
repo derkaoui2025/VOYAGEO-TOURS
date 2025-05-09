@@ -1,0 +1,119 @@
+<div class="fixed left-0 top-0 h-screen w-[260px] flex flex-col bg-dark text-white shadow-lg transition-all z-40 overflow-y-auto" id="admin-sidebar">
+    <!-- Sidebar Logo -->
+    <div class="flex items-center justify-between p-4 bg-darker border-b border-opacity-10 border-white h-[60px]">
+        <a href="/admin/dashboard" class="text-xl font-bold text-secondary">
+            <h2 class="m-0">VOYAGEO</h2>
+        </a>
+        <button id="sidebar-toggle" class="text-white bg-transparent border-0 text-xl cursor-pointer md:hidden">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- User Profile -->
+    <div class="flex items-center p-4 bg-black bg-opacity-10 border-b border-opacity-5 border-white">
+        <div class="mr-3">
+            <img src="https://ui-avatars.com/api/?name=<%= session.adminUsername || 'Admin' %>&background=ff9900&color=fff" alt="Admin" class="w-10 h-10 rounded-full border-2 border-secondary">
+        </div>
+        <div>
+            <p class="m-0 text-sm text-opacity-70 text-white">Welcome,</p>
+            <h4 class="m-0 text-base font-semibold"><%= session.adminUsername || 'Admin' %></h4>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="flex-1 overflow-y-auto py-4">
+        <!-- Main Menu Section -->
+        <div class="mb-6">
+            <h5 class="px-5 mb-2 text-xs font-semibold tracking-wider text-white text-opacity-50 uppercase">MAIN MENU</h5>
+            <ul class="list-none p-0 m-0">
+                <li class="mb-0.5">
+                    <a href="/admin/dashboard" class="flex items-center py-3 px-5 text-white text-opacity-80 no-underline hover:bg-white hover:bg-opacity-5 hover:text-white border-l-4 <%= activePage === 'dashboard' ? 'bg-secondary bg-opacity-10 text-secondary border-l-secondary' : 'border-l-transparent' %>">
+                        <i class="fas fa-tachometer-alt w-6 mr-3 text-center"></i> 
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-0.5">
+                    <a href="/admin/tours" class="flex items-center py-3 px-5 text-white text-opacity-80 no-underline hover:bg-white hover:bg-opacity-5 hover:text-white border-l-4 <%= activePage === 'tours' ? 'bg-secondary bg-opacity-10 text-secondary border-l-secondary' : 'border-l-transparent' %> relative">
+                        <i class="fas fa-map-marked-alt w-6 mr-3 text-center"></i> 
+                        <span>Tours</span>
+                        <i class="fas fa-chevron-right absolute right-5 text-xs text-opacity-50 text-white"></i>
+                    </a>
+                </li>
+                <li class="mb-0.5">
+                    <a href="/admin/bookings" class="flex items-center py-3 px-5 text-white text-opacity-80 no-underline hover:bg-white hover:bg-opacity-5 hover:text-white border-l-4 <%= activePage === 'bookings' ? 'bg-secondary bg-opacity-10 text-secondary border-l-secondary' : 'border-l-transparent' %>">
+                        <i class="fas fa-calendar-check w-6 mr-3 text-center"></i> 
+                        <span>Bookings</span>
+                    </a>
+                </li>
+                <li class="mb-0.5">
+                    <a href="/admin/custom-tours" class="flex items-center py-3 px-5 text-white text-opacity-80 no-underline hover:bg-white hover:bg-opacity-5 hover:text-white border-l-4 <%= activePage === 'custom-tours' ? 'bg-secondary bg-opacity-10 text-secondary border-l-secondary' : 'border-l-transparent' %>">
+                        <i class="fas fa-route w-6 mr-3 text-center"></i> 
+                        <span>Custom Tours</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Users & System Section -->
+        <div>
+            <h5 class="px-5 mb-2 text-xs font-semibold tracking-wider text-white text-opacity-50 uppercase">USERS & SYSTEM</h5>
+            <ul class="list-none p-0 m-0">
+                <li class="mb-0.5">
+                    <a href="/admin/users" class="flex items-center py-3 px-5 text-white text-opacity-80 no-underline hover:bg-white hover:bg-opacity-5 hover:text-white border-l-4 <%= activePage === 'users' ? 'bg-secondary bg-opacity-10 text-secondary border-l-secondary' : 'border-l-transparent' %>">
+                        <i class="fas fa-users w-6 mr-3 text-center"></i> 
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="mb-0.5">
+                    <a href="/admin/settings" class="flex items-center py-3 px-5 text-white text-opacity-80 no-underline hover:bg-white hover:bg-opacity-5 hover:text-white border-l-4 <%= activePage === 'settings' ? 'bg-secondary bg-opacity-10 text-secondary border-l-secondary' : 'border-l-transparent' %>">
+                        <i class="fas fa-cog w-6 mr-3 text-center"></i> 
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Sidebar Footer -->
+    <div class="p-4 bg-black bg-opacity-10 border-t border-opacity-5 border-white">
+        <a href="/admin/logout" class="flex items-center text-white text-opacity-80 no-underline transition-colors hover:text-secondary">
+            <i class="fas fa-sign-out-alt mr-3"></i> 
+            <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    // Mobile sidebar toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('admin-sidebar');
+        
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function() {
+                document.body.classList.remove('sidebar-mobile-open');
+            });
+        }
+        
+        // Add event listener for mobile menu toggle button
+        const mobileToggle = document.getElementById('mobile-sidebar-toggle');
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', function() {
+                document.body.classList.add('sidebar-mobile-open');
+            });
+        }
+    });
+</script>
+
+<style>
+    /* Only add styles that Tailwind can't handle */
+    @media (max-width: 991px) {
+        #admin-sidebar {
+            transform: translateX(-100%);
+        }
+        
+        body.sidebar-mobile-open #admin-sidebar {
+            transform: translateX(0);
+        }
+    }
+</style> 

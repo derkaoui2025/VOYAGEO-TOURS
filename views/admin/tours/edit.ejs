@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="drawer lg:drawer-open min-h-screen">
+        <!-- Mobile Drawer Toggle -->
+        <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
+
+        <!-- Main Content -->
+        <div class="drawer-content flex flex-col bg-base-200">
+            <!-- Top Nav -->
+            <div class="navbar bg-base-100 shadow-md lg:hidden">
+                <div class="flex-none">
+                    <label for="admin-drawer" class="btn btn-square btn-ghost drawer-button">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <span class="text-xl font-semibold">Voyageo Tours</span>
+                </div>
+                <div class="flex-none">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                                <i class="fas fa-user text-lg"></i>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                            <li><a href="/admin/profile"><i class="fas fa-user-cog mr-2"></i> Profile</a></li>
+                            <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                            <li><a href="/admin/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div class="p-4 md:p-6 space-y-6 pb-20">
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">Edit Tour</h1>
+                        <p class="text-sm opacity-60">Modify details for <%= tour.title %></p>
+                    </div>
+                    <div>
+                        <a href="/admin/tours" class="btn btn-ghost btn-sm md:btn-md">
+                            <i class="fas fa-arrow-left mr-2"></i> Back to Tours
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Edit Tour Form -->
+                <form id="editTourForm" action="/admin/tours/<%= tour._id %>/update" method="POST" enctype="multipart/form-data" class="space-y-6">
+                            <!-- Basic Information -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <h2 class="card-title text-lg font-medium mb-4">Basic Information</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text">Tour Title <span class="text-error">*</span></span>
+                                    </label>
+                                    <input type="text" id="title" name="title" class="input input-bordered w-full" value="<%= tour.title %>" required />
+                                        </div>
+                                        
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text">Category <span class="text-error">*</span></span>
+                                    </label>
+                                    <select id="category" name="category" class="select select-bordered w-full" required>
+                                        <option value="" disabled>Select Category</option>
+                                                    <option value="Adventure" <%= tour.category === 'Adventure' ? 'selected' : '' %>>Adventure</option>
+                                                    <option value="Cultural" <%= tour.category === 'Cultural' ? 'selected' : '' %>>Cultural</option>
+                                                    <option value="Beach" <%= tour.category === 'Beach' ? 'selected' : '' %>>Beach</option>
+                                                    <option value="City" <%= tour.category === 'City' ? 'selected' : '' %>>City</option>
+                                                    <option value="Desert" <%= tour.category === 'Desert' ? 'selected' : '' %>>Desert</option>
+                                                    <option value="Mountain" <%= tour.category === 'Mountain' ? 'selected' : '' %>>Mountain</option>
+                                                    <option value="Other" <%= tour.category === 'Other' ? 'selected' : '' %>>Other</option>
+                                                </select>
+                                        </div>
+                                    </div>
+                                    
+                            <div class="form-control mb-4">
+                                <label class="label">
+                                    <span class="label-text">Description <span class="text-error">*</span></span>
+                                </label>
+                                <textarea id="description" name="description" class="textarea textarea-bordered h-32" required><%= tour.description %></textarea>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text">Price (USD) <span class="text-error">*</span></span>
+                                    </label>
+                                    <input type="number" id="price" name="price" class="input input-bordered w-full" min="1" step="1" value="<%= tour.price %>" required />
+                                    </div>
+                                    
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text">Duration (days) <span class="text-error">*</span></span>
+                                    </label>
+                                    <input type="number" id="duration" name="duration" class="input input-bordered w-full" min="1" step="1" value="<%= tour.duration %>" required />
+                                            </div>
+                                        </div>
+                                        
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text">Starting Location <span class="text-error">*</span></span>
+                                    </label>
+                                    <input type="text" id="startLocation" name="startLocation" class="input input-bordered w-full" value="<%= tour.startLocation %>" required />
+                                            </div>
+                                
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text">Max Group Size <span class="text-error">*</span></span>
+                                    </label>
+                                    <input type="number" id="groupSize" name="groupSize" class="input input-bordered w-full" min="1" step="1" value="<%= tour.groupSize %>" required />
+                                        </div>
+                                    </div>
+                                    
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Accommodation <span class="text-error">*</span></span>
+                                </label>
+                                <input type="text" id="accommodation" name="accommodation" class="input input-bordered w-full" value="<%= tour.accommodation %>" required />
+                            </div>
+                                            </div>
+                                        </div>
+                                        
+                    <!-- Tour Images -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <h2 class="card-title text-lg font-medium mb-4">Tour Images</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text">Main Image</span>
+                                    </label>
+                                    <div class="mb-3">
+                                        <span class="text-sm opacity-70 block mb-2">Current image:</span>
+                                        <img src="<%= tour.mainImage %>" alt="<%= tour.title %>" class="w-full max-w-xs h-48 object-cover rounded-md">
+                                    </div>
+                                    
+                                    <input type="file" id="mainImage" name="mainImage" class="file-input file-input-bordered w-full max-w-xs" accept="image/*" data-preview="mainImage-preview" />
+                                    <div class="text-xs opacity-70 mt-1">Leave empty to keep the current image</div>
+                                    
+                                    <div class="mt-2">
+                                        <img id="mainImage-preview" class="hidden w-full max-w-xs h-48 object-cover rounded-md">
+                                </div>
+                            </div>
+                            
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text">Route Map Image</span>
+                                                    </label>
+                                    <div class="mb-3">
+                                        <span class="text-sm opacity-70 block mb-2">Current image:</span>
+                                        <img src="<%= tour.mapImage %>" alt="Tour map" class="w-full max-w-xs h-48 object-cover rounded-md">
+                                        </div>
+                                        
+                                    <input type="file" id="mapImage" name="mapImage" class="file-input file-input-bordered w-full max-w-xs" accept="image/*" data-preview="mapImage-preview" />
+                                    <div class="text-xs opacity-70 mt-1">Leave empty to keep the current image</div>
+                                    
+                                                    <div class="mt-2">
+                                        <img id="mapImage-preview" class="hidden w-full max-w-xs h-48 object-cover rounded-md">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Includes & Excludes -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <h2 class="card-title text-lg font-medium mb-4">What's Included & Excluded</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Includes (one per line) <span class="text-error">*</span></span>
+                                    </label>
+                                    <textarea id="includes" name="includes" class="textarea textarea-bordered h-40" required><%= tour.includes.join('\n') %></textarea>
+                                        </div>
+                                        
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Excludes (one per line) <span class="text-error">*</span></span>
+                                    </label>
+                                    <textarea id="excludes" name="excludes" class="textarea textarea-bordered h-40" required><%= tour.excludes.join('\n') %></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                    <!-- Itinerary -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="card-title text-lg font-medium">Itinerary</h2>
+                                <button type="button" id="add-itinerary-day" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus mr-2"></i> Add Day
+                                </button>
+                            </div>
+                            
+                            <div id="itinerary-container" class="space-y-6">
+                                        <% if (tour.itinerary && tour.itinerary.length > 0) { %>
+                                            <% tour.itinerary.forEach((day, index) => { %>
+                                        <div class="itinerary-item card bg-base-100 shadow border">
+                                            <div class="card-body p-4">
+                                                <div class="flex justify-between items-center mb-2">
+                                                    <h3 class="text-lg font-medium">Day <%= day.day %></h3>
+                                                    <button type="button" class="btn btn-sm btn-error remove-itinerary">
+                                                        <i class="fas fa-times"></i> Remove
+                                                    </button>
+                                                </div>
+                                                
+                                                <input type="hidden" name="itinerary[<%= index %>][day]" value="<%= day.day %>" class="day-input" />
+                                                
+                                                <div class="form-control mb-3">
+                                                    <label class="label">
+                                                        <span class="label-text">Title <span class="text-error">*</span></span>
+                                                    </label>
+                                                    <input type="text" class="input input-bordered w-full" name="itinerary[<%= index %>][title]" value="<%= day.title %>" required />
+                                                </div>
+                                                
+                                                <div class="form-control mb-3">
+                                                    <label class="label">
+                                                        <span class="label-text">Description <span class="text-error">*</span></span>
+                                                    </label>
+                                                    <textarea class="textarea textarea-bordered h-24" name="itinerary[<%= index %>][description]" required><%= day.description %></textarea>
+                                                </div>
+                                                
+                                                <div class="form-control mb-3">
+                                                    <label class="label">
+                                                        <span class="label-text">Distance (optional)</span>
+                                                    </label>
+                                                    <input type="text" class="input input-bordered w-full" name="itinerary[<%= index %>][distance]" value="<%= day.distance || '' %>" />
+                                                </div>
+                                                
+                                                <div class="form-control">
+                                                    <label class="label">
+                                                        <span class="label-text">Highlights (one per line)</span>
+                                                    </label>
+                                                    <textarea class="textarea textarea-bordered h-24" name="itinerary[<%= index %>][highlights]"><%= day.highlights ? day.highlights.join('\n') : '' %></textarea>
+                                                </div>
+                                                
+                                                <div class="text-xs opacity-70 mt-3">
+                                                    <i class="fas fa-grip-vertical mr-1"></i> Drag to reorder days
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <% }); %>
+                                <% } else { %>
+                                    <div class="itinerary-item card bg-base-100 shadow border">
+                                        <div class="card-body p-4">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <h3 class="text-lg font-medium">Day 1</h3>
+                                                <button type="button" class="btn btn-sm btn-error remove-itinerary">
+                                                    <i class="fas fa-times"></i> Remove
+                                    </button>
+                                </div>
+                                            
+                                            <input type="hidden" name="itinerary[0][day]" value="1" class="day-input" />
+                                            
+                                            <div class="form-control mb-3">
+                                                <label class="label">
+                                                    <span class="label-text">Title <span class="text-error">*</span></span>
+                                                </label>
+                                                <input type="text" class="input input-bordered w-full" name="itinerary[0][title]" value="Day 1" required />
+                            </div>
+                            
+                                            <div class="form-control mb-3">
+                                                <label class="label">
+                                                    <span class="label-text">Description <span class="text-error">*</span></span>
+                                                </label>
+                                                <textarea class="textarea textarea-bordered h-24" name="itinerary[0][description]" required></textarea>
+                                            </div>
+                                            
+                                            <div class="form-control mb-3">
+                                                <label class="label">
+                                                    <span class="label-text">Distance (optional)</span>
+                                                </label>
+                                                <input type="text" class="input input-bordered w-full" name="itinerary[0][distance]" />
+                                        </div>
+                                        
+                                            <div class="form-control">
+                                                <label class="label">
+                                                    <span class="label-text">Highlights (one per line)</span>
+                                                </label>
+                                                <textarea class="textarea textarea-bordered h-24" name="itinerary[0][highlights]"></textarea>
+                                            </div>
+                                            
+                                            <div class="text-xs opacity-70 mt-3">
+                                                <i class="fas fa-grip-vertical mr-1"></i> Drag to reorder days
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Options -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <h2 class="card-title text-lg font-medium mb-4">Advanced Options</h2>
+                            
+                            <div class="flex flex-col gap-2">
+                                <div class="form-control">
+                                    <label class="label cursor-pointer justify-start gap-3">
+                                        <input type="checkbox" name="featured" class="toggle toggle-primary" <%= tour.featured ? 'checked' : '' %> />
+                                        <span class="label-text">Feature this tour on the homepage</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="form-control">
+                                    <label class="label cursor-pointer justify-start gap-3">
+                                        <input type="checkbox" name="hidden" class="toggle toggle-error" <%= tour.hidden ? 'checked' : '' %> />
+                                        <span class="label-text">Hide this tour from public view</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Buttons -->
+                    <div class="flex justify-end gap-3">
+                        <a href="/admin/tours" class="btn btn-ghost">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save mr-2"></i> Save Changes
+                        </button>
+                            </div>
+                        </form>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="drawer-side">
+            <label for="admin-drawer" class="drawer-overlay"></label>
+            <div class="bg-base-100 w-80 min-h-full flex flex-col shadow-xl">
+                <!-- Logo -->
+                <div class="p-4 border-b flex items-center justify-center">
+                    <div class="text-2xl font-bold text-primary">Voyageo Admin</div>
+                </div>
+                
+                <!-- Admin Info -->
+                <div class="flex items-center gap-3 p-4 border-b">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-12">
+                            <span class="text-lg"><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-bold"><%= session.adminUsername || 'Admin' %></div>
+                        <div class="text-sm opacity-60">Administrator</div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <ul class="menu menu-lg p-2 flex-grow">
+                    <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a></li>
+                    <li><a href="/admin/tours" class="active"><i class="fas fa-map-marked-alt mr-2"></i> Tours</a></li>
+                    <li><a href="/admin/bookings"><i class="fas fa-calendar-check mr-2"></i> Bookings</a></li>
+                    <li><a href="/admin/custom-tours"><i class="fas fa-route mr-2"></i> Custom Requests</a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users mr-2"></i> Users</a></li>
+                    <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                </ul>
+                
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="/admin/logout" class="btn btn-outline btn-error btn-block">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Image preview functionality
+            const imageInputs = document.querySelectorAll('input[type="file"]');
+            imageInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const previewId = this.dataset.preview;
+                    const preview = document.getElementById(previewId);
+                    
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            preview.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        preview.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Itinerary functionality
+            const container = document.getElementById('itinerary-container');
+            
+            // Make itinerary items sortable
+            $(container).sortable({
+                items: '.itinerary-item',
+                handle: '.card-body',
+                update: function() {
+                    updateDayNumbers();
+                }
+            });
+            
+            // Add new itinerary day
+            document.getElementById('add-itinerary-day').addEventListener('click', function() {
+                const items = container.querySelectorAll('.itinerary-item');
+                const newDay = items.length + 1;
+                    const newIndex = items.length;
+                    
+                const template = `
+                    <div class="itinerary-item card bg-base-100 shadow border">
+                        <div class="card-body p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-lg font-medium">Day ${newDay}</h3>
+                                <button type="button" class="btn btn-sm btn-error remove-itinerary">
+                                <i class="fas fa-times"></i> Remove
+                            </button>
+                        </div>
+                            
+                            <input type="hidden" name="itinerary[${newIndex}][day]" value="${newDay}" class="day-input" />
+                            
+                            <div class="form-control mb-3">
+                                <label class="label">
+                                    <span class="label-text">Title <span class="text-error">*</span></span>
+                                </label>
+                                <input type="text" class="input input-bordered w-full" name="itinerary[${newIndex}][title]" value="Day ${newDay}" required />
+                            </div>
+                            
+                            <div class="form-control mb-3">
+                                <label class="label">
+                                    <span class="label-text">Description <span class="text-error">*</span></span>
+                                </label>
+                                <textarea class="textarea textarea-bordered h-24" name="itinerary[${newIndex}][description]" required></textarea>
+                            </div>
+                            
+                            <div class="form-control mb-3">
+                                <label class="label">
+                                    <span class="label-text">Distance (optional)</span>
+                                </label>
+                                <input type="text" class="input input-bordered w-full" name="itinerary[${newIndex}][distance]" />
+                        </div>
+                            
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Highlights (one per line)</span>
+                                </label>
+                                <textarea class="textarea textarea-bordered h-24" name="itinerary[${newIndex}][highlights]"></textarea>
+                        </div>
+                            
+                            <div class="text-xs opacity-70 mt-3">
+                                <i class="fas fa-grip-vertical mr-1"></i> Drag to reorder days
+                        </div>
+                        </div>
+                        </div>
+                    `;
+                    
+                // Add the new item to the container
+                container.insertAdjacentHTML('beforeend', template);
+                
+                // Add event listener to the new remove button
+                const newItem = container.lastElementChild;
+                const removeBtn = newItem.querySelector('.remove-itinerary');
+                removeBtn.addEventListener('click', function() {
+                    this.closest('.itinerary-item').remove();
+                    updateDayNumbers();
+                });
+            });
+            
+            // Remove itinerary day
+            document.querySelectorAll('.remove-itinerary').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.itinerary-item').remove();
+                    updateDayNumbers();
+                });
+            });
+            
+            // Update day numbers and field names
+            function updateDayNumbers() {
+                const items = container.querySelectorAll('.itinerary-item');
+                items.forEach((item, index) => {
+                    const dayNumber = index + 1;
+                    
+                    // Update day number display
+                    item.querySelector('h3').textContent = `Day ${dayNumber}`;
+                    
+                    // Update day input
+                    const dayInput = item.querySelector('.day-input');
+                    dayInput.value = dayNumber;
+                    dayInput.name = `itinerary[${index}][day]`;
+                    
+                    // Update other field names
+                    const fields = item.querySelectorAll('input:not(.day-input), textarea');
+                    fields.forEach(field => {
+                        const name = field.name;
+                        const newName = name.replace(/itinerary\[\d+\]/, `itinerary[${index}]`);
+                        field.name = newName;
+                    });
+                });
+            }
+            
+            // Form validation
+            const form = document.getElementById('editTourForm');
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    // Find all invalid fields and show error message
+                    const invalidFields = form.querySelectorAll(':invalid');
+                    if (invalidFields.length > 0) {
+                        invalidFields[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        alert('Please fill in all required fields.');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

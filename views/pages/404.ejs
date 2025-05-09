@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+    <style>
+        .error-content {
+            padding: 10rem 0;
+            text-align: center;
+        }
+        
+        .error-code {
+            font-size: 12rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+            margin-bottom: 2rem;
+            text-shadow: 3px 3px 0 var(--secondary-color);
+        }
+        
+        .error-message {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .error-description {
+            font-size: 1.8rem;
+            max-width: 60rem;
+            margin: 0 auto 4rem;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <%- include('../partials/hero') %>
+    
+    <section class="section">
+        <div class="container">
+            <div class="error-content animate">
+                <div class="error-code">404</div>
+                <h1 class="error-message">Page Not Found</h1>
+                <p class="error-description">
+                    We're sorry, but the page you were looking for doesn't exist. 
+                    It might have been moved or deleted, or perhaps you mistyped the URL.
+                </p>
+                <div class="error-actions">
+                    <a href="/" class="btn btn-primary">Back to Home</a>
+                    <a href="/tours" class="btn btn-secondary">Explore Tours</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer') %>
+</body>
+</html> 

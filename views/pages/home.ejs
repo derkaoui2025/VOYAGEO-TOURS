@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+    <style>
+        /* Custom styles for the new tours layout */
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 4rem;
+            font-style: italic;
+        }
+        
+        .horizontal-tour-card {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        
+        .horizontal-tour-image {
+            width: 35%;
+            min-width: 250px;
+            overflow: hidden;
+        }
+        
+        .horizontal-tour-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .horizontal-tour-content {
+            width: 45%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .horizontal-tour-price {
+            width: 20%;
+            min-width: 150px;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-left: 1px solid #eee;
+        }
+        
+        .horizontal-tour-content h3 {
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            color: var(--secondary-color);
+        }
+        
+        .tour-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .tour-detail svg {
+            margin-right: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .current-price {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+        
+        .view-details-btn {
+            width: 100%;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .horizontal-tour-card {
+                flex-direction: column;
+            }
+            
+            .horizontal-tour-image,
+            .horizontal-tour-content,
+            .horizontal-tour-price {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .horizontal-tour-price {
+                border-left: none;
+                border-top: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <%- include('../partials/hero') %>
+    
+    <!-- Featured Tours Section -->
+    <section class="section featured-tours">
+        <div class="container">
+            <h2 class="section-title text-center">MOROCCO DESERT TOUR</h2>
+            <p class="section-subtitle">Our Popular Experiences</p>
+            
+            <% if (featuredTours && featuredTours.length > 0) { %>
+                <% featuredTours.forEach(tour => { %>
+                    <div class="horizontal-tour-card animate">
+                        <div class="horizontal-tour-image">
+                            <img class="lazy-image" data-src="<%= tour.mainImage %>" alt="<%= tour.title %>" width="400" height="300">
+                        </div>
+                        <div class="horizontal-tour-content">
+                            <h3><%= tour.title %></h3>
+                            <div class="tour-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span><%= tour.duration %> DAYS</span>
+                            </div>
+                            <div class="tour-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span><%= tour.startLocation %></span>
+                            </div>
+                            <% if (tour.accommodation) { %>
+                            <div class="tour-detail">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                <span><%= tour.accommodation %></span>
+                            </div>
+                            <% } %>
+                        </div>
+                        <div class="horizontal-tour-price">
+                            <div class="original-price">From $<%= Math.round(tour.price * 1.2) %></div>
+                            <div class="current-price"><%= tour.price %> EUR</div>
+                            <a href="/tours/<%= tour.slug %>" class="btn btn-primary view-details-btn">VIEW DETAILS</a>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <!-- Fallback Tours in case database is unavailable -->
+                <div class="horizontal-tour-card animate">
+                    <div class="horizontal-tour-image">
+                        <img class="lazy-image" data-src="/images/tours/sahara-desert.jpg" alt="Fez to Merzouga Desert Tour" width="400" height="300">
+                    </div>
+                    <div class="horizontal-tour-content">
+                        <h3>FEZ TO MERZOUGA DESERT 2-DAY TOUR VIA THE HIGH ATLAS MOUNTAINS</h3>
+                        <div class="tour-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span>2 DAYS</span>
+                        </div>
+                        <div class="tour-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>FEZ</span>
+                        </div>
+                        <div class="tour-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span>MERZOUGA</span>
+                        </div>
+                    </div>
+                    <div class="horizontal-tour-price">
+                        <div class="original-price">From 120 EUR</div>
+                        <div class="current-price">100 EUR</div>
+                        <a href="/tours/sahara-desert" class="btn btn-primary view-details-btn">VIEW DETAILS</a>
+                    </div>
+                </div>
+                
+                <div class="horizontal-tour-card animate">
+                    <div class="horizontal-tour-image">
+                        <img class="lazy-image" data-src="/images/tours/agafay-desert.jpg" alt="Agafay Desert Package" width="400" height="300">
+                    </div>
+                    <div class="horizontal-tour-content">
+                        <h3>AGAFAY DESERT PACKAGE, QUAD BIKE, CAMEL RIDE AND DINNER SHOW</h3>
+                        <div class="tour-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span>6 - 8 Hours</span>
+                        </div>
+                        <div class="tour-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>Marrakech</span>
+                        </div>
+                        <div class="tour-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            <span>Agafay Desert</span>
+                        </div>
+                    </div>
+                    <div class="horizontal-tour-price">
+                        <div class="original-price">From 230 EUR</div>
+                        <div class="current-price">196 EUR</div>
+                        <a href="/tours/agafay-desert" class="btn btn-primary view-details-btn">VIEW DETAILS</a>
+                    </div>
+                </div>
+            <% } %>
+            
+            <div class="text-center" style="margin-top: 4rem;">
+                <a href="/tours" class="btn btn-secondary">View All Tours</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Why Choose Us Section -->
+    <section class="section why-choose-us">
+        <div class="container">
+            <h2 class="section-title text-center">Why Choose Voyageo Tours?</h2>
+            
+            <div class="features-grid">
+                <div class="feature-item animate">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h3>10+ Years Experience</h3>
+                    <p>With over a decade of experience, we know Morocco like the back of our hand.</p>
+                </div>
+                
+                <div class="feature-item animate">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>Local Expert Guides</h3>
+                    <p>Our guides are knowledgeable locals who are passionate about sharing their culture.</p>
+                </div>
+                
+                <div class="feature-item animate">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <h3>5-Star Rated</h3>
+                    <p>Consistently rated 5 stars on TripAdvisor, Google, and other travel platforms.</p>
+                </div>
+                
+                <div class="feature-item animate">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <h3>Customizable Tours</h3>
+                    <p>Every trip can be tailored to your preferences, interests, and schedule.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="section testimonials">
+        <div class="container">
+            <h2 class="section-title text-center">What Our Travelers Say</h2>
+            
+            <div class="testimonials-slider">
+                <div class="testimonial-item animate">
+                    <div class="testimonial-content">
+                        <p>"Our 10-day tour of Morocco exceeded all expectations. The accommodations were excellent, the food delicious, and our guide Mohammed was knowledgeable and fun!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img class="lazy-image" data-src="/images/testimonials/client1.jpg" alt="Sarah Wilson" width="60" height="60">
+                        <div>
+                            <h4>Sarah Wilson</h4>
+                            <p>United Kingdom</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-item animate">
+                    <div class="testimonial-content">
+                        <p>"The Sahara desert experience was magical. Sleeping under the stars and riding camels at sunrise are memories I'll cherish forever. Voyageo Tours made everything perfect!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img class="lazy-image" data-src="/images/testimonials/client2.jpg" alt="David Thompson" width="60" height="60">
+                        <div>
+                            <h4>David Thompson</h4>
+                            <p>United States</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-item animate">
+                    <div class="testimonial-content">
+                        <p>"As a solo female traveler, I was concerned about visiting Morocco alone. Voyageo Tours ensured I felt safe and comfortable throughout my entire journey. Highly recommend!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img class="lazy-image" data-src="/images/testimonials/client3.jpg" alt="Emma Rodriguez" width="60" height="60">
+                        <div>
+                            <h4>Emma Rodriguez</h4>
+                            <p>Australia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action Section -->
+    <section class="section cta">
+        <div class="container">
+            <div class="cta-content animate">
+                <h2>Ready to Experience Morocco?</h2>
+                <p>Let us help you plan the perfect Moroccan adventure tailored to your interests.</p>
+                <div class="cta-buttons">
+                    <a href="/customize" class="btn btn-primary">Customize Your Tour</a>
+                    <a href="/contact" class="btn btn-outline">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer') %>
+</body>
+</html> 

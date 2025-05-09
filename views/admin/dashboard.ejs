@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <%- include('./partials/head') %>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="drawer lg:drawer-open min-h-screen">
+        <!-- Mobile Drawer Toggle -->
+        <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
+        
+        <!-- Main Content -->
+        <div class="drawer-content flex flex-col bg-base-200">
+            <!-- Top Nav -->
+            <div class="navbar bg-base-100 shadow-md lg:hidden">
+                <div class="flex-none">
+                    <label for="admin-drawer" class="btn btn-square btn-ghost drawer-button">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <span class="text-xl font-semibold">Voyageo Tours</span>
+                </div>
+                <div class="flex-none">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                                <i class="fas fa-user text-lg"></i>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                            <li><a href="/admin/profile"><i class="fas fa-user-cog mr-2"></i> Profile</a></li>
+                            <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                            <li><a href="/admin/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div class="p-4 md:p-6 space-y-6 pb-20">
+                <!-- Welcome Section -->
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">Welcome, <%= session.adminUsername || 'Admin' %></h1>
+                        <p class="text-sm opacity-60">Dashboard overview and summary</p>
+                    </div>
+                    <div class="badge badge-neutral gap-2 px-4 py-3 text-sm">
+                        <i class="fas fa-calendar-alt"></i>
+                        <%= new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' }) %>
+                    </div>
+                </div>
+
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Tours Stat -->
+                    <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                        <div class="stat-figure text-primary">
+                            <div class="avatar">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                                    <i class="fas fa-map-marked-alt text-primary text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-title">Total Tours</div>
+                        <div class="stat-value text-primary"><%= stats.tours || 0 %></div>
+                        <div class="stat-desc">Active travel packages</div>
+                    </div>
+
+                    <!-- Bookings Stat -->
+                    <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                        <div class="stat-figure text-secondary">
+                            <div class="avatar">
+                                <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
+                                    <i class="fas fa-calendar-check text-secondary text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-title">Bookings</div>
+                        <div class="stat-value text-secondary"><%= stats.bookings || 0 %></div>
+                        <div class="stat-desc">Total confirmed bookings</div>
+                    </div>
+
+                    <!-- Custom Tours Stat -->
+                    <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                        <div class="stat-figure text-accent">
+                            <div class="avatar">
+                                <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
+                                    <i class="fas fa-route text-accent text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-title">Custom Requests</div>
+                        <div class="stat-value text-accent"><%= stats.customTours || 0 %></div>
+                        <div class="stat-desc">Pending custom tour requests</div>
+                    </div>
+
+                    <!-- Users Stat -->
+                    <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                        <div class="stat-figure text-info">
+                            <div class="avatar">
+                                <div class="w-12 h-12 rounded-full bg-info/10 flex items-center justify-center">
+                                    <i class="fas fa-users text-info text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-title">Users</div>
+                        <div class="stat-value text-info"><%= stats.users || 0 %></div>
+                        <div class="stat-desc">Registered customer accounts</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card bg-base-100 shadow-md">
+                    <div class="card-body p-4 md:p-6">
+                        <h2 class="card-title text-lg font-medium mb-4">Quick Actions</h2>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="/admin/tours/new" class="btn btn-primary btn-sm md:btn-md">
+                                <i class="fas fa-plus mr-2"></i> Add Tour
+                            </a>
+                            <a href="/admin/bookings" class="btn btn-secondary btn-sm md:btn-md">
+                                <i class="fas fa-calendar-check mr-2"></i> Manage Bookings
+                            </a>
+                            <a href="/admin/custom-tours" class="btn btn-accent btn-sm md:btn-md">
+                                <i class="fas fa-route mr-2"></i> Custom Requests
+                            </a>
+                            <a href="/admin/tours" class="btn btn-neutral btn-sm md:btn-md">
+                                <i class="fas fa-map-marked-alt mr-2"></i> All Tours
+                            </a>
+                            <a href="/admin/bookings/export-excel" class="btn btn-ghost btn-sm md:btn-md">
+                                <i class="fas fa-file-excel mr-2"></i> Export Bookings
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                    <!-- Recent Bookings (2 columns on large screens) -->
+                    <div class="card bg-base-100 shadow-md lg:col-span-2">
+                        <div class="card-body p-4 md:p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="card-title text-lg font-medium">Recent Bookings</h2>
+                                <a href="/admin/bookings" class="btn btn-ghost btn-sm">View All</a>
+                            </div>
+                            
+                            <% if (recentBookings && recentBookings.length > 0) { %>
+                                <div class="overflow-x-auto">
+                                    <table class="table table-zebra table-sm md:table-md w-full">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer</th>
+                                                <th>Tour</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% recentBookings.forEach(booking => { %>
+                                                <tr>
+                                                    <td>
+                                                        <div class="font-medium"><%= booking.fullName %></div>
+                                                        <div class="text-xs opacity-60"><%= booking.email %></div>
+                                                    </td>
+                                                    <td><%= booking.tourName %></td>
+                                                    <td><%= new Date(booking.tourDate).toLocaleDateString() %></td>
+                                                    <td>
+                                                        <% let statusClass = "badge"; 
+                                                           switch(booking.status) {
+                                                                case 'confirmed': statusClass += " badge-success"; break;
+                                                                case 'pending': statusClass += " badge-warning"; break;
+                                                                case 'cancelled': statusClass += " badge-error"; break;
+                                                                case 'completed': statusClass += " badge-info"; break;
+                                                                default: statusClass += " badge-neutral";
+                                                           }
+                                                        %>
+                                                        <span class="<%= statusClass %>"><%= booking.status %></span>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/admin/bookings/<%= booking._id %>" class="btn btn-ghost btn-xs">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <% } else { %>
+                                <div class="py-8 text-center">
+                                    <div class="mask mask-squircle mx-auto w-12 h-12 bg-base-200 flex items-center justify-center mb-2">
+                                        <i class="fas fa-calendar-times opacity-60"></i>
+                                    </div>
+                                    <p class="font-medium">No recent bookings</p>
+                                    <p class="text-sm opacity-60">New bookings will appear here</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="card-title text-lg font-medium">Recent Activity</h2>
+                                <button id="refresh-activity" class="btn btn-ghost btn-square btn-sm">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                            
+                            <% if (recentActivity && recentActivity.length > 0) { %>
+                                <div class="space-y-4">
+                                    <% recentActivity.forEach(activity => { %>
+                                        <div class="flex gap-3 pb-3 border-b">
+                                            <div class="avatar">
+                                                <div class="w-10 h-10 rounded-full bg-base-200 flex items-center justify-center">
+                                                    <i class="<%= activity.icon %> opacity-60"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm"><%= activity.text %></p>
+                                                <p class="text-xs opacity-60 mt-1"><%= activity.time %></p>
+                                            </div>
+                                        </div>
+                                    <% }) %>
+                                </div>
+                            <% } else { %>
+                                <div class="py-8 text-center">
+                                    <div class="mask mask-squircle mx-auto w-12 h-12 bg-base-200 flex items-center justify-center mb-2">
+                                        <i class="fas fa-history opacity-60"></i>
+                                    </div>
+                                    <p class="font-medium">No recent activity</p>
+                                    <p class="text-sm opacity-60">Activity will be shown here</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <!-- Popular Tours Chart -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <h2 class="card-title text-lg font-medium mb-4">Popular Tours</h2>
+                            <div class="h-64 flex justify-center items-center">
+                                <canvas id="popular-tours-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Revenue Overview -->
+                    <div class="card bg-base-100 shadow-md lg:col-span-2">
+                        <div class="card-body p-4 md:p-6">
+                            <h2 class="card-title text-lg font-medium mb-4">Revenue Overview</h2>
+                            <div class="h-64 flex justify-center items-center">
+                                <canvas id="revenue-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="drawer-side">
+            <label for="admin-drawer" class="drawer-overlay"></label>
+            <div class="bg-base-100 w-80 min-h-full flex flex-col shadow-xl">
+                <!-- Logo -->
+                <div class="p-4 border-b flex items-center justify-center">
+                    <div class="text-2xl font-bold text-primary">Voyageo Admin</div>
+                </div>
+                
+                <!-- Admin Info -->
+                <div class="flex items-center gap-3 p-4 border-b">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-12">
+                            <span class="text-lg"><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-bold"><%= session.adminUsername || 'Admin' %></div>
+                        <div class="text-sm opacity-60">Administrator</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <ul class="menu menu-lg p-2 flex-grow">
+                    <li><a href="/admin/dashboard" class="active"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a></li>
+                    <li><a href="/admin/tours"><i class="fas fa-map-marked-alt mr-2"></i> Tours</a></li>
+                    <li><a href="/admin/bookings"><i class="fas fa-calendar-check mr-2"></i> Bookings</a></li>
+                    <li><a href="/admin/custom-tours"><i class="fas fa-route mr-2"></i> Custom Requests</a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users mr-2"></i> Users</a></li>
+                    <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                </ul>
+                
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="/admin/logout" class="btn btn-outline btn-error btn-block">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize charts when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Popular Tours Chart
+            const popularToursCtx = document.getElementById('popular-tours-chart');
+            if (popularToursCtx) {
+                new Chart(popularToursCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [<% if (popularTours && popularTours.length > 0) { %>
+                            <% popularTours.forEach((tour, index) => { %>
+                                '<%= tour.name %>'<%= index < popularTours.length - 1 ? ',' : '' %>
+                            <% }) %>
+                        <% } else { %>
+                            'Desert Safari', 'Marrakech Explorer', 'Atlas Mountains', 'Coastal Tour', 'City Break'
+                        <% } %>],
+                        datasets: [{
+                            data: [<% if (popularTours && popularTours.length > 0) { %>
+                                <% popularTours.forEach((tour, index) => { %>
+                                    <%= tour.bookings %><%= index < popularTours.length - 1 ? ',' : '' %>
+                                <% }) %>
+                            <% } else { %>
+                                25, 20, 18, 15, 12
+                            <% } %>],
+                            backgroundColor: [
+                                '#0066c0', '#ff9900', '#00ba9d', '#3498db', '#f59e0b'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    padding: 10
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenue-chart');
+            if (revenueCtx) {
+                // Mock data - in a real application, this would come from the backend
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const currentMonth = new Date().getMonth();
+                const lastSixMonths = months.slice(Math.max(0, currentMonth - 5), currentMonth + 1);
+                
+                new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: lastSixMonths,
+                        datasets: [{
+                            label: 'Revenue',
+                            data: [15000, 18500, 21000, 19800, 24500, 28000],
+                            borderColor: '#0066c0',
+                            backgroundColor: 'rgba(0, 102, 192, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

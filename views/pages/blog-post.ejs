@@ -1,0 +1,65 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Blog Post Content -->
+            <article>
+                <h1 class="mb-3"><%= post.title %></h1>
+                
+                <div class="mb-4 text-muted">
+                    <span>By <%= post.author %></span>
+                    <span class="mx-2">•</span>
+                    <span><%= post.createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                </div>
+                
+                <img src="<%= post.image %>" class="img-fluid rounded mb-4" alt="<%= post.title %>">
+                
+                <div class="blog-content">
+                    <%- post.content %>
+                </div>
+            </article>
+            
+            <div class="mt-5 mb-4">
+                <hr>
+                <a href="/blog" class="btn btn-outline-primary">&larr; Back to Blog</a>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Sidebar -->
+            <div class="card sidebar-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 mb-3">About Our Blog</h3>
+                    <p>Welcome to the Voyageo Tours travel blog! Here we share insider tips, cultural insights, and travel inspiration for your Moroccan adventure.</p>
+                </div>
+            </div>
+            
+            <div class="card sidebar-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 mb-3">Popular Destinations</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="/tours/marrakech" class="text-decoration-none">Marrakech</a></li>
+                        <li><a href="/tours/fes" class="text-decoration-none">Fes</a></li>
+                        <li><a href="/tours/chefchaouen" class="text-decoration-none">Chefchaouen</a></li>
+                        <li><a href="/tours/sahara-desert" class="text-decoration-none">Sahara Desert</a></li>
+                        <li><a href="/tours/essaouira" class="text-decoration-none">Essaouira</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card sidebar-card">
+                <div class="card-body">
+                    <h3 class="h5 mb-3">Other Blog Posts</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/blog/top-10-places-to-visit-in-morocco" class="text-decoration-none">Top 10 Places to Visit in Morocco</a></li>
+                        <li class="mb-2"><a href="/blog/moroccan-cuisine-a-culinary-journey" class="text-decoration-none">Moroccan Cuisine: A Culinary Journey</a></li>
+                        <li class="mb-2"><a href="/blog/desert-adventures-exploring-the-sahara" class="text-decoration-none">Desert Adventures: Exploring the Sahara</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %> 

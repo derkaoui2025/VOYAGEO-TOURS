@@ -1,0 +1,80 @@
+<!-- Blog Sidebar Component -->
+
+<!-- Search Widget -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-light">
+    <h4 class="h5 mb-0">Search</h4>
+  </div>
+  <div class="card-body">
+    <form action="/blog/search" method="GET">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search articles..." name="q" required>
+        <button class="btn btn-primary" type="submit">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Categories Widget -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-light">
+    <h4 class="h5 mb-0">Categories</h4>
+  </div>
+  <div class="card-body">
+    <% if (categories && categories.length > 0) { %>
+      <div class="list-group list-group-flush">
+        <% categories.forEach(category => { %>
+          <a href="/blog/category/<%= category._id %>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <%= category._id %>
+            <span class="badge bg-primary rounded-pill"><%= category.count %></span>
+          </a>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-muted mb-0">No categories available.</p>
+    <% } %>
+  </div>
+</div>
+
+<!-- About Widget -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-light">
+    <h4 class="h5 mb-0">About Our Blog</h4>
+  </div>
+  <div class="card-body">
+    <p>Welcome to the Voyageo Tours travel blog! Here we share insider tips, cultural insights, and travel inspiration for your Moroccan adventure.</p>
+    <a href="/contact" class="btn btn-sm btn-outline-primary">Contact Us</a>
+  </div>
+</div>
+
+<!-- Newsletter Signup -->
+<div class="card shadow-sm mb-4 bg-light">
+  <div class="card-body">
+    <h4 class="h5 mb-3">Subscribe to Our Newsletter</h4>
+    <p class="small text-muted mb-3">Get travel tips and inspiration directly to your inbox.</p>
+    <form action="#" method="POST" class="newsletter-form">
+      <div class="mb-2">
+        <input type="email" class="form-control form-control-sm" placeholder="Your email address" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm w-100">Subscribe</button>
+    </form>
+  </div>
+</div>
+
+<!-- Popular Destinations -->
+<div class="card shadow-sm">
+  <div class="card-header bg-light">
+    <h4 class="h5 mb-0">Popular Destinations</h4>
+  </div>
+  <div class="card-body">
+    <ul class="list-unstyled mb-0">
+      <li class="mb-2"><a href="/tours/marrakech" class="text-decoration-none">Marrakech</a></li>
+      <li class="mb-2"><a href="/tours/fes" class="text-decoration-none">Fes</a></li>
+      <li class="mb-2"><a href="/tours/chefchaouen" class="text-decoration-none">Chefchaouen</a></li>
+      <li class="mb-2"><a href="/tours/sahara-desert" class="text-decoration-none">Sahara Desert</a></li>
+      <li><a href="/tours/essaouira" class="text-decoration-none">Essaouira</a></li>
+    </ul>
+  </div>
+</div> 

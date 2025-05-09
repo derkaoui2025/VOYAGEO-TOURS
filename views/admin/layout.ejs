@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <%- include('./partials/sidebar') %>
+
+        <!-- Main Content Container -->
+        <div class="admin-main">
+            <!-- Header -->
+            <%- include('./partials/header') %>
+
+            <!-- Content -->
+            <main class="admin-content">
+                <%- include('./partials/alerts') %>
+                
+                <%- body %>
+            </main>
+
+            <!-- Footer -->
+            <%- include('./partials/footer') %>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/admin.js"></script>
+
+    <style>
+        /* Admin layout */
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+        
+        .admin-main {
+            flex: 1;
+            margin-left: var(--admin-sidebar-width);
+            transition: all 0.3s ease;
+            width: calc(100% - var(--admin-sidebar-width));
+            overflow-x: hidden;
+        }
+        
+        .admin-content {
+            padding: 1.5rem;
+            background-color: var(--bg-light);
+            min-height: calc(100vh - var(--admin-header-height));
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .admin-main {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            body.sidebar-mobile-open .admin-sidebar {
+                transform: translateX(0);
+            }
+            
+            body.sidebar-mobile-open::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 99;
+            }
+        }
+    </style>
+</body>
+</html> 

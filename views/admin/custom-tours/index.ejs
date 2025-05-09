@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <div class="p-4">
+        <!-- Admin Custom Tours Index Page -->
+        <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold">Custom Tour Requests</h1>
+                <p class="text-sm opacity-60">
+                    <i class="fas fa-info-circle text-purple mr-1"></i> Manage all custom tour requests from customers
+                </p>
+            </div>
+            <div>
+                <a href="/admin/dashboard" class="btn btn-outline btn-sm">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Summary -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6" id="statsSection">
+            <!-- Stats will be loaded here via jQuery -->
+        </div>
+
+        <!-- Custom Tour Requests Table -->
+        <div class="card bg-base-100 shadow-sm mb-6">
+            <div class="card-body p-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <h2 class="card-title text-lg">All Requests</h2>
+                    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <div class="form-control relative w-full sm:w-64">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                            <input type="text" id="customTourSearch" placeholder="Search requests..." 
+                                   class="input input-bordered w-full pl-10" />
+                        </div>
+                        <select id="statusFilter" class="select select-bordered w-full sm:w-auto">
+                            <option value="all">All Statuses</option>
+                            <option value="pending">🟠 Pending</option>
+                            <option value="reviewed">🔵 Reviewed</option>
+                            <option value="contacted">🟢 Contacted</option>
+                            <option value="completed">✅ Completed</option>
+                            <option value="rejected">🔴 Rejected</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <% if (customTours && customTours.length > 0) { %>
+                    <div class="overflow-x-auto">
+                        <table class="table table-zebra w-full" id="customToursTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Start Date</th>
+                                    <th>Duration</th>
+                                    <th>Group Size</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% customTours.forEach(request => { %>
+                                    <tr data-status="<%= request.status %>" data-id="<%= request._id %>" class="request-row">
+                                        <td class="font-medium"><%= request.fullName %></td>
+                                        <td><a href="mailto:<%= request.email %>" class="link link-hover"><%= request.email %></a></td>
+                                        <td data-date="<%= request.startDate %>">
+                                            <div class="badge bg-purple/10 text-purple px-3 py-2">
+                                                <i class="far fa-calendar-alt mr-1"></i>
+                                                <%= new Date(request.startDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %>
+                                            </div>
+                                        </td>
+                                        <td><%= request.duration %> days</td>
+                                        <td><%= request.groupSize %> people</td>
+                                        <td>
+                                            <% 
+                                            let badgeClass = "badge"; 
+                                            switch(request.status) {
+                                                case 'pending': badgeClass += " badge-warning"; break;
+                                                case 'reviewed': badgeClass += " badge-info"; break;
+                                                case 'contacted': badgeClass += " badge-primary"; break;
+                                                case 'completed': badgeClass += " badge-success"; break;
+                                                case 'rejected': badgeClass += " badge-error"; break;
+                                            }
+                                            %>
+                                            <span class="<%= badgeClass %>">
+                                                <%= request.status.charAt(0).toUpperCase() + request.status.slice(1) %>
+                                            </span>
+                                        </td>
+                                        <td data-sort="<%= request.createdAt %>">
+                                            <%= new Date(request.createdAt).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %>
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="flex justify-end gap-2">
+                                                <a href="/admin/custom-tours/<%= request._id %>" class="btn btn-ghost btn-sm btn-square">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-ghost btn-sm btn-square text-error delete-tour" 
+                                                        data-id="<%= request._id %>" 
+                                                        data-name="<%= request.fullName %>">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-between items-center mt-4 pt-4 border-t border-base-300">
+                        <div class="text-sm opacity-70" id="resultsCount">
+                            Showing <span id="visibleCount"><%= customTours.length %></span> of <%= customTours.length %> requests
+                        </div>
+                        <button class="btn btn-sm btn-primary" id="refreshBtn">
+                            <i class="fas fa-sync-alt mr-1"></i> Refresh
+                        </button>
+                    </div>
+                <% } else { %>
+                    <div class="py-16 text-center">
+                        <div class="mask mask-squircle w-16 h-16 bg-base-200 mx-auto flex items-center justify-center mb-4">
+                            <i class="fas fa-inbox text-xl opacity-60"></i>
+                        </div>
+                        <h3 class="text-lg font-medium">No Custom Tour Requests</h3>
+                        <p class="opacity-60 mb-4">There are no custom tour requests yet.</p>
+                        <button class="btn btn-primary btn-sm" id="refreshBtn">
+                            <i class="fas fa-sync-alt mr-1"></i> Refresh
+                        </button>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <dialog id="deleteModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Confirm Deletion</h3>
+            <p class="py-4">Are you sure you want to delete the request from <span id="deleteName" class="font-bold"></span>? This action cannot be undone.</p>
+            <div class="modal-action">
+                <button id="cancel-delete" class="btn">Cancel</button>
+                <form id="deleteForm" method="POST">
+                    <button type="submit" class="btn btn-error">
+                        <i class="fas fa-trash mr-1"></i> Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="toast toast-end hidden">
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span id="successToastMessage">Operation completed successfully.</span>
+        </div>
+    </div>
+
+    <%- include('../partials/scripts') %>
+    
+    <script>
+    $(document).ready(function() {
+        // Generate stats
+        function generateStats() {
+            const statusCounts = {
+                total: 0,
+                pending: 0,
+                reviewed: 0,
+                contacted: 0,
+                completed: 0,
+                rejected: 0
+            };
+            
+            $('#customToursTable tbody tr').each(function() {
+                const status = $(this).data('status');
+                statusCounts.total++;
+                statusCounts[status]++;
+            });
+            
+            const statsHTML = `
+                <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                    <div class="stat-figure text-primary">
+                        <div class="avatar">
+                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                                <i class="fas fa-list text-primary text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-title">Total</div>
+                    <div class="stat-value text-primary">${statusCounts.total}</div>
+                </div>
+                
+                <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                    <div class="stat-figure text-warning">
+                        <div class="avatar">
+                            <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center">
+                                <i class="fas fa-clock text-warning text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-title">Pending</div>
+                    <div class="stat-value text-warning">${statusCounts.pending}</div>
+                </div>
+                
+                <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                    <div class="stat-figure text-info">
+                        <div class="avatar">
+                            <div class="w-12 h-12 rounded-full bg-info/10 flex items-center justify-center">
+                                <i class="fas fa-search text-info text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-title">Reviewed</div>
+                    <div class="stat-value text-info">${statusCounts.reviewed}</div>
+                </div>
+                
+                <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                    <div class="stat-figure text-purple">
+                        <div class="avatar">
+                            <div class="w-12 h-12 rounded-full bg-purple/10 flex items-center justify-center">
+                                <i class="fas fa-phone text-purple text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-title">Contacted</div>
+                    <div class="stat-value text-purple">${statusCounts.contacted}</div>
+                </div>
+                
+                <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
+                    <div class="stat-figure text-success">
+                        <div class="avatar">
+                            <div class="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center">
+                                <i class="fas fa-check-circle text-success text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-title">Completed</div>
+                    <div class="stat-value text-success">${statusCounts.completed}</div>
+                </div>
+            `;
+            
+            $('#statsSection').html(statsHTML);
+        }
+        
+        // Call generate stats on load
+        generateStats();
+        
+        // Search and filter functionality with visual feedback
+        $('#customTourSearch, #statusFilter').on('input change', function() {
+            filterTable();
+        });
+        
+        function filterTable() {
+            const searchTerm = $('#customTourSearch').val().toLowerCase();
+            const statusValue = $('#statusFilter').val();
+            let visibleCount = 0;
+            
+            $('#customToursTable tbody tr').each(function() {
+                const row = $(this);
+                const rowStatus = row.attr('data-status');
+                const textContent = row.text().toLowerCase();
+                
+                const statusMatch = statusValue === 'all' || rowStatus === statusValue;
+                const searchMatch = searchTerm === '' || textContent.includes(searchTerm);
+                
+                if (statusMatch && searchMatch) {
+                    row.show();
+                    visibleCount++;
+                } else {
+                    row.hide();
+                }
+            });
+            
+            // Update visible count
+            $('#visibleCount').text(visibleCount);
+        }
+        
+        // Delete confirmation
+        $('.delete-tour').on('click', function() {
+            const id = $(this).data('id');
+            const name = $(this).data('name');
+            
+            $('#deleteForm').attr('action', `/admin/custom-tours/${id}/delete`);
+            $('#deleteName').text(name);
+            
+            document.getElementById('deleteModal').showModal();
+        });
+        
+        // Cancel delete
+        $('#cancel-delete').on('click', function() {
+            document.getElementById('deleteModal').close();
+        });
+        
+        // Refresh button
+        $('#refreshBtn').on('click', function() {
+            const btn = $(this);
+            
+            // Show spinner and disable button
+            btn.html('<i class="fas fa-spinner fa-spin"></i> Refreshing...');
+            btn.addClass('loading');
+            
+            // Reload the page after a short delay to show the animation
+            setTimeout(function() {
+                window.location.reload();
+            }, 800);
+        });
+    });
+    </script>
+</body>
+</html> 

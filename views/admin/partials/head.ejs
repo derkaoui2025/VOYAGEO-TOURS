@@ -1,0 +1,79 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title><%= pageTitle || 'Admin Dashboard' %> | Voyageo Tours</title>
+
+<!-- Favicon and App Icons -->
+<link rel="icon" type="image/svg+xml" href="/images/icons/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/images/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+<link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png">
+<link rel="manifest" href="/images/icons/site.webmanifest">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Tailwind CSS and Daisy UI -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.2/dist/full.css" rel="stylesheet" type="text/css" />
+<!-- Admin CSS for non-Tailwind specific styles -->
+
+
+<script>
+  // Configure Tailwind theme
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#0066c0',
+          secondary: '#ff9900',
+          accent: '#00ba9d',
+          neutral: '#2a323c',
+          'base-100': '#ffffff',
+          info: '#3498db',
+          success: '#22c55e',
+          warning: '#f59e0b',
+          error: '#dc3545',
+        },
+        fontFamily: {
+          poppins: ['Poppins', 'sans-serif'],
+          montserrat: ['Montserrat', 'sans-serif']
+        }
+      }
+    },
+    plugins: [require("daisyui")],
+    daisyui: {
+      themes: [
+        {
+          light: {
+            ...require("daisyui/src/theming/themes")["[data-theme=light]"],
+            "purple": "#f39c12",
+          },
+          dark: {
+            ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
+            "purple": "#f39c12",
+          },
+          corporate: {
+            ...require("daisyui/src/theming/themes")["[data-theme=corporate]"],
+            "purple": "#f39c12",
+          }
+        }
+      ],
+      darkTheme: "corporate",
+    }
+  }
+</script>
+
+<style>
+  /* Only keep minimal CSS variables that might still be needed */
+  :root {
+    --admin-sidebar-width: 260px;
+    --admin-header-height: 60px;
+  }
+  
+  /* Set base styles with Tailwind */
+  body {
+    @apply font-poppins bg-light text-text-primary;
+  }
+</style> 
