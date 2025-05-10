@@ -77,6 +77,11 @@ class UploadService {
       format = 'jpeg'
     } = options;
     
+    // Check if file exists
+    if (!file || !file.buffer) {
+      throw new Error('No valid file provided');
+    }
+    
     // Check file type
     if (!file.mimetype.startsWith('image/')) {
       throw new Error('Only image files are supported');
@@ -88,26 +93,32 @@ class UploadService {
     // Process image with sharp if dimensions or format are specified
     let fileBuffer = file.buffer;
     if (width || height || format) {
-      const transformer = sharp(file.buffer);
-      
-      // Resize if width or height is specified
-      if (width || height) {
-        transformer.resize(width, height, {
-          fit: 'inside',
-          withoutEnlargement: true
-        });
+      try {
+        const transformer = sharp(file.buffer, { failOnError: false });
+        
+        // Resize if width or height is specified
+        if (width || height) {
+          transformer.resize(width, height, {
+            fit: 'inside',
+            withoutEnlargement: true
+          });
+        }
+        
+        // Set format and quality
+        if (format === 'jpeg') {
+          transformer.jpeg({ quality });
+        } else if (format === 'png') {
+          transformer.png({ quality });
+        } else if (format === 'webp') {
+          transformer.webp({ quality });
+        }
+        
+        fileBuffer = await transformer.toBuffer();
+      } catch (error) {
+        console.error('Error processing image with Sharp:', error);
+        // Fall back to original buffer instead of failing
+        fileBuffer = file.buffer;
       }
-      
-      // Set format and quality
-      if (format === 'jpeg') {
-        transformer.jpeg({ quality });
-      } else if (format === 'png') {
-        transformer.png({ quality });
-      } else if (format === 'webp') {
-        transformer.webp({ quality });
-      }
-      
-      fileBuffer = await transformer.toBuffer();
     }
     
     // Upload to the appropriate storage provider

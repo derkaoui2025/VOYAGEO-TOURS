@@ -3,6 +3,8 @@ const router = express.Router();
 const Tour = require('../models/Tour');
 const CustomTour = require('../models/CustomTour');
 const Booking = require('../models/Booking');
+const Excursion = require('../models/Excursion');
+const ExcursionBooking = require('../models/ExcursionBooking');
 const dotenv = require('dotenv');
 // const blogRoutes = require('./blog/publicRoutes')
 
@@ -274,6 +276,185 @@ router.post('/api/bookings', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to create booking'
+    });
+  }
+});
+
+// All excursions page
+router.get('/excursions', async (req, res) => {
+  try {
+    // Get all excursions
+    const excursions = await Excursion.find().sort('-createdAt');
+    
+    res.render('pages/excursions', { 
+      pageTitle: 'Day Excursions',
+      heroTitle: 'Day Excursions From Major Cities',
+      heroSubtitle: 'Explore the beauty of Morocco with our guided day trips',
+      excursions
+    });
+  } catch (err) {
+    console.error('Error fetching excursions:', err);
+    res.render('pages/excursions', { 
+      pageTitle: 'Day Excursions',
+      heroTitle: 'Day Excursions From Major Cities',
+      heroSubtitle: 'Explore the beauty of Morocco with our guided day trips',
+      excursions: []
+    });
+  }
+});
+
+// Single excursion details page
+router.get('/excursions/:slug', async (req, res) => {
+  try {
+    // Find excursion by slug
+    const excursion = await Excursion.findOne({ slug: req.params.slug });
+    
+    if (!excursion) {
+      return res.status(404).render('pages/404', {
+        pageTitle: 'Excursion Not Found',
+        heroTitle: 'Excursion Not Found',
+        heroSubtitle: 'The excursion you were looking for doesn\'t exist'
+      });
+    }
+    
+    // Find related excursions from the same location
+    const relatedExcursions = await Excursion.find({
+      startLocation: excursion.startLocation,
+      _id: { $ne: excursion._id } // exclude current excursion
+    }).limit(3);
+    
+    res.render('pages/excursion-details', { 
+      pageTitle: excursion.title,
+      heroTitle: excursion.title,
+      heroSubtitle: `${excursion.duration} ${excursion.durationType} excursion from ${excursion.startLocation}`,
+      excursion,
+      relatedExcursions
+    });
+  } catch (err) {
+    console.error('Error fetching excursion details:', err);
+    res.status(404).render('pages/404', {
+      pageTitle: 'Excursion Not Found',
+      heroTitle: 'Excursion Not Found',
+      heroSubtitle: 'The excursion you were looking for doesn\'t exist'
+    });
+  }
+});
+
+// POST /api/excursion-bookings - Create a new excursion booking
+router.post('/api/excursion-bookings', async (req, res) => {
+  try {
+    console.log('Received excursion booking request:', req.body);
+    const { fullName, email, excursionId, excursionDate, guestCount, phone } = req.body;
+    
+    // Validate required fields
+    if (!fullName || !email || !excursionId || !excursionDate || !guestCount) {
+      console.log('Missing required fields:', { fullName, email, excursionId, excursionDate, guestCount });
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields'
+      });
+    }
+    
+    // Validate email format
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!emailRegex.test(email)) {
+      console.log('Invalid email format:', email);
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email format'
+      });
+    }
+    
+    // Find excursion to calculate total price (if applicable)
+    console.log('Looking up excursion with ID:', excursionId);
+    const excursion = await Excursion.findById(excursionId);
+    
+    if (!excursion) {
+      console.log('Excursion not found for ID:', excursionId);
+      return res.status(404).json({
+        success: false,
+        message: 'Excursion not found'
+      });
+    }
+    
+    console.log('Found excursion:', {
+      title: excursion.title,
+      type: excursion.excursionType,
+      price: excursion.price
+    });
+    
+    // Calculate total price if excursion has a price
+    let totalPrice;
+    if (excursion.price) {
+      // For private excursions, price is per group
+      // For public excursions, price is per person
+      totalPrice = excursion.excursionType === 'private' 
+        ? excursion.price 
+        : excursion.price * guestCount;
+      
+      console.log('Calculated total price:', totalPrice);
+    }
+    
+    // Create new excursion booking
+    const booking = new ExcursionBooking({
+      fullName,
+      email,
+      excursionId,
+      excursionDate: new Date(excursionDate),
+      guestCount: parseInt(guestCount),
+      phone: phone || '',
+      totalPrice,
+      status: 'pending'
+    });
+    
+    console.log('Created booking object:', booking);
+    
+    // Save booking to database
+    const savedBooking = await booking.save();
+    console.log('Booking saved successfully with ID:', savedBooking._id);
+    
+    // Return success response
+    res.status(201).json({
+      success: true,
+      message: 'Excursion booking created successfully',
+      booking: {
+        id: savedBooking._id,
+        fullName: savedBooking.fullName,
+        email: savedBooking.email,
+        excursionDate: savedBooking.excursionDate,
+        guestCount: savedBooking.guestCount,
+        totalPrice: savedBooking.totalPrice,
+        status: savedBooking.status
+      }
+    });
+  } catch (error) {
+    console.error('Error creating excursion booking:', error);
+    console.error('Request body:', req.body);
+    console.error('Error details:', error.stack);
+    
+    // Check for MongoDB validation errors
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(err => err.message);
+      console.error('Validation errors:', validationErrors);
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        errors: validationErrors
+      });
+    }
+    
+    // Check for MongoDB duplicate key error
+    if (error.code === 11000) {
+      console.error('Duplicate key error:', error.keyValue);
+      return res.status(400).json({
+        success: false,
+        message: 'Duplicate booking error'
+      });
+    }
+    
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create excursion booking'
     });
   }
 });

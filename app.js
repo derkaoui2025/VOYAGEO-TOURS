@@ -52,6 +52,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const adminRoutes = require('./routes/admin');
 const adminTourRoutes = require('./routes/tours');
 const publicRoutes = require('./routes/public');
+const frontendRoutes = require('./routes/frontendRoutes');
 // const apiRoutes = require('./routes/api');
 
 // Apply routes
@@ -59,6 +60,7 @@ app.use('/admin', adminRoutes);
 app.use('/admin/tours', adminTourRoutes);
 // app.use('/api', apiRoutes);
 app.use('/', publicRoutes);
+app.use('/', frontendRoutes); // Mount frontend blog routes
 
 // Redirect root /admin to /admin/dashboard or /admin/login if not authenticated
 app.get('/admin', (req, res) => {

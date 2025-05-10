@@ -6,12 +6,23 @@ const Tour = require('../models/Tour');
 const Booking = require('../models/Booking');
 const CustomTour = require('../models/CustomTour');
 const User = require('../models/User');
+const ExcursionBooking = require('../models/ExcursionBooking');
+const Excursion = require('../models/Excursion');
 
 // Import middleware
 const isAdmin = require('../middleware/isAdmin');
 
 // Import controllers for bookings
 const bookingController = require('../controllers/admin/bookingController');
+// Import controller for excursions
+const excursionController = require('../controllers/admin/excursionController');
+// Import controller for excursion bookings
+const excursionBookingController = require('../controllers/admin/excursionBookingController');
+// Import controller for blog posts
+const blogController = require('../controllers/admin/blogController');
+
+// Import Cloudinary config for excursion gallery uploads
+const { excursionGalleryUpload, processExcursionGallery, uploadBlogImage } = require('../config/cloudinary');
 
 // GET /admin/login - Display login form
 router.get('/login', (req, res) => {
@@ -66,7 +77,9 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       tours: await Tour.countDocuments(),
       bookings: await Booking.countDocuments(),
       customTours: await CustomTour.countDocuments(),
-      users: await User.countDocuments()
+      users: await User.countDocuments(),
+      excursions: await Excursion.countDocuments(),
+      excursionBookings: await ExcursionBooking.countDocuments()
     };
     
     // Get recent bookings (limit to 5)
@@ -75,6 +88,12 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       .limit(5)
       .populate('tourId', 'title');
     
+    // Get recent excursion bookings (limit to 5)
+    const recentExcursionBookings = await ExcursionBooking.find()
+      .sort('-createdAt')
+      .limit(5)
+      .populate('excursionId', 'title');
+    
     // Format booking data for display
     const formattedBookings = recentBookings.map(booking => ({
       _id: booking._id,
@@ -82,6 +101,17 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       email: booking.email,
       tourName: booking.tourId ? booking.tourId.title : 'Unknown Tour',
       tourDate: booking.tourDate,
+      guestCount: booking.guestCount,
+      status: booking.status
+    }));
+    
+    // Format excursion booking data for display
+    const formattedExcursionBookings = recentExcursionBookings.map(booking => ({
+      _id: booking._id,
+      fullName: booking.fullName,
+      email: booking.email,
+      excursionName: booking.excursionId ? booking.excursionId.title : 'Unknown Excursion',
+      excursionDate: booking.excursionDate,
       guestCount: booking.guestCount,
       status: booking.status
     }));
@@ -133,6 +163,7 @@ router.get('/dashboard', isAdmin, async (req, res) => {
         activePage: 'dashboard',
         stats,
         recentBookings: formattedBookings,
+        recentExcursionBookings: formattedExcursionBookings,
         recentActivity,
         popularTours,
         success: req.query.success,
@@ -146,6 +177,7 @@ router.get('/dashboard', isAdmin, async (req, res) => {
         activePage: 'dashboard',
         stats,
         recentBookings: formattedBookings,
+        recentExcursionBookings: formattedExcursionBookings,
         recentActivity,
         popularTours,
         success: req.query.success,
@@ -159,6 +191,7 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       activePage: 'dashboard',
       stats: {},
       recentBookings: [],
+      recentExcursionBookings: [],
       recentActivity: [],
       popularTours: [],
       error: 'Error loading dashboard data'
@@ -173,6 +206,12 @@ router.get('/bookings/export-excel', isAdmin, bookingController.exportBookingsEx
 router.get('/bookings/:id', isAdmin, bookingController.getBookingDetails);
 router.post('/bookings/:id/status', isAdmin, bookingController.updateBookingStatus);
 router.delete('/bookings/:id', isAdmin, bookingController.deleteBooking);
+
+// Excursion Booking Routes
+router.get('/excursion-bookings', isAdmin, excursionBookingController.getAllExcursionBookings);
+router.get('/excursion-bookings/:id', isAdmin, excursionBookingController.getBookingDetails);
+router.post('/excursion-bookings/:id/status', isAdmin, excursionBookingController.updateBookingStatus);
+router.delete('/excursion-bookings/:id', isAdmin, excursionBookingController.deleteBooking);
 
 // Custom Tours Routes
 router.get('/custom-tours', isAdmin, async (req, res) => {
@@ -271,5 +310,24 @@ router.post('/custom-tours/:id/delete', isAdmin, async (req, res) => {
     });
   }
 });
+
+// Excursion Routes
+router.get('/excursions', isAdmin, excursionController.getAllExcursions);
+router.get('/excursions/create', isAdmin, excursionController.showCreateForm);
+router.post('/excursions', isAdmin, excursionGalleryUpload.array('gallery', 10), processExcursionGallery, excursionController.createExcursion);
+router.get('/excursions/edit/:id', isAdmin, excursionController.showEditForm);
+router.put('/excursions/:id', isAdmin, excursionGalleryUpload.array('gallery', 10), processExcursionGallery, excursionController.updateExcursion);
+router.delete('/excursions/:id', isAdmin, excursionController.deleteExcursion);
+router.delete('/excursions/:id/image/:imageIndex', isAdmin, excursionController.deleteImage);
+
+// Blog Routes
+router.get('/blog', isAdmin, blogController.getAllPosts);
+router.get('/blog/new', isAdmin, blogController.getNewPostForm);
+router.post('/blog', isAdmin, uploadBlogImage.single('image'), blogController.createPost);
+router.get('/blog/edit/:id', isAdmin, blogController.getEditPostForm);
+router.post('/blog/:id', isAdmin, uploadBlogImage.single('image'), blogController.updatePost);
+router.delete('/blog/:id', isAdmin, blogController.deletePost);
+router.post('/blog/:id/toggle-featured', isAdmin, blogController.toggleFeaturedStatus);
+router.post('/blog/:id/toggle-status', isAdmin, blogController.togglePostStatus);
 
 module.exports = router; 

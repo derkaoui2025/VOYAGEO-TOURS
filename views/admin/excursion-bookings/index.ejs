@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="drawer lg:drawer-open min-h-screen">
+        <!-- Mobile Drawer Toggle -->
+        <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
+        
+        <!-- Main Content -->
+        <div class="drawer-content flex flex-col bg-base-200">
+            <!-- Top Nav -->
+            <div class="navbar bg-base-100 shadow-md lg:hidden">
+                <div class="flex-none">
+                    <label for="admin-drawer" class="btn btn-square btn-ghost drawer-button">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <span class="text-xl font-semibold">Voyageo Tours</span>
+                </div>
+                <div class="flex-none">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                                <i class="fas fa-user text-lg"></i>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                            <li><a href="/admin/profile"><i class="fas fa-user-cog mr-2"></i> Profile</a></li>
+                            <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                            <li><a href="/admin/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div class="p-4 md:p-6 space-y-6 pb-20">
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">Excursion Bookings</h1>
+                        <p class="text-sm opacity-60">Manage all excursion bookings</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="/admin/dashboard" class="btn btn-outline btn-sm">
+                            <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <% if (success) { %>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        <span><%= success %></span>
+                    </div>
+                <% } %>
+                
+                <% if (error) { %>
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+                
+                <!-- Filters -->
+                <div class="card bg-base-100 shadow-md">
+                    <div class="card-body p-4 md:p-6">
+                        <h2 class="card-title text-lg font-medium mb-4">Filters</h2>
+                        <form action="/admin/excursion-bookings" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Status</span>
+                                </label>
+                                <select name="status" class="select select-bordered w-full">
+                                    <option value="" <%= filters.status === '' ? 'selected' : '' %>>All</option>
+                                    <option value="pending" <%= filters.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                    <option value="confirmed" <%= filters.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
+                                    <option value="completed" <%= filters.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                                    <option value="cancelled" <%= filters.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Start Date</span>
+                                </label>
+                                <input type="date" name="startDate" class="input input-bordered w-full" value="<%= filters.startDate %>">
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">End Date</span>
+                                </label>
+                                <input type="date" name="endDate" class="input input-bordered w-full" value="<%= filters.endDate %>">
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Search</span>
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" name="search" class="input input-bordered w-full" placeholder="Name or Email" value="<%= filters.search %>">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Bookings Table -->
+                <div class="card bg-base-100 shadow-md">
+                    <div class="card-body p-4 md:p-6">
+                        <h2 class="card-title text-lg font-medium mb-4">Excursion Bookings List</h2>
+                        <div class="overflow-x-auto">
+                            <table class="table table-zebra w-full">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Customer</th>
+                                        <th>Excursion</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                        <th>Guests</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (bookings && bookings.length > 0) { %>
+                                        <% bookings.forEach(booking => { %>
+                                            <tr>
+                                                <td class="text-xs"><%= booking._id.toString().slice(-6) %></td>
+                                                <td>
+                                                    <div class="font-medium"><%= booking.fullName %></div>
+                                                    <div class="text-xs opacity-60"><%= booking.email %></div>
+                                                </td>
+                                                <td><%= booking.excursionName %></td>
+                                                <td>
+                                                    <% let typeClass = booking.excursionType === 'private' ? 'badge-primary' : 'badge-info'; %>
+                                                    <span class="badge <%= typeClass %>"><%= booking.excursionType %></span>
+                                                </td>
+                                                <td><%= new Date(booking.excursionDate).toLocaleDateString() %></td>
+                                                <td><%= booking.guestCount %></td>
+                                                <td><%= booking.totalPrice ? `${booking.totalPrice} EUR` : 'N/A' %></td>
+                                                <td>
+                                                    <% let statusClass = 'badge-secondary'; %>
+                                                    <% if (booking.status === 'pending') statusClass = 'badge-warning'; %>
+                                                    <% if (booking.status === 'confirmed') statusClass = 'badge-success'; %>
+                                                    <% if (booking.status === 'completed') statusClass = 'badge-info'; %>
+                                                    <% if (booking.status === 'cancelled') statusClass = 'badge-error'; %>
+                                                    
+                                                    <span class="badge <%= statusClass %>">
+                                                        <%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div class="flex gap-2">
+                                                        <a href="/admin/excursion-bookings/<%= booking._id %>" class="btn btn-sm btn-info">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                        <button class="btn btn-sm btn-error delete-booking" 
+                                                                data-id="<%= booking._id %>" 
+                                                                data-name="<%= booking.fullName %>"
+                                                                data-excursion="<%= booking.excursionName %>">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="9" class="text-center py-4">
+                                                <div class="flex flex-col items-center justify-center">
+                                                    <div class="mask mask-squircle bg-base-200 p-3 mb-2">
+                                                        <i class="fas fa-calendar-times opacity-60 text-lg"></i>
+                                                    </div>
+                                                    <p class="font-medium">No excursion bookings found</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <% if (pagination && pagination.totalPages > 0) { %>
+                            <div class="flex justify-center md:justify-end mt-4">
+                                <div class="join">
+                                    <% if (pagination.hasPrevPage) { %>
+                                        <a href="/admin/excursion-bookings?page=<%= pagination.currentPage - 1 %>&status=<%= filters.status %>&search=<%= filters.search %>&startDate=<%= filters.startDate %>&endDate=<%= filters.endDate %>"
+                                           class="join-item btn btn-sm">
+                                            «
+                                        </a>
+                                    <% } else { %>
+                                        <button class="join-item btn btn-sm btn-disabled">«</button>
+                                    <% } %>
+                                    
+                                    <% for (let i = 1; i <= pagination.totalPages; i++) { %>
+                                        <a href="/admin/excursion-bookings?page=<%= i %>&status=<%= filters.status %>&search=<%= filters.search %>&startDate=<%= filters.startDate %>&endDate=<%= filters.endDate %>"
+                                           class="join-item btn btn-sm <%= pagination.currentPage === i ? 'btn-active' : '' %>">
+                                            <%= i %>
+                                        </a>
+                                    <% } %>
+                                    
+                                    <% if (pagination.hasNextPage) { %>
+                                        <a href="/admin/excursion-bookings?page=<%= pagination.currentPage + 1 %>&status=<%= filters.status %>&search=<%= filters.search %>&startDate=<%= filters.startDate %>&endDate=<%= filters.endDate %>"
+                                           class="join-item btn btn-sm">
+                                            »
+                                        </a>
+                                    <% } else { %>
+                                        <button class="join-item btn btn-sm btn-disabled">»</button>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="drawer-side">
+            <label for="admin-drawer" class="drawer-overlay"></label>
+            <div class="bg-base-100 w-80 min-h-full flex flex-col shadow-xl">
+                <!-- Logo -->
+                <div class="p-4 border-b flex items-center justify-center">
+                    <div class="text-2xl font-bold text-primary">Voyageo Admin</div>
+                </div>
+                
+                <!-- Admin Info -->
+                <div class="flex items-center gap-3 p-4 border-b">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-12">
+                            <span class="text-lg"><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-bold"><%= session.adminUsername || 'Admin' %></div>
+                        <div class="text-sm opacity-60">Administrator</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <ul class="menu menu-lg p-2 flex-grow">
+                    <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a></li>
+                    <li><a href="/admin/tours"><i class="fas fa-map-marked-alt mr-2"></i> Tours</a></li>
+                    <li><a href="/admin/excursions"><i class="fas fa-hiking mr-2"></i> Excursions</a></li>
+                    <li><a href="/admin/bookings"><i class="fas fa-calendar-check mr-2"></i> Tour Bookings</a></li>
+                    <li><a href="/admin/excursion-bookings" class="active"><i class="fas fa-clipboard-list mr-2"></i> Excursion Bookings</a></li>
+                    <li><a href="/admin/custom-tours"><i class="fas fa-route mr-2"></i> Custom Requests</a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users mr-2"></i> Users</a></li>
+                    <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                </ul>
+                
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="/admin/logout" class="btn btn-outline btn-error btn-block">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <dialog id="delete-modal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Confirm Deletion</h3>
+            <p class="py-4">Are you sure you want to delete the booking for <strong id="booking-name"></strong> for <strong id="booking-excursion"></strong>?</p>
+            <div class="modal-action">
+                <button class="btn" onclick="document.getElementById('delete-modal').close()">Cancel</button>
+                <button class="btn btn-error" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Delete booking functionality
+            document.querySelectorAll('.delete-booking').forEach(button => {
+                button.addEventListener('click', function() {
+                    const bookingId = this.dataset.id;
+                    const customerName = this.dataset.name;
+                    const excursionName = this.dataset.excursion;
+                    
+                    document.getElementById('booking-name').textContent = customerName;
+                    document.getElementById('booking-excursion').textContent = excursionName;
+                    
+                    const modal = document.getElementById('delete-modal');
+                    modal.showModal();
+                    
+                    document.getElementById('confirm-delete').onclick = function() {
+                        fetch(`/admin/excursion-bookings/${bookingId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                window.location.href = '/admin/excursion-bookings?success=Excursion booking deleted successfully';
+                            } else {
+                                alert('Error: ' + result.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Failed to delete excursion booking.');
+                        });
+                    };
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

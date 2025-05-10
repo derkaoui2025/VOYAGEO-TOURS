@@ -201,12 +201,107 @@ const processUploads = async (req, res, next) => {
   }
 };
 
+// Configure multer storage with Cloudinary for excursion gallery images
+const excursionGalleryStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'voyageo-tours/excursions',
+    format: async (req, file) => 'webp', // Convert all images to WebP
+    public_id: (req, file) => `excursion-gallery-${Date.now()}-${Math.round(Math.random() * 1e9)}`
+  }
+});
+
+// Configure multer upload for excursion gallery images
+const excursionGalleryUpload = multer({
+  storage: excursionGalleryStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    // Accept only image files
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
+  }
+});
+
+// Process excursion gallery uploads
+const processExcursionGallery = async (req, res, next) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return next();
+    }
+
+    // Create array to store gallery image URLs and public IDs
+    const galleryImages = [];
+    const galleryPublicIds = [];
+
+    // Process each gallery image
+    for (const file of req.files) {
+      try {
+        // Upload to Cloudinary
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: 'voyageo-tours/excursions',
+          format: 'webp',
+          transformation: [
+            { quality: 'auto:good' },
+            { fetch_format: 'webp' }
+          ]
+        });
+        
+        // Store the secure URL and public ID
+        galleryImages.push(result.secure_url);
+        galleryPublicIds.push(result.public_id);
+      } catch (uploadError) {
+        console.error('Error uploading gallery image:', uploadError);
+        // Continue with other images even if one fails
+      }
+    }
+
+    // Add the URLs and public IDs to the request body
+    req.body.gallery = galleryImages;
+    req.body.galleryPublicIds = galleryPublicIds;
+    
+    next();
+  } catch (error) {
+    console.error('Error processing excursion gallery uploads:', error);
+    next(error);
+  }
+};
+
+// Configure multer storage with Cloudinary for blog images
+const blogStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'voyageo-tours/blog',
+    format: async (req, file) => 'webp', // Convert all images to WebP
+    public_id: (req, file) => `blog-image-${Date.now()}-${Math.round(Math.random() * 1e9)}`
+  }
+});
+
+// Configure multer upload for blog images
+const uploadBlogImage = multer({
+  storage: blogStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    // Accept only image files
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
+  }
+});
+
 module.exports = {
   cloudinary,
   upload,
   mainUpload,
   mapUpload,
+  excursionGalleryUpload,
   processUploads,
+  processExcursionGallery,
+  uploadBlogImage,
   uploadImage,
   bufferUpload,
   deleteImage

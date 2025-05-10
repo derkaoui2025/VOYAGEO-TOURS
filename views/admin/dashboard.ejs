@@ -76,37 +76,37 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="stat-title">Bookings</div>
+                        <div class="stat-title">Tour Bookings</div>
                         <div class="stat-value text-secondary"><%= stats.bookings || 0 %></div>
-                        <div class="stat-desc">Total confirmed bookings</div>
+                        <div class="stat-desc">Total tour reservations</div>
                     </div>
-
-                    <!-- Custom Tours Stat -->
+                    
+                    <!-- Excursions Stat -->
                     <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
-                        <div class="stat-figure text-accent">
+                        <div class="stat-figure text-warning">
                             <div class="avatar">
-                                <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                                    <i class="fas fa-route text-accent text-xl"></i>
+                                <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center">
+                                    <i class="fas fa-hiking text-warning text-xl"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="stat-title">Custom Requests</div>
-                        <div class="stat-value text-accent"><%= stats.customTours || 0 %></div>
-                        <div class="stat-desc">Pending custom tour requests</div>
+                        <div class="stat-title">Excursions</div>
+                        <div class="stat-value text-warning"><%= stats.excursions || 0 %></div>
+                        <div class="stat-desc">Active day excursions</div>
                     </div>
 
-                    <!-- Users Stat -->
+                    <!-- Excursion Bookings Stat -->
                     <div class="stat bg-base-100 rounded-box shadow hover:shadow-lg transition-shadow">
-                        <div class="stat-figure text-info">
+                        <div class="stat-figure text-error">
                             <div class="avatar">
-                                <div class="w-12 h-12 rounded-full bg-info/10 flex items-center justify-center">
-                                    <i class="fas fa-users text-info text-xl"></i>
+                                <div class="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center">
+                                    <i class="fas fa-clipboard-list text-error text-xl"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="stat-title">Users</div>
-                        <div class="stat-value text-info"><%= stats.users || 0 %></div>
-                        <div class="stat-desc">Registered customer accounts</div>
+                        <div class="stat-title">Excursion Bookings</div>
+                        <div class="stat-value text-error"><%= stats.excursionBookings || 0 %></div>
+                        <div class="stat-desc">Total excursion bookings</div>
                     </div>
                 </div>
 
@@ -119,16 +119,16 @@
                                 <i class="fas fa-plus mr-2"></i> Add Tour
                             </a>
                             <a href="/admin/bookings" class="btn btn-secondary btn-sm md:btn-md">
-                                <i class="fas fa-calendar-check mr-2"></i> Manage Bookings
+                                <i class="fas fa-calendar-check mr-2"></i> Tour Bookings
+                            </a>
+                            <a href="/admin/excursions" class="btn btn-warning btn-sm md:btn-md">
+                                <i class="fas fa-hiking mr-2"></i> Excursions
+                            </a>
+                            <a href="/admin/excursion-bookings" class="btn btn-error btn-sm md:btn-md">
+                                <i class="fas fa-clipboard-list mr-2"></i> Excursion Bookings
                             </a>
                             <a href="/admin/custom-tours" class="btn btn-accent btn-sm md:btn-md">
                                 <i class="fas fa-route mr-2"></i> Custom Requests
-                            </a>
-                            <a href="/admin/tours" class="btn btn-neutral btn-sm md:btn-md">
-                                <i class="fas fa-map-marked-alt mr-2"></i> All Tours
-                            </a>
-                            <a href="/admin/bookings/export-excel" class="btn btn-ghost btn-sm md:btn-md">
-                                <i class="fas fa-file-excel mr-2"></i> Export Bookings
                             </a>
                         </div>
                     </div>
@@ -136,11 +136,11 @@
 
                 <!-- Main Content Grid -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                    <!-- Recent Bookings (2 columns on large screens) -->
+                    <!-- Recent Tour Bookings (2 columns on large screens) -->
                     <div class="card bg-base-100 shadow-md lg:col-span-2">
                         <div class="card-body p-4 md:p-6">
                             <div class="flex justify-between items-center mb-4">
-                                <h2 class="card-title text-lg font-medium">Recent Bookings</h2>
+                                <h2 class="card-title text-lg font-medium">Recent Tour Bookings</h2>
                                 <a href="/admin/bookings" class="btn btn-ghost btn-sm">View All</a>
                             </div>
                             
@@ -199,6 +199,69 @@
                         </div>
                     </div>
 
+                    <!-- Recent Excursion Bookings (2 columns on large screens) -->
+                    <div class="card bg-base-100 shadow-md lg:col-span-2">
+                        <div class="card-body p-4 md:p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="card-title text-lg font-medium">Recent Excursion Bookings</h2>
+                                <a href="/admin/excursion-bookings" class="btn btn-ghost btn-sm">View All</a>
+                            </div>
+                            
+                            <% if (typeof recentExcursionBookings !== 'undefined' && recentExcursionBookings && recentExcursionBookings.length > 0) { %>
+                                <div class="overflow-x-auto">
+                                    <table class="table table-zebra table-sm md:table-md w-full">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer</th>
+                                                <th>Excursion</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% recentExcursionBookings.forEach(booking => { %>
+                                                <tr>
+                                                    <td>
+                                                        <div class="font-medium"><%= booking.fullName %></div>
+                                                        <div class="text-xs opacity-60"><%= booking.email %></div>
+                                                    </td>
+                                                    <td><%= booking.excursionName %></td>
+                                                    <td><%= new Date(booking.excursionDate).toLocaleDateString() %></td>
+                                                    <td>
+                                                        <% let statusClass = "badge"; 
+                                                           switch(booking.status) {
+                                                                case 'confirmed': statusClass += " badge-success"; break;
+                                                                case 'pending': statusClass += " badge-warning"; break;
+                                                                case 'cancelled': statusClass += " badge-error"; break;
+                                                                case 'completed': statusClass += " badge-info"; break;
+                                                                default: statusClass += " badge-neutral";
+                                                           }
+                                                        %>
+                                                        <span class="<%= statusClass %>"><%= booking.status %></span>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/admin/excursion-bookings/<%= booking._id %>" class="btn btn-ghost btn-xs">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <% } else { %>
+                                <div class="py-8 text-center">
+                                    <div class="mask mask-squircle mx-auto w-12 h-12 bg-base-200 flex items-center justify-center mb-2">
+                                        <i class="fas fa-calendar-times opacity-60"></i>
+                                    </div>
+                                    <p class="font-medium">No recent excursion bookings</p>
+                                    <p class="text-sm opacity-60">New excursion bookings will appear here</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    
                     <!-- Recent Activity -->
                     <div class="card bg-base-100 shadow-md">
                         <div class="card-body p-4 md:p-6">
@@ -286,8 +349,21 @@
                 <ul class="menu menu-lg p-2 flex-grow">
                     <li><a href="/admin/dashboard" class="active"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a></li>
                     <li><a href="/admin/tours"><i class="fas fa-map-marked-alt mr-2"></i> Tours</a></li>
+                    <li><a href="/admin/excursions"><i class="fas fa-hiking mr-2"></i> Excursions</a></li>
                     <li><a href="/admin/bookings"><i class="fas fa-calendar-check mr-2"></i> Bookings</a></li>
                     <li><a href="/admin/custom-tours"><i class="fas fa-route mr-2"></i> Custom Requests</a></li>
+                    
+                    <!-- Blog Management Section -->
+                    <li class="menu-title pt-4">
+                        <span class="text-xs font-semibold opacity-60 uppercase">Content</span>
+                    </li>
+                    <li>
+                        <a href="/admin/blog"><i class="fas fa-blog mr-2"></i> Blog Posts</a>
+                        <ul class="ml-4 mt-1">
+                            <li><a href="/admin/blog/new"><i class="fas fa-plus-circle mr-2"></i> New Post</a></li>
+                        </ul>
+                    </li>
+                    
                     <li><a href="/admin/users"><i class="fas fa-users mr-2"></i> Users</a></li>
                     <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
                 </ul>
@@ -313,21 +389,13 @@
                 new Chart(popularToursCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: [<% if (popularTours && popularTours.length > 0) { %>
-                            <% popularTours.forEach((tour, index) => { %>
-                                '<%= tour.name %>'<%= index < popularTours.length - 1 ? ',' : '' %>
-                            <% }) %>
-                        <% } else { %>
-                            'Desert Safari', 'Marrakech Explorer', 'Atlas Mountains', 'Coastal Tour', 'City Break'
-                        <% } %>],
+                        labels: popularTours ? 
+                            popularTours.map(tour => tour.name) :
+                            ['Desert Safari', 'Marrakech Explorer', 'Atlas Mountains', 'Coastal Tour', 'City Break'],
                         datasets: [{
-                            data: [<% if (popularTours && popularTours.length > 0) { %>
-                                <% popularTours.forEach((tour, index) => { %>
-                                    <%= tour.bookings %><%= index < popularTours.length - 1 ? ',' : '' %>
-                                <% }) %>
-                            <% } else { %>
-                                25, 20, 18, 15, 12
-                            <% } %>],
+                            data: popularTours ? 
+                                popularTours.map(tour => tour.bookings) :
+                                [25, 20, 18, 15, 12],
                             backgroundColor: [
                                 '#0066c0', '#ff9900', '#00ba9d', '#3498db', '#f59e0b'
                             ],

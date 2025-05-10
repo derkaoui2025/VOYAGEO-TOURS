@@ -2,783 +2,446 @@
 <html lang="en">
 <head>
     <%- include('../partials/head') %>
-    <style>
-        .tour-detail-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3rem;
-            position: relative;
-        }
-        
-        .tour-content {
-            flex: 1;
-            min-width: 60%;
-        }
-        
-        .tour-header {
-            padding: 2rem 0;
-        }
-        
-        .tour-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .tour-info-item {
-            padding: 1.5rem;
-            background-color: var(--gray-color);
-            border-radius: 5px;
-            text-align: center;
-            flex: 1;
-            min-width: 120px;
-        }
-        
-        .tour-info-item h4 {
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-            font-size: 1.6rem;
-        }
-        
-        .tour-info-item p {
-            margin: 0;
-            font-weight: 600;
-            font-size: 1.5rem;
-        }
-        
-        .tour-description {
-            margin-bottom: 4rem;
-            line-height: 1.8;
-            font-size: 1.7rem;
-        }
-        
-        .tour-image {
-            margin-bottom: 4rem;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .tour-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        .tour-itinerary {
-            margin-bottom: 4rem;
-        }
-        
-        .itinerary-day {
-            margin-bottom: 3rem;
-            border-left: 4px solid var(--primary-color);
-            padding-left: 2rem;
-            padding-bottom: 2rem;
-            position: relative;
-        }
-        
-        .itinerary-day::after {
-            content: "";
-            position: absolute;
-            left: -9px;
-            top: 0;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-        }
-        
-        .itinerary-day h3 {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-        }
-        
-        .day-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 700;
-            margin-right: 1rem;
-        }
-        
-        .day-highlights {
-            margin-top: 1.5rem;
-            background-color: rgba(243, 156, 18, 0.1);
-            padding: 1.5rem;
-            border-radius: 5px;
-        }
-        
-        .day-highlights h4 {
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-        
-        .day-highlights ul {
-            padding-left: 2rem;
-        }
-        
-        .day-highlights li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .tour-includes-excludes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3rem;
-            margin-bottom: 4rem;
-        }
-        
-        .tour-includes,
-        .tour-excludes {
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        .includes-list,
-        .excludes-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .includes-list li {
-            position: relative;
-            padding-left: 3rem;
-            margin-bottom: 1.5rem;
-            font-size: 1.6rem;
-        }
-        
-        .includes-list li::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0.2rem;
-            width: 2rem;
-            height: 2rem;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f39c12' width='24' height='24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
-        
-        .excludes-list li {
-            position: relative;
-            padding-left: 3rem;
-            margin-bottom: 1.5rem;
-            font-size: 1.6rem;
-        }
-        
-        .excludes-list li::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0.2rem;
-            width: 2rem;
-            height: 2rem;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232c3e50' width='24' height='24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
-        
-        .tour-map {
-            margin-bottom: 4rem;
-        }
-        
-        .tour-map h2 {
-            margin-bottom: 2rem;
-        }
-        
-        .tour-map img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Booking Form Styles - Desktop */
-        .booking-sidebar {
-            width: 35%;
-            min-width: 350px;
-        }
-        
-        .booking-form-container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 2.5rem;
-            position: sticky;
-            top: 100px;
-            margin-bottom: 3rem;
-        }
-        
-        .booking-form-container h3 {
-            margin-bottom: 2rem;
-            color: var(--secondary-color);
-            font-size: 2.2rem;
-            text-align: center;
-        }
-        
-        .booking-price {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .booking-price .original-price {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .booking-price .current-price {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
-        
-        .booking-price .price-per-person {
-            font-size: 1.4rem;
-            color: #666;
-        }
-        
-        .form-group {
-            margin-bottom: 2rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.8rem;
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 1.2rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1.6rem;
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        
-        .form-btn {
-            width: 100%;
-            padding: 1.5rem;
-            background-color: var(--primary-color);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 1.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .form-btn:hover {
-            background-color: #e67e22;
-        }
-        
-        .booking-guarantee {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 1.4rem;
-            color: #666;
-        }
-        
-        .booking-guarantee i {
-            color: var(--primary-color);
-            margin-right: 0.5rem;
-        }
-        
-        /* Mobile Booking Button and Modal */
-        .mobile-booking-btn {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--primary-color);
-            color: #fff;
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 1.8rem;
-            font-weight: 600;
-            z-index: 100;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .booking-modal {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #fff;
-            z-index: 1000;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
-            transform: translateY(100%);
-            transition: transform 0.3s ease-out;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .booking-modal.show {
-            transform: translateY(0);
-        }
-        
-        .modal-header {
-            padding: 2rem;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-header h3 {
-            margin: 0;
-            font-size: 2rem;
-        }
-        
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 2.4rem;
-            color: #999;
-            cursor: pointer;
-        }
-        
-        .modal-body {
-            padding: 2rem;
-        }
-        
-        .modal-backdrop {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 990;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .modal-backdrop.show {
-            opacity: 1;
-        }
-        
-        .booking-success {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .booking-success h3 {
-            color: #27ae60;
-            margin-bottom: 1rem;
-        }
-        
-        .booking-success p {
-            margin-bottom: 2rem;
-        }
-        
-        /* Responsive Adjustments */
-        @media (max-width: 992px) {
-            .booking-sidebar {
-                width: 100%;
-            }
-            
-            .booking-form-container {
-                position: static;
-                margin-top: 3rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .tour-info-item {
-                min-width: 45%;
-            }
-            
-            .booking-sidebar {
-                display: none;
-            }
-            
-            .mobile-booking-btn {
-                display: block;
-            }
-            
-            .booking-form-container {
-                box-shadow: none;
-                padding: 0;
-            }
-            
-            .tour-includes-excludes {
-                flex-direction: column;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .tour-info-item {
-                min-width: 100%;
-            }
-            
-            .itinerary-day h3 {
-                font-size: 1.8rem;
-            }
-            
-            .day-number {
-                width: 35px;
-                height: 35px;
-            }
-        }
-    </style>
 </head>
 <body>
     <%- include('../partials/navbar') %>
-    
-    <%- include('../partials/hero') %>
-    
-    <section class="section">
-        <div class="container">
-            <div class="tour-detail-container">
-                <div class="tour-content">
-                    <div class="tour-header">
-                        <div class="tour-info">
-                            <div class="tour-info-item">
-                                <h4>Duration</h4>
-                                <p><%= tour.duration %> Days</p>
-                            </div>
-                            <div class="tour-info-item">
-                                <h4>Starting Point</h4>
-                                <p><%= tour.startLocation %></p>
-                            </div>
-                            <div class="tour-info-item">
-                                <h4>Accommodation</h4>
-                                <p><%= tour.accommodation %></p>
-                            </div>
-                            <div class="tour-info-item">
-                                <h4>Group Size</h4>
-                                <p>Up to <%= tour.groupSize %> people</p>
-                            </div>
-                            <div class="tour-info-item">
-                                <h4>Category</h4>
-                                <p><%= tour.category %></p>
-                            </div>
-                        </div>
+
+    <div class="tour-container">
+        <!-- Main content area -->
+        <main class="tour-main">
+            <!-- Image Gallery -->
+            <div class="tour-gallery">
+                <div class="gallery-main">
+                    <img src="<%= tour.mainImage %>" alt="<%= tour.title %>">
+                </div>
+                <div class="gallery-nav">
+                    <div class="gallery-thumb active">
+                        <img src="<%= tour.mainImage %>" alt="Main view">
                     </div>
-                    
-                    <div class="tour-description animate">
-                        <p><%= tour.description %></p>
-                    </div>
-                    
-                    <div class="tour-image animate">
-                        <img src="<%= tour.mainImage %>" alt="<%= tour.title %>" width="1200" height="600">
-                    </div>
-                    
-                    <% if (tour.itinerary && tour.itinerary.length > 0) { %>
-                    <div class="tour-itinerary animate">
-                        <h2 class="section-title">Tour Itinerary</h2>
-                        
-                        <% tour.itinerary.forEach(day => { %>
-                        <div class="itinerary-day">
-                            <h3><span class="day-number"><%= day.day %></span> <%= day.title %></h3>
-                            <p><%= day.description %></p>
-                            
-                            <% if (day.highlights && day.highlights.length > 0) { %>
-                            <div class="day-highlights">
-                                <h4>Highlights:</h4>
-                                <ul>
-                                    <% day.highlights.forEach(highlight => { %>
-                                    <li><%= highlight %></li>
-                                    <% }); %>
-                                </ul>
+                    <% if (tour.images && tour.images.length > 0) { %>
+                        <% tour.images.slice(0, 4).forEach(image => { %>
+                            <div class="gallery-thumb">
+                                <img src="<%= image %>" alt="Tour view">
                             </div>
-                            <% } %>
-                            
-                            <% if (day.distance) { %>
-                            <p><strong>Distance:</strong> <%= day.distance %></p>
-                            <% } %>
-                        </div>
                         <% }); %>
-                    </div>
                     <% } %>
-                    
-                    <div class="tour-includes-excludes animate">
-                        <div class="tour-includes">
-                            <h2 class="section-title">What's Included</h2>
-                            <ul class="includes-list">
-                                <% tour.includes.forEach(item => { %>
-                                <li><%= item %></li>
-                                <% }); %>
-                            </ul>
-                        </div>
-                        
-                        <div class="tour-excludes">
-                            <h2 class="section-title">What's Not Included</h2>
-                            <ul class="excludes-list">
-                                <% tour.excludes.forEach(item => { %>
-                                <li><%= item %></li>
-                                <% }); %>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="tour-map animate">
-                        <h2 class="section-title">Tour Map</h2>
-                        <div class="tour-map-container">
-                            <img src="<%= tour.mapImage %>" alt="<%= tour.title %> Route Map" width="1200" height="600">
-                        </div>
+                </div>
+            </div>
+
+            <!-- Tour Header -->
+            <div class="tour-header">
+                <div class="tour-title">
+                    <h1><%= tour.title %></h1>
+                    <div class="tour-price-mobile">
+                        <div class="price-current-mobile">€<%= tour.price %></div>
+                        <div class="price-per-mobile">per person</div>
                     </div>
                 </div>
                 
-                <!-- Booking Sidebar for Desktop -->
-                <div class="booking-sidebar">
-                    <div class="booking-form-container">
-                        <h3>Book this Tour</h3>
-                        <div class="booking-price">
-                            <div class="original-price">From $<%= Math.round(tour.price * 1.2) %></div>
-                            <div class="current-price">$<%= tour.price %></div>
-                            <div class="price-per-person">per person</div>
+                <div class="tour-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span><%= tour.duration %> <%= tour.duration === 1 ? 'Day' : 'Days' %></span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span><%= tour.startLocation %></span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-users"></i>
+                        <span>Max <%= tour.groupSize %> people</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-star"></i>
+                        <span>4.9 (128 reviews)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tour Overview -->
+            <div class="tour-section">
+                <h2 class="section-title">Tour Overview</h2>
+                <div class="tour-overview">
+                    <%= tour.description %>
+                </div>
+            </div>
+
+            <!-- Tour Highlights -->
+            <div class="tour-section">
+                <h2 class="section-title">Tour Highlights</h2>
+                <div class="highlights-grid">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-map-marked-alt"></i>
                         </div>
-                        <form id="booking-form" class="booking-form">
-                            <div class="form-group">
-                                <label for="fullName">Full Name</label>
-                                <input type="text" id="fullName" name="fullName" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="tourDate">Tour Date</label>
-                                <input type="date" id="tourDate" name="tourDate" class="form-control" required min="<%= new Date().toISOString().split('T')[0] %>">
-                            </div>
-                            <div class="form-group">
-                                <label for="guestCount">Number of Guests</label>
-                                <select id="guestCount" name="guestCount" class="form-control" required>
-                                    <% for(let i = 1; i <= 10; i++) { %>
-                                    <option value="<%= i %>"><%= i %></option>
-                                    <% } %>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="specialRequests">Special Requests</label>
-                                <textarea id="specialRequests" name="specialRequests" class="form-control" rows="3"></textarea>
-                            </div>
-                            <input type="hidden" id="tourId" name="tourId" value="<%= tour._id %>">
-                            <button type="submit" class="form-btn">Book Now</button>
-                        </form>
-                        <div class="booking-guarantee">
-                            <i class="fa fa-lock"></i> Secure booking - No payment required today
+                        <div class="highlight-text">
+                            Explore the stunning landscapes of <%= tour.startLocation %>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="highlight-text">
+                            Experience authentic local cuisine
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="highlight-text">
+                            Capture breathtaking photo opportunities
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="highlight-text">
+                            Learn about rich cultural history with expert guides
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <!-- Mobile Booking Button -->
-    <button class="mobile-booking-btn" id="mobile-booking-btn">Book This Tour</button>
-    
-    <!-- Booking Modal for Mobile -->
-    <div class="booking-modal" id="booking-modal">
-        <div class="modal-header">
-            <h3>Book <%= tour.title %></h3>
-            <button class="close-modal" id="close-modal">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="booking-price">
-                <div class="original-price">From $<%= Math.round(tour.price * 1.2) %></div>
-                <div class="current-price">$<%= tour.price %></div>
-                <div class="price-per-person">per person</div>
+
+            <!-- Tour Itinerary -->
+            <div class="tour-section">
+                <h2 class="section-title">Tour Itinerary</h2>
+                <div class="itinerary-list">
+                    <% if (tour.itinerary && tour.itinerary.length > 0) { %>
+                        <% tour.itinerary.forEach((day, index) => { %>
+                            <div class="itinerary-item">
+                                <div class="itinerary-day">
+                                    <div class="itinerary-heading">
+                                        <div class="day-badge">Day <%= index + 1 %></div>
+                                        <div class="day-title"><%= day.title || `Day ${index + 1}` %></div>
+                                    </div>
+                                    <div class="itinerary-content">
+                                        <%= day.description %>
+                                        
+                                        <% if (day.activities && day.activities.length > 0) { %>
+                                            <ul class="activity-list">
+                                                <% day.activities.forEach(activity => { %>
+                                                    <li><%= activity %></li>
+                                                <% }); %>
+                                            </ul>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <!-- Default itinerary if none provided -->
+                        <div class="itinerary-item">
+                            <div class="itinerary-day">
+                                <div class="itinerary-heading">
+                                    <div class="day-badge">Day 1</div>
+                                    <div class="day-title">Start of the Journey</div>
+                                </div>
+                                <div class="itinerary-content">
+                                    Begin your adventure in <%= tour.startLocation %> with a warm welcome from your guide.
+                                    <ul class="activity-list">
+                                        <li>Morning pickup from your hotel</li>
+                                        <li>Visit key cultural sites</li>
+                                        <li>Enjoy a traditional lunch</li>
+                                        <li>Evening relaxation at accommodation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="itinerary-item">
+                            <div class="itinerary-day">
+                                <div class="itinerary-heading">
+                                    <div class="day-badge">Day 2</div>
+                                    <div class="day-title">Exploration Day</div>
+                                </div>
+                                <div class="itinerary-content">
+                                    Discover the hidden gems and breathtaking landscapes of the region.
+                                    <ul class="activity-list">
+                                        <li>Scenic morning drive</li>
+                                        <li>Guided tour of important sites</li>
+                                        <li>Authentic cultural experiences</li>
+                                        <li>Return to accommodation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
             </div>
-            <form id="booking-form-mobile" class="booking-form">
-                <div class="form-group">
-                    <label for="fullName-mobile">Full Name</label>
-                    <input type="text" id="fullName-mobile" name="fullName" class="form-control" required>
+
+            <!-- Includes & Excludes -->
+            <div class="tour-section">
+                <h2 class="section-title">What's Included</h2>
+                <div class="includes-excludes">
+                    <div class="includes-box">
+                        <h3 class="box-title"><i class="fas fa-check-circle"></i> Tour Includes</h3>
+                        <ul class="includes-list">
+                            <% if (tour.includes && tour.includes.length > 0) { %>
+                                <% tour.includes.forEach(item => { %>
+                                    <li><%= item %></li>
+                                <% }); %>
+                            <% } else { %>
+                                <li>Professional English-speaking guide</li>
+                                <li>Transportation in air-conditioned vehicle</li>
+                                <li>Entrance fees to monuments</li>
+                                <li>Bottled water during the tour</li>
+                                <li>Hotel pickup and drop-off</li>
+                            <% } %>
+                        </ul>
+                    </div>
+                    
+                    <div class="excludes-box">
+                        <h3 class="box-title"><i class="fas fa-times-circle"></i> Tour Excludes</h3>
+                        <ul class="excludes-list">
+                            <% if (tour.excludes && tour.excludes.length > 0) { %>
+                                <% tour.excludes.forEach(item => { %>
+                                    <li><%= item %></li>
+                                <% }); %>
+                            <% } else { %>
+                                <li>International airfare</li>
+                                <li>Personal expenses</li>
+                                <li>Optional activities</li>
+                                <li>Travel insurance</li>
+                                <li>Gratuities</li>
+                            <% } %>
+                        </ul>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email-mobile">Email</label>
-                    <input type="email" id="email-mobile" name="email" class="form-control" required>
+            </div>
+
+            <!-- Tour Map -->
+            <div class="tour-section">
+                <h2 class="section-title">Tour Map</h2>
+                <div class="tour-map">
+                    <% if (tour.mapImage) { %>
+                        <img src="<%= tour.mapImage %>" alt="Map of <%= tour.title %>">
+                    <% } else { %>
+                        <img src="/images/maps/morocco-map-generic.jpg" alt="Map of Morocco">
+                    <% } %>
                 </div>
-                <div class="form-group">
-                    <label for="tourDate-mobile">Tour Date</label>
-                    <input type="date" id="tourDate-mobile" name="tourDate" class="form-control" required min="<%= new Date().toISOString().split('T')[0] %>">
+            </div>
+
+            <!-- FAQs Section -->
+            <div class="tour-section">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What is the best time to visit <%= tour.startLocation %>?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            The best time to visit <%= tour.startLocation %> is during spring (March to May) and fall (September to November) when the weather is pleasant and not too hot.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Is this tour suitable for children?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, this tour is suitable for children aged 6 and above. Children must be accompanied by an adult.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What should I bring on this tour?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            We recommend bringing comfortable walking shoes, a hat, sunscreen, sunglasses, a camera, and a light jacket or sweater for evenings.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What is the cancellation policy?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Full refund if canceled at least 24 hours in advance. No refund for cancellations less than 24 hours before the start time.
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="guestCount-mobile">Number of Guests</label>
-                    <select id="guestCount-mobile" name="guestCount" class="form-control" required>
-                        <% for(let i = 1; i <= 10; i++) { %>
-                        <option value="<%= i %>"><%= i %></option>
-                        <% } %>
-                    </select>
+            </div>
+
+          
+        </main>
+
+        <!-- Booking Sidebar -->
+        <aside class="booking-sidebar">
+            <div class="booking-form">
+                <div class="booking-header">
+                    <h2>Book This Tour</h2>
                 </div>
-                <div class="form-group">
-                    <label for="specialRequests-mobile">Special Requests</label>
-                    <textarea id="specialRequests-mobile" name="specialRequests" class="form-control" rows="3"></textarea>
+                <div class="booking-prices">
+                    <% if (tour.oldPrice) { %>
+                        <div class="price-original">€<%= tour.oldPrice %></div>
+                    <% } %>
+                    <div class="price-current">€<%= tour.price %></div>
+                    <div class="price-per">per person</div>
                 </div>
-                <input type="hidden" id="tourId-mobile" name="tourId" value="<%= tour._id %>">
-                <button type="submit" class="form-btn">Book Now</button>
-            </form>
+                <div class="booking-form-content">
+                    <form id="tour-booking-form" action="/api/bookings" method="POST">
+                        <input type="hidden" name="tourId" value="<%= tour._id %>">
+                        <input type="hidden" name="tourSlug" value="<%= tour.slug %>">
+                        
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tourDate">Tour Date</label>
+                            <input type="date" id="tourDate" name="tourDate" class="form-control" required min="<%= new Date().toISOString().split('T')[0] %>">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="guestCount">Number of Guests</label>
+                            <select id="guestCount" name="guestCount" class="form-control" required>
+                                <% for(let i = 1; i <= 10; i++) { %>
+                                    <option value="<%= i %>"><%= i %> <%= i === 1 ? 'person' : 'people' %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="specialRequests">Special Requests</label>
+                            <textarea id="specialRequests" name="specialRequests" class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="booking-footer">
+                    <button type="submit" form="tour-booking-form" class="btn-book">
+                        <i class="fas fa-calendar-check"></i> Book Now
+                    </button>
+                    <div class="booking-guarantee">
+                        <i class="fas fa-shield-alt"></i> Secure booking · Free cancellation 24h before
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Mobile Booking Button -->
+    <button class="booking-mobile-btn" id="mobile-booking-btn">
+        <i class="fas fa-calendar-check"></i> Book Now - €<%= tour.price %> per person
+    </button>
+
+    <!-- Mobile Booking Modal -->
+    <div class="booking-modal" id="booking-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Book <%= tour.title %></h3>
+                <button class="modal-close" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Booking form content will be cloned here via JavaScript -->
+            </div>
         </div>
     </div>
-    
-    <!-- Success Message Box -->
-    <div class="booking-success" id="booking-success">
-        <h3>Booking Received!</h3>
-        <p>Thank you for booking with us. We'll contact you shortly to confirm your tour details.</p>
-        <button class="form-btn" id="close-success">Continue Browsing</button>
-    </div>
-    
-    <!-- Modal Backdrop -->
-    <div class="modal-backdrop" id="modal-backdrop"></div>
-    
+
+   
+
     <%- include('../partials/footer') %>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Mobile booking modal
-            const mobileBookingBtn = document.getElementById('mobile-booking-btn');
+            // Gallery functionality
+            const galleryMain = document.querySelector('.gallery-main img');
+            const galleryThumbs = document.querySelectorAll('.gallery-thumb');
+            
+            galleryThumbs.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    // Update main image
+                    galleryMain.src = this.querySelector('img').src;
+                    
+                    // Update active state
+                    galleryThumbs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // FAQ functionality
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    // Toggle active state
+                    this.classList.toggle('active');
+                    
+                    // Toggle answer visibility
+                    const answer = this.nextElementSibling;
+                    if (answer.style.display === 'block') {
+                        answer.style.display = 'none';
+                    } else {
+                        answer.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Mobile booking functionality
+            const mobileBookBtn = document.getElementById('mobile-booking-btn');
             const bookingModal = document.getElementById('booking-modal');
             const closeModalBtn = document.getElementById('close-modal');
-            const modalBackdrop = document.getElementById('modal-backdrop');
+            const bookingForm = document.querySelector('.booking-form-content');
+            const modalBody = document.querySelector('.modal-body');
             
-            // Success message
-            const bookingSuccess = document.getElementById('booking-success');
-            const closeSuccessBtn = document.getElementById('close-success');
+            // Clone the booking form for the modal
+            if (bookingForm && modalBody) {
+                modalBody.innerHTML = bookingForm.innerHTML;
+            }
             
-            // Forms
-            const bookingForm = document.getElementById('booking-form');
-            const bookingFormMobile = document.getElementById('booking-form-mobile');
+            // Open modal
+            if (mobileBookBtn) {
+                mobileBookBtn.addEventListener('click', function() {
+                    bookingModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                });
+            }
             
-            // Open modal when mobile booking button is clicked
-            mobileBookingBtn.addEventListener('click', function() {
-                bookingModal.style.display = 'block';
-                modalBackdrop.style.display = 'block';
-                setTimeout(() => {
-                    bookingModal.classList.add('show');
-                    modalBackdrop.classList.add('show');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            });
-            
-            // Close modal when close button is clicked
-            closeModalBtn.addEventListener('click', closeModal);
-            modalBackdrop.addEventListener('click', closeModal);
-            
-            function closeModal() {
-                bookingModal.classList.remove('show');
-                modalBackdrop.classList.remove('show');
-                setTimeout(() => {
+            // Close modal
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
                     bookingModal.style.display = 'none';
-                    modalBackdrop.style.display = 'none';
-                }, 300);
-                document.body.style.overflow = '';
-            }
-            
-            // Handle desktop form submission
-            bookingForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                submitBooking(new FormData(bookingForm));
-            });
-            
-            // Handle mobile form submission
-            bookingFormMobile.addEventListener('submit', function(e) {
-                e.preventDefault();
-                submitBooking(new FormData(bookingFormMobile));
-            });
-            
-            // Close success message
-            closeSuccessBtn.addEventListener('click', function() {
-                bookingSuccess.style.display = 'none';
-                modalBackdrop.classList.remove('show');
-                setTimeout(() => {
-                    modalBackdrop.style.display = 'none';
-                }, 300);
-                document.body.style.overflow = '';
-            });
-            
-            // Function to submit booking data
-            function submitBooking(formData) {
-                const bookingData = {
-                    fullName: formData.get('fullName'),
-                    email: formData.get('email'),
-                    tourId: formData.get('tourId'),
-                    tourDate: formData.get('tourDate'),
-                    guestCount: parseInt(formData.get('guestCount')),
-                    specialRequests: formData.get('specialRequests') || ''
-                };
-                
-                fetch('/api/bookings', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(bookingData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Reset forms
-                        bookingForm.reset();
-                        bookingFormMobile.reset();
-                        
-                        // Close modal if open
-                        bookingModal.classList.remove('show');
-                        setTimeout(() => {
-                            bookingModal.style.display = 'none';
-                        }, 300);
-                        
-                        // Show success message
-                        bookingSuccess.style.display = 'block';
-                        modalBackdrop.style.display = 'block';
-                        setTimeout(() => {
-                            modalBackdrop.classList.add('show');
-                        }, 10);
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error submitting booking:', error);
-                    alert('There was an error submitting your booking. Please try again.');
+                    document.body.style.overflow = 'auto';
                 });
             }
             
-            // Calculate and update total price based on guest count
-            const guestCountEl = document.getElementById('guestCount');
-            const guestCountMobileEl = document.getElementById('guestCount-mobile');
-            const basePriceEl = document.querySelectorAll('.current-price');
-            const basePrice = <%= tour.price %>;
+            // Close modal when clicking outside content
+            window.addEventListener('click', function(event) {
+                if (event.target === bookingModal) {
+                    bookingModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
             
-            function updateTotalPrice(guestCount) {
-                const totalPrice = basePrice * guestCount;
-                basePriceEl.forEach(el => {
-                    el.textContent = `$${totalPrice}`;
+            // Price calculation for booking form
+            const guestCountSelect = document.getElementById('guestCount');
+            if (guestCountSelect) {
+                guestCountSelect.addEventListener('change', function() {
+                    const basePrice = <%= tour.price %>;
+                    const guests = parseInt(this.value);
+                    const totalPrice = basePrice * guests;
+                    
+                    // Update displayed price if needed
+                    // This is optional as the backend will calculate final price
                 });
             }
-            
-            guestCountEl.addEventListener('change', function() {
-                updateTotalPrice(this.value);
-            });
-            
-            guestCountMobileEl.addEventListener('change', function() {
-                updateTotalPrice(this.value);
-            });
         });
     </script>
 </body>

@@ -7,6 +7,7 @@
 const blogService = require('../../services/blogService');
 const uploadService = require('../../services/uploadService');
 const config = require('../../config');
+const Blog = require('../../models/Blog'); // Add the direct Blog model import
 
 module.exports = {
   /**
@@ -19,12 +20,14 @@ module.exports = {
       res.render('admin/blog/index', {
         pageTitle: 'Blog Management',
         activePage: 'blog',
-        posts
+        posts,
+        success: req.query.success || null,
+        error: null
       });
     } catch (error) {
       console.error('Error fetching blog posts:', error);
       res.render('admin/error', {
-        error: 'Failed to fetch blog posts',
+        message: 'Failed to fetch blog posts',
         pageTitle: 'Error',
         activePage: 'blog'
       });
@@ -52,7 +55,9 @@ module.exports = {
           metaDescription: '',
           keywords: []
         }
-      }
+      },
+      success: null,
+      error: null
     });
   },
 
@@ -65,16 +70,17 @@ module.exports = {
       let imageUrl = req.body.image;
       
       if (req.file) {
-        const uploadResult = await uploadService.uploadFile(req.file, {
-          folder: 'blog',
-          width: 1200,  // Max width for blog images
-          height: 800,  // Max height for blog images
-          quality: 85,
-          format: 'jpeg'
-        });
-        
-        imageUrl = uploadResult.url;
+        // The image has already been uploaded to Cloudinary by the middleware
+        imageUrl = req.file.path; // Cloudinary secure_url is set to the path property
+        console.log('Uploaded image URL:', imageUrl);
       }
+      
+      // Process tags
+      const tags = req.body.tags ? 
+        (typeof req.body.tags === 'string' ? 
+          req.body.tags.split(',').map(t => t.trim()) : 
+          req.body.tags) : 
+        [];
       
       // Process SEO fields
       const seo = {
@@ -92,21 +98,47 @@ module.exports = {
       const postData = {
         ...req.body,
         image: imageUrl,
+        tags,
         seo
       };
       
       // Use the service to create the post
-      await blogService.createPost(postData);
+      const newPost = await blogService.createPost(postData);
+      
+      // Handle AJAX requests
+      if (req.xhr) {
+        return res.json({
+          success: true,
+          message: 'Blog post created successfully',
+          post: newPost
+        });
+      }
       
       res.redirect('/admin/blog');
     } catch (error) {
       console.error('Error creating blog post:', error);
       
+      // Handle AJAX requests
+      if (req.xhr) {
+        return res.status(500).json({
+          success: false,
+          message: error.message || 'Failed to create blog post'
+        });
+      }
+      
       res.render('admin/blog/new', {
         pageTitle: 'Create New Blog Post',
         activePage: 'blog',
         error: error.message || 'Failed to create blog post',
-        post: req.body
+        post: {
+          ...req.body,
+          tags: req.body.tags ? req.body.tags.split(',').map(t => t.trim()) : [],
+          seo: {
+            metaTitle: req.body['seo.metaTitle'] || '',
+            metaDescription: req.body['seo.metaDescription'] || '',
+            keywords: req.body['seo.keywords'] ? req.body['seo.keywords'].split(',').map(k => k.trim()) : []
+          }
+        }
       });
     }
   },
@@ -116,11 +148,12 @@ module.exports = {
    */
   getEditPostForm: async (req, res) => {
     try {
-      const post = await blogService.getPostById(req.params.id);
+      // Use Blog model directly instead of using a non-existent service method
+      const post = await Blog.findById(req.params.id);
       
       if (!post) {
         return res.status(404).render('admin/error', {
-          error: 'Blog post not found',
+          message: 'Blog post not found', // Use 'message' instead of 'error'
           pageTitle: 'Error',
           activePage: 'blog'
         });
@@ -129,12 +162,14 @@ module.exports = {
       res.render('admin/blog/edit', {
         pageTitle: 'Edit Blog Post',
         activePage: 'blog',
-        post
+        post,
+        success: req.query.success || null,
+        error: null
       });
     } catch (error) {
       console.error('Error fetching blog post for edit:', error);
       res.render('admin/error', {
-        error: 'Failed to fetch blog post',
+        message: 'Failed to fetch blog post', // Use 'message' instead of 'error'
         pageTitle: 'Error',
         activePage: 'blog'
       });
@@ -146,12 +181,12 @@ module.exports = {
    */
   updatePost: async (req, res) => {
     try {
-      // Check if post exists
-      const existingPost = await blogService.getPostById(req.params.id);
+      // Check if post exists - use Blog model directly
+      const existingPost = await Blog.findById(req.params.id);
       
       if (!existingPost) {
         return res.status(404).render('admin/error', {
-          error: 'Blog post not found',
+          message: 'Blog post not found', // Use 'message' instead of 'error'
           pageTitle: 'Error',
           activePage: 'blog'
         });
@@ -161,21 +196,36 @@ module.exports = {
       let imageUrl = req.body.image || existingPost.image;
       
       if (req.file) {
-        const uploadResult = await uploadService.uploadFile(req.file, {
-          folder: 'blog',
-          width: 1200,
-          height: 800,
-          quality: 85,
-          format: 'jpeg'
-        });
-        
-        imageUrl = uploadResult.url;
+        // The image has already been uploaded to Cloudinary by the middleware
+        imageUrl = req.file.path; // Cloudinary secure_url is set to the path property
+        console.log('Updated image URL:', imageUrl);
         
         // If replacing an image, delete the old one
         if (existingPost.image && existingPost.image !== '/images/blog/default.jpg') {
-          await uploadService.deleteFile(existingPost.image);
+          try {
+            // Extract the public ID from the Cloudinary URL
+            // Example: https://res.cloudinary.com/your-cloud/image/upload/v1234567890/voyageo-tours/blog/image-id.webp
+            const urlParts = existingPost.image.split('/');
+            const publicIdWithExtension = urlParts[urlParts.length - 1];
+            const publicId = `voyageo-tours/blog/${publicIdWithExtension.split('.')[0]}`;
+            
+            console.log('Deleting image with public ID:', publicId);
+            
+            // Use Cloudinary's API directly for deletion
+            const { cloudinary } = require('../config/cloudinary');
+            await cloudinary.uploader.destroy(publicId);
+          } catch (deleteError) {
+            console.error('Error deleting old image (non-critical):', deleteError);
+          }
         }
       }
+      
+      // Process tags
+      const tags = req.body.tags ? 
+        (typeof req.body.tags === 'string' ? 
+          req.body.tags.split(',').map(t => t.trim()) : 
+          req.body.tags) : 
+        [];
       
       // Process SEO fields
       const seo = {
@@ -193,21 +243,48 @@ module.exports = {
       const postData = {
         ...req.body,
         image: imageUrl,
+        tags,
         seo
       };
       
       // Use the service to update the post
-      await blogService.updatePost(req.params.id, postData);
+      const updatedPost = await blogService.updatePost(req.params.id, postData);
+      
+      // Handle AJAX requests
+      if (req.xhr) {
+        return res.json({
+          success: true,
+          message: 'Blog post updated successfully',
+          post: updatedPost
+        });
+      }
       
       res.redirect('/admin/blog');
     } catch (error) {
       console.error('Error updating blog post:', error);
       
+      // Handle AJAX requests
+      if (req.xhr) {
+        return res.status(500).json({
+          success: false,
+          message: error.message || 'Failed to update blog post'
+        });
+      }
+      
       res.render('admin/blog/edit', {
         pageTitle: 'Edit Blog Post',
         activePage: 'blog',
         error: error.message || 'Failed to update blog post',
-        post: { ...req.body, _id: req.params.id }
+        post: { 
+          ...req.body, 
+          _id: req.params.id,
+          tags: req.body.tags ? req.body.tags.split(',').map(t => t.trim()) : [],
+          seo: {
+            metaTitle: req.body['seo.metaTitle'] || '',
+            metaDescription: req.body['seo.metaDescription'] || '',
+            keywords: req.body['seo.keywords'] ? req.body['seo.keywords'].split(',').map(k => k.trim()) : []
+          }
+        }
       });
     }
   },
@@ -217,8 +294,8 @@ module.exports = {
    */
   deletePost: async (req, res) => {
     try {
-      // Get post to check for image
-      const post = await blogService.getPostById(req.params.id);
+      // Get post to check for image - use Blog model directly
+      const post = await Blog.findById(req.params.id);
       
       if (post && post.image && post.image !== '/images/blog/default.jpg') {
         // Delete the image file
@@ -249,7 +326,7 @@ module.exports = {
       }
       
       res.status(500).render('admin/error', {
-        error: 'Failed to delete blog post',
+        message: 'Failed to delete blog post',
         pageTitle: 'Error',
         activePage: 'blog'
       });

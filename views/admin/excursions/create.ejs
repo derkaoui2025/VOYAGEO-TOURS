@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <%- include('../partials/head') %>
+    <!-- Quill Editor CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="drawer lg:drawer-open min-h-screen">
+        <!-- Mobile Drawer Toggle -->
+        <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
+        
+        <!-- Main Content -->
+        <div class="drawer-content flex flex-col bg-base-200">
+            <!-- Top Nav -->
+            <div class="navbar bg-base-100 shadow-md lg:hidden">
+                <div class="flex-none">
+                    <label for="admin-drawer" class="btn btn-square btn-ghost drawer-button">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <span class="text-xl font-semibold">Voyageo Tours</span>
+                </div>
+                <div class="flex-none">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                                <i class="fas fa-user text-lg"></i>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                            <li><a href="/admin/profile"><i class="fas fa-user-cog mr-2"></i> Profile</a></li>
+                            <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                            <li><a href="/admin/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div class="p-4 md:p-6 space-y-6 pb-20">
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">Add New Excursion</h1>
+                        <p class="text-sm opacity-60">Create a new excursion for your customers</p>
+                    </div>
+                    <div>
+                        <a href="/admin/excursions" class="btn btn-ghost">
+                            <i class="fas fa-arrow-left mr-2"></i> Back to Excursions
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Error message container - initially hidden -->
+                <div id="error-container" class="alert alert-error shadow-lg hidden">
+                    <div>
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="error-message"></span>
+                    </div>
+                    <div class="flex-none">
+                        <button class="btn btn-sm btn-ghost" onclick="document.getElementById('error-container').classList.add('hidden')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Excursion Form Card -->
+                <div class="card bg-base-100 shadow-md">
+                    <div class="card-body p-4 md:p-6">
+                        <h2 class="card-title text-lg font-medium mb-4">Excursion Details</h2>
+                        
+                        <!-- Form -->
+                        <form id="excursion-form" class="space-y-6">
+                            <!-- Basic Information -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text font-medium">Title</span>
+                                        <span class="label-text-alt text-error">*</span>
+                                    </label>
+                                    <input type="text" id="title" name="title" required placeholder="Enter excursion title" class="input input-bordered w-full" />
+                                </div>
+                                
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text font-medium">Start Location</span>
+                                        <span class="label-text-alt text-error">*</span>
+                                    </label>
+                                    <input type="text" id="startLocation" name="startLocation" required placeholder="Enter start location" class="input input-bordered w-full" />
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text font-medium">Duration</span>
+                                        <span class="label-text-alt text-error">*</span>
+                                    </label>
+                                    <input type="number" id="duration" name="duration" required min="0.5" step="0.5" placeholder="Duration" class="input input-bordered w-full" />
+                                </div>
+                                
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text font-medium">Duration Type</span>
+                                    </label>
+                                    <select id="durationType" name="durationType" class="select select-bordered w-full">
+                                        <option value="hours">Hours</option>
+                                        <option value="days">Days</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-control w-full">
+                                    <label class="label">
+                                        <span class="label-text font-medium">Excursion Type</span>
+                                        <span class="label-text-alt text-error">*</span>
+                                    </label>
+                                    <select id="excursionType" name="excursionType" required class="select select-bordered w-full">
+                                        <option value="" disabled selected>Select type</option>
+                                        <option value="private">Private</option>
+                                        <option value="public">Public</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Description -->
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-medium">Description</span>
+                                    <span class="label-text-alt text-error">*</span>
+                                </label>
+                                <div id="editor-container" style="height: 300px;"></div>
+                                <input type="hidden" id="description" name="description">
+                            </div>
+                            
+                            <!-- Gallery Images -->
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-md font-medium">Gallery Images</h3>
+                                    <label for="gallery-input" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-plus mr-2"></i> Add Images
+                                    </label>
+                                    <input id="gallery-input" type="file" multiple accept="image/*" class="hidden" />
+                                </div>
+                                
+                                <div id="image-preview-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+                                    <div id="image-upload-placeholder" class="border-2 border-dashed border-base-300 rounded-lg h-32 flex flex-col items-center justify-center cursor-pointer hover:bg-base-200 transition-colors">
+                                        <i class="fas fa-cloud-upload-alt text-2xl opacity-40 mb-2"></i>
+                                        <span class="text-xs opacity-60">Click to add images</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="mt-6 flex justify-end">
+                                <button type="submit" id="submit-btn" class="btn btn-primary">
+                                    <i class="fas fa-save mr-2"></i> Save Excursion
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="drawer-side">
+            <label for="admin-drawer" class="drawer-overlay"></label>
+            <div class="bg-base-100 w-80 min-h-full flex flex-col shadow-xl">
+                <!-- Logo -->
+                <div class="p-4 border-b flex items-center justify-center">
+                    <div class="text-2xl font-bold text-primary">Voyageo Admin</div>
+                </div>
+                
+                <!-- Admin Info -->
+                <div class="flex items-center gap-3 p-4 border-b">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-12">
+                            <span class="text-lg"><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-bold"><%= session.adminUsername || 'Admin' %></div>
+                        <div class="text-sm opacity-60">Administrator</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <ul class="menu menu-lg p-2 flex-grow">
+                    <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a></li>
+                    <li><a href="/admin/tours"><i class="fas fa-map-marked-alt mr-2"></i> Tours</a></li>
+                    <li><a href="/admin/excursions" class="active"><i class="fas fa-hiking mr-2"></i> Excursions</a></li>
+                    <li><a href="/admin/bookings"><i class="fas fa-calendar-check mr-2"></i> Bookings</a></li>
+                    <li><a href="/admin/custom-tours"><i class="fas fa-route mr-2"></i> Custom Requests</a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users mr-2"></i> Users</a></li>
+                    <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                </ul>
+                
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="/admin/logout" class="btn btn-outline btn-error btn-block">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        // Initialize Quill Editor
+        const quill = new Quill('#editor-container', {
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            },
+            theme: 'snow'
+        });
+
+        // Image Preview and Upload
+        const galleryInput = document.getElementById('gallery-input');
+        const previewContainer = document.getElementById('image-preview-container');
+        const uploadPlaceholder = document.getElementById('image-upload-placeholder');
+        const selectedFiles = new DataTransfer(); // To store selected files
+
+        // Click on placeholder to trigger file input
+        uploadPlaceholder.addEventListener('click', () => {
+            galleryInput.click();
+        });
+
+        // Handle file selection
+        galleryInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // Only process image files
+                    if (!file.type.match('image.*')) continue;
+                    
+                    // Add to selected files
+                    selectedFiles.items.add(file);
+                    
+                    // Create preview
+                    const reader = new FileReader();
+                    reader.onload = (function(file) {
+                        return function(e) {
+                            const previewDiv = document.createElement('div');
+                            previewDiv.className = 'relative group';
+                            previewDiv.innerHTML = `
+                                <div class="h-32 rounded-lg overflow-hidden">
+                                    <img src="${e.target.result}" alt="Preview" class="w-full h-full object-cover" />
+                                </div>
+                                <button type="button" class="absolute top-2 right-2 bg-error text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-filename="${file.name}">
+                                    <i class="fas fa-times text-xs"></i>
+                                </button>
+                            `;
+                            
+                            // Add remove button functionality
+                            const removeBtn = previewDiv.querySelector('button');
+                            removeBtn.addEventListener('click', function() {
+                                const filename = this.getAttribute('data-filename');
+                                
+                                // Remove from DataTransfer object
+                                const newFiles = new DataTransfer();
+                                for (let j = 0; j < selectedFiles.files.length; j++) {
+                                    const currentFile = selectedFiles.files[j];
+                                    if (currentFile.name !== filename) {
+                                        newFiles.items.add(currentFile);
+                                    }
+                                }
+                                selectedFiles.items.clear();
+                                for (let j = 0; j < newFiles.files.length; j++) {
+                                    selectedFiles.items.add(newFiles.files[j]);
+                                }
+                                
+                                // Remove preview
+                                previewDiv.remove();
+                            });
+                            
+                            // Insert before placeholder
+                            previewContainer.insertBefore(previewDiv, uploadPlaceholder);
+                        };
+                    })(file);
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        // Form Submission
+        document.getElementById('excursion-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData();
+            
+            // Basic fields
+            formData.append('title', document.getElementById('title').value);
+            formData.append('startLocation', document.getElementById('startLocation').value);
+            formData.append('duration', document.getElementById('duration').value);
+            formData.append('durationType', document.getElementById('durationType').value);
+            formData.append('excursionType', document.getElementById('excursionType').value);
+            
+            // Get Quill content and store in hidden input
+            const description = quill.root.innerHTML;
+            document.getElementById('description').value = description;
+            formData.append('description', description);
+            
+            // Add all selected files
+            for (let i = 0; i < selectedFiles.files.length; i++) {
+                formData.append('gallery', selectedFiles.files[i]);
+            }
+            
+            // Disable submit button during submission
+            const submitBtn = document.getElementById('submit-btn');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+            
+            try {
+                // Send AJAX request
+                const response = await fetch('/admin/excursions', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Redirect to excursions list
+                    window.location.href = data.redirect;
+                } else {
+                    // Show error
+                    const errorContainer = document.getElementById('error-container');
+                    const errorMessage = document.getElementById('error-message');
+                    
+                    errorMessage.textContent = data.message || 'Failed to create excursion';
+                    errorContainer.classList.remove('hidden');
+                    
+                    // Scroll to top
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                
+                // Show error
+                const errorContainer = document.getElementById('error-container');
+                const errorMessage = document.getElementById('error-message');
+                
+                errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+                errorContainer.classList.remove('hidden');
+                
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        });
+    </script>
+</body>
+</html> 

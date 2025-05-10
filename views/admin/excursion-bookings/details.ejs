@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="drawer lg:drawer-open min-h-screen">
+        <!-- Mobile Drawer Toggle -->
+        <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
+        
+        <!-- Main Content -->
+        <div class="drawer-content flex flex-col bg-base-200">
+            <!-- Top Nav -->
+            <div class="navbar bg-base-100 shadow-md lg:hidden">
+                <div class="flex-none">
+                    <label for="admin-drawer" class="btn btn-square btn-ghost drawer-button">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <span class="text-xl font-semibold">Voyageo Tours</span>
+                </div>
+                <div class="flex-none">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                                <i class="fas fa-user text-lg"></i>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                            <li><a href="/admin/profile"><i class="fas fa-user-cog mr-2"></i> Profile</a></li>
+                            <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                            <li><a href="/admin/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div class="p-4 md:p-6 space-y-6 pb-20">
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">Excursion Booking Details</h1>
+                        <p class="text-sm opacity-60">View and manage booking information</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="/admin/excursion-bookings" class="btn btn-outline btn-sm">
+                            <i class="fas fa-arrow-left mr-2"></i> Back to Bookings
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <% if (success) { %>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        <span><%= success %></span>
+                    </div>
+                <% } %>
+                
+                <% if (error) { %>
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Customer Information -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <h2 class="card-title text-lg font-medium mb-4">Customer Information</h2>
+                            <div class="overflow-x-auto">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th class="w-[150px]">Full Name</th>
+                                            <td><%= booking.fullName %></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td><%= booking.email %></td>
+                                        </tr>
+                                        <% if (booking.phone) { %>
+                                        <tr>
+                                            <th>Phone</th>
+                                            <td><%= booking.phone %></td>
+                                        </tr>
+                                        <% } %>
+                                        <tr>
+                                            <th>Guest Count</th>
+                                            <td><%= booking.guestCount %></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Booking Date</th>
+                                            <td><%= new Date(booking.createdAt).toLocaleString() %></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Excursion Information -->
+                    <div class="card bg-base-100 shadow-md">
+                        <div class="card-body p-4 md:p-6">
+                            <h2 class="card-title text-lg font-medium mb-4">Excursion Information</h2>
+                            <% if (booking.excursionId) { %>
+                                <div class="overflow-x-auto">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th class="w-[150px]">Excursion</th>
+                                                <td>
+                                                    <div class="flex items-center gap-2">
+                                                        <%= booking.excursionId.title %>
+                                                        <a href="/admin/excursions/edit/<%= booking.excursionId._id %>" class="btn btn-xs btn-info">
+                                                            <i class="fas fa-edit"></i> Edit
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Type</th>
+                                                <td>
+                                                    <% let typeClass = booking.excursionId.excursionType === 'private' ? 'badge-primary' : 'badge-info'; %>
+                                                    <span class="badge <%= typeClass %>">
+                                                        <%= booking.excursionId.excursionType.charAt(0).toUpperCase() + booking.excursionId.excursionType.slice(1) %>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Location</th>
+                                                <td><%= booking.excursionId.startLocation %></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Duration</th>
+                                                <td><%= booking.excursionId.duration %> <%= booking.excursionId.durationType %></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Excursion Date</th>
+                                                <td><%= new Date(booking.excursionDate).toLocaleDateString() %></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Price</th>
+                                                <td>
+                                                    <% if (booking.totalPrice) { %>
+                                                        <%= booking.totalPrice %> EUR
+                                                        <span class="text-sm opacity-60">
+                                                            (<%= booking.excursionId.excursionType === 'private' ? 'per group' : 'per person' %>)
+                                                        </span>
+                                                    <% } else { %>
+                                                        N/A
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <% if (booking.excursionId.gallery && booking.excursionId.gallery.length > 0) { %>
+                                    <div class="mt-4">
+                                        <img src="<%= booking.excursionId.gallery[0] %>" alt="<%= booking.excursionId.title %>" class="rounded-lg object-cover" style="max-height: 150px;">
+                                    </div>
+                                <% } %>
+                            <% } else { %>
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>Excursion details not available or excursion has been deleted.</span>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Booking Management -->
+                <div class="card bg-base-100 shadow-md">
+                    <div class="card-body p-4 md:p-6">
+                        <h2 class="card-title text-lg font-medium mb-4">Booking Management</h2>
+                        <div class="flex flex-col md:flex-row justify-between gap-6">
+                            <div class="md:w-1/2">
+                                <h3 class="font-medium text-lg mb-2">Current Status: 
+                                    <% let statusClass = "badge-secondary"; %>
+                                    <% if (booking.status === 'pending') statusClass = 'badge-warning'; %>
+                                    <% if (booking.status === 'confirmed') statusClass = 'badge-success'; %>
+                                    <% if (booking.status === 'completed') statusClass = 'badge-info'; %>
+                                    <% if (booking.status === 'cancelled') statusClass = 'badge-error'; %>
+                                    <span class="badge <%= statusClass %>">
+                                        <%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %>
+                                    </span>
+                                </h3>
+                                
+                                <div class="form-control mt-4">
+                                    <label class="label">
+                                        <span class="label-text">Update Status</span>
+                                    </label>
+                                    <div class="flex gap-2">
+                                        <select id="status-select" class="select select-bordered flex-1">
+                                            <option value="pending" <%= booking.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="confirmed" <%= booking.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
+                                            <option value="completed" <%= booking.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                                            <option value="cancelled" <%= booking.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                        </select>
+                                        <button id="update-status" class="btn btn-primary">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="md:w-1/2 flex justify-start md:justify-end items-end">
+                                <button class="btn btn-error" id="delete-booking">
+                                    <i class="fas fa-trash mr-2"></i> Delete Booking
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="drawer-side">
+            <label for="admin-drawer" class="drawer-overlay"></label>
+            <div class="bg-base-100 w-80 min-h-full flex flex-col shadow-xl">
+                <!-- Logo -->
+                <div class="p-4 border-b flex items-center justify-center">
+                    <div class="text-2xl font-bold text-primary">Voyageo Admin</div>
+                </div>
+                
+                <!-- Admin Info -->
+                <div class="flex items-center gap-3 p-4 border-b">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-12">
+                            <span class="text-lg"><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-bold"><%= session.adminUsername || 'Admin' %></div>
+                        <div class="text-sm opacity-60">Administrator</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <ul class="menu menu-lg p-2 flex-grow">
+                    <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a></li>
+                    <li><a href="/admin/tours"><i class="fas fa-map-marked-alt mr-2"></i> Tours</a></li>
+                    <li><a href="/admin/excursions"><i class="fas fa-hiking mr-2"></i> Excursions</a></li>
+                    <li><a href="/admin/bookings"><i class="fas fa-calendar-check mr-2"></i> Tour Bookings</a></li>
+                    <li><a href="/admin/excursion-bookings" class="active"><i class="fas fa-clipboard-list mr-2"></i> Excursion Bookings</a></li>
+                    <li><a href="/admin/custom-tours"><i class="fas fa-route mr-2"></i> Custom Requests</a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users mr-2"></i> Users</a></li>
+                    <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                </ul>
+                
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="/admin/logout" class="btn btn-outline btn-error btn-block">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <dialog id="delete-modal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Confirm Deletion</h3>
+            <p class="py-4">Are you sure you want to delete this excursion booking?</p>
+            <div class="modal-action">
+                <button class="btn" onclick="document.getElementById('delete-modal').close()">Cancel</button>
+                <button class="btn btn-error" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update booking status
+            document.getElementById('update-status').addEventListener('click', function() {
+                const newStatus = document.getElementById('status-select').value;
+                
+                fetch('/admin/excursion-bookings/<%= booking._id %>/status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        status: newStatus
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to update booking status.');
+                });
+            });
+            
+            // Delete booking
+            document.getElementById('delete-booking').addEventListener('click', function() {
+                const modal = document.getElementById('delete-modal');
+                modal.showModal();
+            });
+            
+            document.getElementById('confirm-delete').addEventListener('click', function() {
+                fetch('/admin/excursion-bookings/<%= booking._id %>', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        window.location.href = '/admin/excursion-bookings?success=Excursion booking deleted successfully';
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete booking.');
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
