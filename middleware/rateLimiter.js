@@ -32,7 +32,7 @@ const loginRateLimiter = rateLimit({
 // Create general rate limiter for all routes
 const generalRateLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 100, // 100 requests per minute
+  max: 700, // 100 requests per minute
   message: 'Too many requests, please try again later.',
   standardHeaders: true,
   legacyHeaders: false

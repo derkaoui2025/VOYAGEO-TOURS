@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= transfer.startCity %> to <%= transfer.endCity %> Transfer | Voyageo Tours Morocco</title>
+    <meta name="description" content="Book a comfortable and reliable transfer from <%= transfer.startCity %> to <%= transfer.endCity %> in Morocco. <%= transfer.vehicleType %> with professional driver for up to <%= transfer.maxPassengers %> passengers.">
+    <meta name="keywords" content="Morocco transfers, <%= transfer.startCity %>, <%= transfer.endCity %>, Morocco transportation, private transfers, airport transfers">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',
+                        secondary: '#2c3e50',
+                        accent: '#e67e22',
+                        warning: '#f39c12'
+                    },
+                    maxWidth: {
+                        'screen-xl': '1280px',
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- JSON-LD Structured Data for Transfer -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": "<%= transfer.startCity %> to <%= transfer.endCity %> Transfer",
+            "description": "Comfortable and reliable transfer service from <%= transfer.startCity %> to <%= transfer.endCity %> with a professional driver.",
+            "provider": {
+                "@type": "Organization",
+                "name": "Voyageo Tours Morocco"
+            },
+            "areaServed": {
+                "@type": "Country",
+                "name": "Morocco"
+            },
+            "serviceType": "Transportation Service",
+            "offers": {
+                "@type": "Offer",
+                "price": "<%= transfer.price %>",
+                "priceCurrency": "MAD"
+            },
+            "image": "<%= transfer.gallery && transfer.gallery.length > 0 ? transfer.gallery[0] : '/images/placeholder-transfer.jpg' %>"
+        }
+    </script>
+    
+    <style>
+        /* Minimal design system */
+        .thumbnail {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        
+        .thumbnail:hover {
+            opacity: 0.8;
+        }
+        
+        .thumbnail.active {
+            border: 2px solid #3498db;
+            opacity: 1;
+        }
+
+        /* Sticky booking sidebar */
+        @media (min-width: 1024px) {
+            .booking-sidebar {
+                position: sticky;
+                top: 90px;
+            }
+        }
+        
+        /* Contact button styles */
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.875rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .email-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .email-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #1fac54;
+        }
+        
+        .phone-btn {
+            background-color: #333;
+            color: white;
+        }
+        
+        .phone-btn:hover {
+            background-color: #222;
+        }
+    </style>
+</head>
+
+<body class="text-gray-800 bg-gray-50">
+    <!-- Include Navbar -->
+    <%- include('../partials/navbar') %>
+
+    <main class="pt-[74px] pb-12">
+        <!-- Transfer Header -->
+        <div class="w-full relative overflow-hidden">
+            <% if (transfer.gallery && transfer.gallery.length > 0) { %>
+                <img id="main-image" src="<%= transfer.gallery[0] %>" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer" class="w-full h-[40vh] md:h-[50vh] object-cover">
+            <% } else { %>
+                <div class="w-full h-[40vh] md:h-[50vh] bg-gray-300 flex items-center justify-center">
+                    <span class="text-gray-500 text-lg">No image available</span>
+                </div>
+            <% } %>
+            
+            <!-- Overlay with title -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6 md:p-10">
+                <div class="container mx-auto">
+                    <div class="max-w-4xl">
+                        <h1 class="text-2xl md:text-4xl text-white font-bold mb-2"><%= transfer.startCity %> to <%= transfer.endCity %> Transfer</h1>
+                        <div class="flex flex-wrap items-center gap-4 text-white">
+                            <div class="flex items-center">
+                                <i class="fas fa-car mr-2 text-warning"></i>
+                                <span><%= transfer.vehicleType %></span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-2 text-warning"></i>
+                                <span><%= transfer.duration %></span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-tag mr-2 text-warning"></i>
+                                <span>From <%= transfer.price.toLocaleString() %> MAD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Thumbnail Gallery -->
+        <div class="container mx-auto px-4 -mt-6 relative z-10">
+            <% if (transfer.gallery && transfer.gallery.length > 1) { %>
+                <div class="bg-white border border-gray-200 p-3 overflow-x-auto">
+                    <div class="flex gap-3">
+                        <% transfer.gallery.forEach((image, index) => { %>
+                            <div class="thumbnail <%= index === 0 ? 'active' : '' %>" data-image="<%= image %>" onclick="changeMainImage('<%= image %>', this)">
+                                <img src="<%= image %>" alt="<%= transfer.startCity %> to <%= transfer.endCity %> - Image <%= index + 1 %>" class="w-20 h-14 md:w-24 md:h-16 object-cover">
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 mt-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Transfer Details -->
+                <div class="w-full lg:w-2/3">
+                    <!-- Navigation Tabs -->
+                    <div class="mb-6 border-b border-gray-200">
+                        <nav class="flex space-x-6" id="transfer-nav">
+                            <a href="#about" class="py-3 border-b-2 border-primary font-medium text-primary">About</a>
+                            <a href="#included" class="py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700">What's Included</a>
+                            <a href="#info" class="py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700">Info</a>
+                        </nav>
+                    </div>
+
+                    <!-- Description Section -->
+                    <div id="about" class="bg-white border border-gray-200 p-6 mb-8">
+                        <h2 class="text-2xl font-semibold text-secondary mb-4">About This Transfer</h2>
+                        <div class="prose max-w-none text-gray-700">
+                            <%- transfer.description %>
+                        </div>
+                    </div>
+                    
+                    <!-- What's Included Section -->
+                    <div id="included" class="bg-white border border-gray-200 p-6 mb-8">
+                        <h2 class="text-2xl font-semibold text-secondary mb-4">What's Included</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-xl font-semibold text-secondary mb-3">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Included
+                                </h3>
+                                <ul class="space-y-2">
+                                    <% if (transfer.included && transfer.included.length > 0) { %>
+                                        <% transfer.included.forEach(item => { %>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                                <span><%= item %></span>
+                                            </li>
+                                        <% }); %>
+                                    <% } else { %>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                            <span>Professional driver</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                            <span>Fuel and tolls</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                            <span>Bottled water</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                            <span>Luggage handling</span>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-xl font-semibold text-secondary mb-3">
+                                    <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                    Not Included
+                                </h3>
+                                <ul class="space-y-2">
+                                    <% if (transfer.excluded && transfer.excluded.length > 0) { %>
+                                        <% transfer.excluded.forEach(item => { %>
+                                            <li class="flex items-start">
+                                                <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                                <span><%= item %></span>
+                                            </li>
+                                        <% }); %>
+                                    <% } else { %>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                            <span>Food and beverages (except water)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                            <span>Entrance fees to attractions</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                            <span>Gratuities (optional)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                            <span>Additional stops not in itinerary</span>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Information -->
+                    <div id="info" class="bg-white border border-gray-200 p-6 mb-8">
+                        <h2 class="text-2xl font-semibold text-secondary mb-4">Additional Information</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-gray-50 border border-gray-200">
+                                <h3 class="font-semibold text-lg mb-2">Transfer Duration</h3>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-clock text-warning mr-3 text-xl"></i>
+                                    <span><%= transfer.duration %></span>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-gray-50 border border-gray-200">
+                                <h3 class="font-semibold text-lg mb-2">Vehicle Type</h3>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-car text-warning mr-3 text-xl"></i>
+                                    <span><%= transfer.vehicleType %></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h3 class="font-semibold text-lg mb-3">Transfer Details</h3>
+                            <ul class="text-gray-700">
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2 mt-1"></i>
+                                    <span><strong>From:</strong> <%= transfer.startCity %></span>
+                                </li>
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2 mt-1"></i>
+                                    <span><strong>To:</strong> <%= transfer.endCity %></span>
+                                </li>
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-clock text-primary mr-2 mt-1"></i>
+                                    <span><strong>Departure:</strong> <%= transfer.departureTime %></span>
+                                </li>
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-users text-primary mr-2 mt-1"></i>
+                                    <span><strong>Maximum Passengers:</strong> <%= transfer.maxPassengers %></span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h3 class="font-semibold text-lg mb-3">Important Notes</h3>
+                            <ul class="text-gray-700">
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-info-circle text-primary mr-2 mt-1"></i>
+                                    <span>Confirmation will be received at time of booking</span>
+                                </li>
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-info-circle text-primary mr-2 mt-1"></i>
+                                    <span>Your driver will wait up to 1 hour after scheduled meeting time</span>
+                                </li>
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-info-circle text-primary mr-2 mt-1"></i>
+                                    <span>Please be ready 10 minutes before scheduled departure time</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Route Map Section -->
+<div class="bg-white border border-gray-200 p-6 mb-8">
+    <h2 class="text-2xl font-semibold text-secondary mb-4">Route Map</h2>
+    <div class="w-full h-[300px] bg-gray-200 mb-4 flex items-center justify-center">
+        <a href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=<%= transfer.startCity %>,Morocco;<%= transfer.endCity %>,Morocco" 
+           target="_blank" 
+           class="text-blue-600 underline text-lg">
+            View Route on OpenStreetMap
+        </a>
+    </div>
+    <p class="text-gray-600"><i class="fas fa-route text-primary mr-2"></i> Route from <%= transfer.startCity %> to <%= transfer.endCity %></p>
+</div>
+
+                </div>
+                
+                <!-- Booking Sidebar -->
+                <div class="w-full lg:w-1/3">
+                    <div class="booking-sidebar bg-white border border-gray-200 p-6">
+                        <h2 class="text-xl font-semibold mb-6 pb-4 border-b">Book This Transfer</h2>
+                        
+                        <div class="space-y-5">
+                            <!-- Price info -->
+                            <div class="mb-6">
+                                <div class="flex items-center">
+                                    <span class="text-2xl font-bold mr-2">
+                                        <%= transfer.price %> MAD
+                                    </span>
+                                    <span class="text-sm text-gray-600">
+                                        per Person.
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Email button -->
+                            <a href="mailto:info@voyageo-tours.com?subject=Booking inquiry for transfer from <%= transfer.startCity %> to <%= transfer.endCity %>" class="contact-btn email-btn">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email Us</span>
+                            </a>
+                            
+                            <!-- WhatsApp button -->
+                            <a href="https://wa.me/212661123456?text=Hello, I'd like to book a transfer from <%= transfer.startCity %> to <%= transfer.endCity %>" target="_blank" class="contact-btn whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>WhatsApp</span>
+                            </a>
+                            
+                            <!-- Phone button -->
+                            <a href="tel:+212661123456" class="contact-btn phone-btn">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>Call Us</span>
+                            </a>
+                            
+                            <div class="text-center text-sm text-gray-500 mt-6">
+                                <p>Our team is available 24/7 to assist you</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Contact Sheet -->
+    <div id="mobile-contact-sheet" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-lg p-6 transform transition-transform duration-300" id="sheet-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold">Contact Us</h3>
+                <button id="close-sheet" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <a href="mailto:info@voyageo-tours.com?subject=Booking inquiry for transfer from <%= transfer.startCity %> to <%= transfer.endCity %>" class="contact-btn email-btn">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email Us</span>
+                </a>
+                
+                <a href="https://wa.me/212661123456?text=Hello, I'd like to book a transfer from <%= transfer.startCity %> to <%= transfer.endCity %>" target="_blank" class="contact-btn whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </a>
+                
+                <a href="tel:+212661123456" class="contact-btn phone-btn">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Call Us</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Sticky Contact Button -->
+    <div class="lg:hidden fixed bottom-4 left-4 z-30">
+        <button id="open-sheet" class="w-14 h-14 rounded-full bg-primary text-white shadow-lg flex items-center justify-center">
+            <i class="fas fa-envelope text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Custom Footer with structured data for SEO -->
+    <footer class="bg-white border-t border-gray-200 py-10 mt-12">
+        <div class="container mx-auto max-w-screen-xl px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-600 hover:text-primary">Home</a></li>
+                        <li><a href="/tours" class="text-gray-600 hover:text-primary">All Tours</a></li>
+                        <li><a href="/transfers" class="text-gray-600 hover:text-primary">Transfers</a></li>
+                        <li><a href="/customize" class="text-gray-600 hover:text-primary">Custom Tours</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Popular Transfers -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Popular Transfers</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/transfers/marrakech-to-essaouira" class="text-gray-600 hover:text-primary">Marrakech to Essaouira</a></li>
+                        <li><a href="/transfers/casablanca-to-marrakech" class="text-gray-600 hover:text-primary">Casablanca to Marrakech</a></li>
+                        <li><a href="/transfers/fes-to-chefchaouen" class="text-gray-600 hover:text-primary">Fes to Chefchaouen</a></li>
+                        <li><a href="/transfers/marrakech-to-agadir" class="text-gray-600 hover:text-primary">Marrakech to Agadir</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Popular Destinations -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Popular Destinations</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/destinations/marrakech" class="text-gray-600 hover:text-primary">Marrakech</a></li>
+                        <li><a href="/destinations/fes" class="text-gray-600 hover:text-primary">Fes</a></li>
+                        <li><a href="/destinations/chefchaouen" class="text-gray-600 hover:text-primary">Chefchaouen</a></li>
+                        <li><a href="/destinations/desert" class="text-gray-600 hover:text-primary">Sahara Desert</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 mt-8 pt-8 text-center text-sm text-gray-500">
+                <p>© <%= new Date().getFullYear() %> Voyageo Tours Morocco. Safe and comfortable transfers throughout Morocco.</p>
+                <p class="mt-2">Private transfers, airport transfers, intercity transportation, day trips, custom transfers, luxury vehicles, and group transportation.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gallery functionality
+        function changeMainImage(imageSrc, thumbnail) {
+            document.getElementById('main-image').src = imageSrc;
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            thumbnail.classList.add('active');
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('#transfer-nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+                
+                // Update active tab
+                document.querySelectorAll('#transfer-nav a').forEach(a => {
+                    a.classList.remove('border-primary', 'text-primary');
+                    a.classList.add('border-transparent', 'text-gray-500');
+                });
+                this.classList.add('border-primary', 'text-primary');
+                this.classList.remove('border-transparent', 'text-gray-500');
+            });
+        });
+
+        // Mobile contact sheet
+        const openSheetBtn = document.getElementById('open-sheet');
+        const closeSheetBtn = document.getElementById('close-sheet');
+        const contactSheet = document.getElementById('mobile-contact-sheet');
+        const sheetContent = document.getElementById('sheet-content');
+
+        if (openSheetBtn && closeSheetBtn && contactSheet) {
+            openSheetBtn.addEventListener('click', () => {
+                contactSheet.classList.remove('hidden');
+                setTimeout(() => {
+                    sheetContent.classList.add('translate-y-0');
+                }, 10);
+            });
+
+            closeSheetBtn.addEventListener('click', () => {
+                sheetContent.classList.remove('translate-y-0');
+                setTimeout(() => {
+                    contactSheet.classList.add('hidden');
+                }, 300);
+            });
+
+            contactSheet.addEventListener('click', (e) => {
+                if (e.target === contactSheet) {
+                    sheetContent.classList.remove('translate-y-0');
+                    setTimeout(() => {
+                        contactSheet.classList.add('hidden');
+                    }, 300);
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

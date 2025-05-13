@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %> | Voyageo Tours Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="/css/sweetalert-fix.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="drawer lg:drawer-open">
+        <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
+        
+        <div class="drawer-content flex flex-col">
+            <!-- Top Navigation Bar -->
+            <div class="navbar bg-base-100 border-b lg:hidden">
+                <div class="flex-none">
+                    <label for="admin-drawer" class="btn btn-square btn-ghost drawer-button">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <a class="text-xl font-bold">Voyageo Admin</a>
+                </div>
+                <div class="flex-none">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div class="avatar placeholder">
+                                <div class="bg-primary text-primary-content rounded-full w-10">
+                                    <span><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                                </div>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                            <li><a href="/admin/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="p-4 md:p-6 bg-base-200 min-h-screen">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold">Edit Activity: <%= activity.title %></h1>
+                    <a href="/admin/activities" class="btn btn-outline">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Activities
+                    </a>
+                </div>
+                
+                <% if (error) { %>
+                    <div class="alert alert-error mb-4">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+                
+                <div class="bg-base-100 rounded-box shadow-lg p-6">
+                    <form id="activity-form" class="space-y-6">
+                        <input type="hidden" name="_method" value="PUT">
+                        
+                        <!-- Basic Information -->
+                        <div class="card bg-base-100 border">
+                            <div class="card-body">
+                                <h2 class="card-title">Basic Information</h2>
+                                
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Title *</span>
+                                    </label>
+                                    <input type="text" name="title" class="input input-bordered w-full" value="<%= activity.title %>" required />
+                                </div>
+                                
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Location</span>
+                                    </label>
+                                    <input type="text" name="location" class="input input-bordered w-full" value="<%= activity.location || '' %>" />
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="form-control">
+                                        <label class="label">
+                                            <span class="label-text">Duration *</span>
+                                        </label>
+                                        <input type="number" name="duration" min="0.5" step="0.5" class="input input-bordered w-full" value="<%= activity.duration %>" required />
+                                    </div>
+                                    
+                                    <div class="form-control">
+                                        <label class="label">
+                                            <span class="label-text">Duration Type</span>
+                                        </label>
+                                        <select name="durationType" class="select select-bordered w-full">
+                                            <option value="hours" <%= activity.durationType === 'hours' ? 'selected' : '' %>>Hours</option>
+                                            <option value="days" <%= activity.durationType === 'days' ? 'selected' : '' %>>Days</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-control">
+                                        <label class="label">
+                                            <span class="label-text">Price ($) *</span>
+                                        </label>
+                                        <input type="number" name="price" min="0" step="0.01" class="input input-bordered w-full" value="<%= activity.price %>" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="card bg-base-100 border">
+                            <div class="card-body">
+                                <h2 class="card-title">Description *</h2>
+                                <div>
+                                    <div id="description-editor" style="min-height: 200px;"></div>
+                                    <input type="hidden" name="description" id="description-input" required />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Includes / Not Includes -->
+                        <div class="card bg-base-100 border">
+                            <div class="card-body">
+                                <h2 class="card-title">What's Included / Not Included</h2>
+                                
+                                <div class="mb-4">
+                                    <label class="label">
+                                        <span class="label-text">What's Included</span>
+                                    </label>
+                                    <div id="includes-editor" style="min-height: 150px;"></div>
+                                    <input type="hidden" name="includes" id="includes-input" />
+                                </div>
+                                
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text">What's Not Included</span>
+                                    </label>
+                                    <div id="not-includes-editor" style="min-height: 150px;"></div>
+                                    <input type="hidden" name="notIncludes" id="not-includes-input" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Gallery -->
+                        <div class="card bg-base-100 border">
+                            <div class="card-body">
+                                <h2 class="card-title">Gallery Images</h2>
+                                
+                                <!-- Current Images -->
+                                <% if (activity.gallery && activity.gallery.length > 0) { %>
+                                    <div class="mb-4">
+                                        <label class="label">
+                                            <span class="label-text">Current Images</span>
+                                        </label>
+                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            <% activity.gallery.forEach((image, index) => { %>
+                                                <div class="relative">
+                                                    <img src="<%= image %>" alt="Gallery image <%= index %>" class="w-full h-32 object-cover rounded-lg" />
+                                                    <button type="button" class="btn btn-circle btn-xs btn-error absolute top-1 right-1 delete-image" data-index="<%= index %>">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                <% } %>
+                                
+                                <!-- Upload New Images -->
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Upload New Images (Max 10)</span>
+                                    </label>
+                                    <input type="file" id="gallery-upload" class="file-input file-input-bordered w-full" accept="image/*" multiple />
+                                    <div class="text-sm mt-1 text-gray-500">Recommended size: 1200x800px. Supported formats: JPG, PNG, WebP</div>
+                                </div>
+                                
+                                <div id="gallery-preview" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                                    <!-- Preview images will appear here -->
+                                </div>
+                                
+                                <div id="upload-progress" class="hidden">
+                                    <progress class="progress progress-primary w-full"></progress>
+                                    <p class="text-center text-sm mt-2">Uploading images...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="flex justify-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i> Update Activity
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="drawer-side">
+            <label for="admin-drawer" class="drawer-overlay"></label>
+            <div class="bg-base-100 w-80 min-h-full flex flex-col shadow-xl">
+                <!-- Logo -->
+                <div class="p-4 border-b flex items-center justify-center">
+                    <div class="text-2xl font-bold text-primary">Voyageo Admin</div>
+                </div>
+                
+                <!-- Admin Info -->
+                <div class="flex items-center gap-3 p-4 border-b">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-12">
+                            <span class="text-lg"><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-bold"><%= session.adminUsername || 'Admin' %></div>
+                        <div class="text-sm opacity-60">Administrator</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <ul class="menu menu-lg p-2 flex-grow">
+                    <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a></li>
+                    <li><a href="/admin/tours"><i class="fas fa-map-marked-alt mr-2"></i> Tours</a></li>
+                    <li><a href="/admin/bookings"><i class="fas fa-calendar-check mr-2"></i> Bookings</a></li>
+                    <li><a href="/admin/custom-tours"><i class="fas fa-route mr-2"></i> Custom Requests</a></li>
+                    <li><a href="/admin/excursions"><i class="fas fa-hiking mr-2"></i> Excursions</a></li>
+                    <li><a href="/admin/excursion-bookings"><i class="fas fa-clipboard-list mr-2"></i> Excursion Bookings</a></li>
+                    <li><a href="/admin/transfers"><i class="fas fa-car mr-2"></i> Transfers</a></li>
+                    <li><a href="/admin/transfer-bookings"><i class="fas fa-clipboard-list mr-2"></i> Transfer Bookings</a></li>
+                    <li><a href="/admin/activities" class="active"><i class="fas fa-walking mr-2"></i> Activities</a></li>
+                    <li><a href="/admin/activity-bookings"><i class="fas fa-clipboard-list mr-2"></i> Activity Bookings</a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users mr-2"></i> Users</a></li>
+                    <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                </ul>
+                
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="/admin/logout" class="btn btn-outline btn-error w-full">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Quill editors
+            const descriptionEditor = new Quill('#description-editor', {
+                theme: 'snow',
+                placeholder: 'Enter activity description...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote', 'code-block'],
+                        [{ 'header': 1 }, { 'header': 2 }],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'indent': '-1' }, { 'indent': '+1' }],
+                        ['link'],
+                        ['clean']
+                    ]
+                }
+            });
+            
+            const includesEditor = new Quill('#includes-editor', {
+                theme: 'snow',
+                placeholder: 'What is included in this activity?',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['clean']
+                    ]
+                }
+            });
+            
+            const notIncludesEditor = new Quill('#not-includes-editor', {
+                theme: 'snow',
+                placeholder: 'What is not included in this activity?',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['clean']
+                    ]
+                }
+            });
+            
+            // Set initial values for editors
+            descriptionEditor.root.innerHTML = `<%- activity.description %>`;
+            includesEditor.root.innerHTML = `<%- activity.includes || '' %>`;
+            notIncludesEditor.root.innerHTML = `<%- activity.notIncludes || '' %>`;
+            
+            // Handle gallery upload preview
+            const galleryUpload = document.getElementById('gallery-upload');
+            const galleryPreview = document.getElementById('gallery-preview');
+            
+            galleryUpload.addEventListener('change', function() {
+                galleryPreview.innerHTML = '';
+                
+                if (this.files) {
+                    // Limit to 10 files
+                    const files = Array.from(this.files).slice(0, 10);
+                    
+                    files.forEach((file, index) => {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            const div = document.createElement('div');
+                            div.className = 'relative';
+                            
+                            div.innerHTML = `
+                                <img src="${e.target.result}" alt="Gallery preview ${index}" class="w-full h-32 object-cover rounded-lg" />
+                                <button type="button" class="btn btn-circle btn-xs btn-error absolute top-1 right-1 remove-preview" data-index="${index}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            `;
+                            
+                            galleryPreview.appendChild(div);
+                            
+                            // Add event listener to remove preview
+                            div.querySelector('.remove-preview').addEventListener('click', function() {
+                                div.remove();
+                            });
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    });
+                }
+            });
+            
+            // Handle existing image deletion
+            const deleteImageButtons = document.querySelectorAll('.delete-image');
+            
+            deleteImageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const imageIndex = this.getAttribute('data-index');
+                    
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This image will be permanently deleted',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch(`/admin/activities/<%= activity._id %>/images/${imageIndex}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    this.closest('.relative').remove();
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'The image has been deleted.',
+                                        'success'
+                                    );
+                                } else {
+                                    Swal.fire(
+                                        'Error!',
+                                        data.message || 'Failed to delete image',
+                                        'error'
+                                    );
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire(
+                                    'Error!',
+                                    'An error occurred while deleting the image.',
+                                    'error'
+                                );
+                            });
+                        }
+                    });
+                });
+            });
+            
+            // Form submission
+            const form = document.getElementById('activity-form');
+            const descriptionInput = document.getElementById('description-input');
+            const includesInput = document.getElementById('includes-input');
+            const notIncludesInput = document.getElementById('not-includes-input');
+            const uploadProgress = document.getElementById('upload-progress');
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Get content from Quill editors
+                descriptionInput.value = descriptionEditor.root.innerHTML;
+                includesInput.value = includesEditor.root.innerHTML;
+                notIncludesInput.value = notIncludesEditor.root.innerHTML;
+                
+                // Validate required fields
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                
+                try {
+                    const formData = new FormData(form);
+                    
+                    // Add gallery files
+                    const galleryFiles = galleryUpload.files;
+                    for (let i = 0; i < galleryFiles.length && i < 10; i++) {
+                        formData.append('gallery', galleryFiles[i]);
+                    }
+                    
+                    // Show progress
+                    uploadProgress.classList.remove('hidden');
+                    
+                    // Send form data
+                    const response = await fetch('/admin/activities/<%= activity._id %>?_method=PUT', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const result = await response.json();
+                    
+                    // Hide progress
+                    uploadProgress.classList.add('hidden');
+                    
+                    if (result.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Activity updated successfully',
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+                            window.location.href = result.redirect || '/admin/activities';
+                        });
+                    } else {
+                        throw new Error(result.message || 'Failed to update activity');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    // Hide progress
+                    uploadProgress.classList.add('hidden');
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: error.message || 'An error occurred while updating the activity',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

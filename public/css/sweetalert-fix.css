@@ -1,0 +1,38 @@
+/* Fix for SweetAlert2 transparent buttons with DaisyUI */
+.swal2-confirm, 
+.swal2-cancel, 
+.swal2-deny {
+    background-color: #3085d6 !important;
+    color: white !important;
+    opacity: 1 !important;
+}
+
+.swal2-cancel {
+    background-color: #d33 !important;
+}
+
+.swal2-actions button {
+    box-shadow: none !important;
+}
+
+/* Adjust SweetAlert2 modal styles for better compatibility with DaisyUI */
+.swal2-popup {
+    border-radius: 0.5rem;
+}
+
+.swal2-title {
+    font-size: 1.5rem !important;
+}
+
+.swal2-html-container {
+    font-size: 1rem !important;
+}
+
+/* Fix for button hover states */
+.swal2-styled.swal2-confirm:hover {
+    background-color: #2779bd !important;
+}
+
+.swal2-styled.swal2-cancel:hover {
+    background-color: #bf2c37 !important;
+} 

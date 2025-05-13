@@ -2,6 +2,9 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 const streamifier = require('streamifier');
+const fs = require('fs');
+const { promisify } = require('util');
+const unlinkAsync = promisify(fs.unlink);
 
 // Configure Cloudinary
 cloudinary.config({
@@ -293,16 +296,174 @@ const uploadBlogImage = multer({
   }
 });
 
+// Configure multer storage with Cloudinary for activity gallery images
+const activityGalleryStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'voyageo-tours/activities',
+    format: async (req, file) => 'webp', // Convert all images to WebP
+    public_id: (req, file) => `activity-gallery-${Date.now()}-${Math.round(Math.random() * 1e9)}`
+  }
+});
+
+// Configure multer upload for activity gallery images
+const activityGalleryUpload = multer({
+  storage: activityGalleryStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    // Accept only image files
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
+  }
+});
+
+// Process activity gallery uploads
+const processActivityGallery = async (req, res, next) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return next();
+    }
+
+    // Create array to store gallery image URLs and public IDs
+    const galleryImages = [];
+    const galleryPublicIds = [];
+
+    // Process each gallery image
+    for (const file of req.files) {
+      try {
+        // Upload to Cloudinary
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: 'voyageo-tours/activities',
+          format: 'webp',
+          transformation: [
+            { quality: 'auto:good' },
+            { fetch_format: 'webp' }
+          ]
+        });
+        
+        // Add URLs and public IDs to arrays
+        galleryImages.push(result.secure_url);
+        galleryPublicIds.push(result.public_id);
+        
+        // Delete temporary file - only if it's a local file, not a URL
+        try {
+          // Check if the path is a local file (not a URL)
+          if (file.path && !file.path.startsWith('http') && !file.path.startsWith('https')) {
+            await unlinkAsync(file.path);
+          }
+        } catch (err) {
+          console.error('Error deleting temporary file:', err);
+        }
+      } catch (err) {
+        console.error('Error uploading gallery image:', err);
+      }
+    }
+    
+    // Add gallery images to request body
+    req.body.gallery = galleryImages;
+    req.body.galleryPublicIds = galleryPublicIds;
+    
+    next();
+  } catch (error) {
+    console.error('Error processing gallery uploads:', error);
+    next(error);
+  }
+};
+
+// Configure multer storage with Cloudinary for transfer gallery images
+const transferGalleryStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'voyageo-tours/transfers',
+    format: async (req, file) => 'webp', // Convert all images to WebP
+    public_id: (req, file) => `transfer-gallery-${Date.now()}-${Math.round(Math.random() * 1e9)}`
+  }
+});
+
+// Configure multer upload for transfer gallery images
+const transferGalleryUpload = multer({
+  storage: transferGalleryStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    // Accept only image files
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
+  }
+});
+
+// Process transfer gallery uploads
+const processTransferGallery = async (req, res, next) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return next();
+    }
+
+    // Create array to store gallery image URLs and public IDs
+    const galleryImages = [];
+    const galleryPublicIds = [];
+
+    // Process each gallery image
+    for (const file of req.files) {
+      try {
+        // Upload to Cloudinary
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: 'voyageo-tours/transfers',
+          format: 'webp',
+          transformation: [
+            { quality: 'auto:good' },
+            { fetch_format: 'webp' }
+          ]
+        });
+        
+        // Add URLs and public IDs to arrays
+        galleryImages.push(result.secure_url);
+        galleryPublicIds.push(result.public_id);
+        
+        // Delete temporary file - only if it's a local file, not a URL
+        try {
+          // Check if the path is a local file (not a URL)
+          if (file.path && !file.path.startsWith('http') && !file.path.startsWith('https')) {
+            await unlinkAsync(file.path);
+          }
+        } catch (err) {
+          console.error('Error deleting temporary file:', err);
+        }
+      } catch (err) {
+        console.error('Error uploading gallery image:', err);
+      }
+    }
+    
+    // Add gallery images to request body
+    req.body.gallery = galleryImages;
+    req.body.galleryPublicIds = galleryPublicIds;
+    
+    next();
+  } catch (error) {
+    console.error('Error processing gallery uploads:', error);
+    next(error);
+  }
+};
+
 module.exports = {
   cloudinary,
   upload,
+  processUploads,
+  uploadImage,
+  deleteImage,
+  bufferUpload,
   mainUpload,
   mapUpload,
   excursionGalleryUpload,
-  processUploads,
   processExcursionGallery,
   uploadBlogImage,
-  uploadImage,
-  bufferUpload,
-  deleteImage
+  activityGalleryUpload,
+  processActivityGallery,
+  transferGalleryUpload,
+  processTransferGallery
 }; 

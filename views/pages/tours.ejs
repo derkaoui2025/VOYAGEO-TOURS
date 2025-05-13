@@ -3,22 +3,14 @@
 <head>
     <%- include('../partials/head') %>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 font-opensans text-gray-800">
     <%- include('../partials/navbar') %>
     
-    <!-- Hero Section with large image and text overlay -->
-    <section class="relative">
-        <div class="w-full h-[500px] relative">
-            <img src="/images/headers/morocco-tour-bg.jpg" alt="Morocco Tours" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <div class="text-center">
-                    <img src="/images/logo-white.png" alt="Voyageo Tours" class="h-16 mx-auto mb-4">
-                    <h1 class="text-4xl font-montserrat font-bold text-white mb-3">MOROCCO TOUR</h1>
-                    <p class="text-white/90 text-base max-w-3xl mx-auto">Discover the magic of Morocco with our carefully crafted tours</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <%- include('../partials/hero', { 
+        heroTitle: 'Morocco Tours', 
+        heroSubtitle: 'Discover the magic of Morocco with our carefully crafted tours',
+        headerImagePath: '/images/headers/morocco-tour-bg.jpg'
+    }) %>
     
     <!-- Quick Filter Tags -->
     <section class="py-8 bg-white border-b">

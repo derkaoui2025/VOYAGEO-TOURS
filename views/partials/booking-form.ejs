@@ -1,0 +1,473 @@
+<%
+/**
+ * Unified Booking Form Partial
+ * 
+ * Required parameters:
+ * - bookingType: String ('tour', 'excursion', 'activity', 'transfer', or 'custom')
+ * - item: Object (the tour, excursion, activity, or transfer object)
+ * 
+ * Optional parameters:
+ * - formId: String (default: 'booking-form')
+ * - submitButtonText: String (default: 'Book Now')
+ * - showPrice: Boolean (default: true)
+ * - maxGuests: Number (default: 10)
+ * - redirectUrl: String (URL to redirect after successful booking)
+ */
+
+// Set defaults for optional parameters using locals object
+const bookingType = locals.bookingType;
+const item = locals.item;
+const formId = locals.formId || 'booking-form';
+const submitButtonText = locals.submitButtonText || 'Book Now';
+const showPrice = typeof locals.showPrice !== 'undefined' ? locals.showPrice : true;
+const maxGuests = locals.maxGuests || 10;
+const redirectUrl = locals.redirectUrl;
+const isTransfer = bookingType === 'transfer';
+const isPrivate = item && item.excursionType === 'private' || isTransfer;
+
+// Date validation - ensure users can only select future dates
+const today = new Date().toISOString().split('T')[0];
+%>
+
+<div class="booking-form-wrapper">
+    <!-- Form Header with Price Info -->
+    <% if (showPrice && item.price) { %>
+    <div class="booking-price-header mb-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <% if (item.originalPrice && item.originalPrice > item.price) { %>
+                <span class="text-gray-500 line-through text-sm">
+                    <%= item.originalPrice %> MAD
+                </span>
+                <% } %>
+                <span class="text-xl font-bold text-primary">
+                    <%= item.price %> MAD
+                </span>
+                <span class="text-sm text-gray-600">
+                    <%= isPrivate ? 'per vehicle/group' : 'per person' %>
+                </span>
+            </div>
+            <% if (bookingType !== 'custom') { %>
+            <div class="text-xs px-2 py-1 bg-primary/10 text-primary rounded">
+                <i class="fas fa-calendar-check mr-1"></i> 
+                Instant Confirmation
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
+
+    <!-- Booking Form -->
+    <form id="<%= formId %>" class="space-y-4 booking-form">
+        <!-- Hidden fields -->
+        <input type="hidden" name="bookingType" value="<%= bookingType %>">
+        <input type="hidden" name="itemId" value="<%= item._id %>">
+        <input type="hidden" name="itemName" value="<%= bookingType === 'transfer' ? 
+            `${item.startCity} to ${item.endCity}` : item.title %>">
+        
+        <!-- Personal Information -->
+        <div class="form-group">
+            <label for="<%= formId %>-fullName" class="form-label">Full Name *</label>
+            <input type="text" id="<%= formId %>-fullName" name="fullName" 
+                class="form-control" required>
+            <div class="error-message hidden" id="<%= formId %>-fullName-error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="<%= formId %>-email" class="form-label">Email Address *</label>
+            <input type="email" id="<%= formId %>-email" name="email" 
+                class="form-control" required>
+            <div class="error-message hidden" id="<%= formId %>-email-error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="<%= formId %>-phone" class="form-label">Phone Number *</label>
+            <input type="tel" id="<%= formId %>-phone" name="phone" 
+                class="form-control" required>
+            <div class="error-message hidden" id="<%= formId %>-phone-error"></div>
+        </div>
+        
+        <!-- Date Selection -->
+        <div class="form-group">
+            <label for="<%= formId %>-date" class="form-label">Date *</label>
+            <input type="date" id="<%= formId %>-date" name="date" 
+                class="form-control" required min="<%= today %>">
+            <div class="error-message hidden" id="<%= formId %>-date-error"></div>
+        </div>
+        
+        <!-- Number of People -->
+        <div class="form-group">
+            <label for="<%= formId %>-numberOfPeople" class="form-label">
+                <%= isTransfer ? 'Number of Passengers' : 'Number of People' %> *
+            </label>
+            <select id="<%= formId %>-numberOfPeople" name="numberOfPeople" class="form-control" required>
+                <% for(let i = 1; i <= maxGuests; i++) { %>
+                <option value="<%= i %>">
+                    <%= i %> <%= i === 1 ? 
+                        (isTransfer ? 'passenger' : 'person') : 
+                        (isTransfer ? 'passengers' : 'people') %>
+                </option>
+                <% } %>
+            </select>
+            <div class="error-message hidden" id="<%= formId %>-numberOfPeople-error"></div>
+        </div>
+        
+        <% if (isTransfer) { %>
+        <!-- Transfer Specific Fields -->
+        <div class="form-group">
+            <label class="form-label">Passenger Details</label>
+            <div class="grid grid-cols-3 gap-2">
+                <div>
+                    <label for="<%= formId %>-adults" class="block text-xs mb-1">Adults</label>
+                    <input type="number" id="<%= formId %>-adults" name="passengers[adults]" 
+                        class="form-control" min="0" value="1">
+                </div>
+                <div>
+                    <label for="<%= formId %>-children" class="block text-xs mb-1">Children</label>
+                    <input type="number" id="<%= formId %>-children" name="passengers[children]" 
+                        class="form-control" min="0" value="0">
+                </div>
+                <div>
+                    <label for="<%= formId %>-infants" class="block text-xs mb-1">Infants</label>
+                    <input type="number" id="<%= formId %>-infants" name="passengers[infants]" 
+                        class="form-control" min="0" value="0">
+                </div>
+            </div>
+        </div>
+        <% } %>
+        
+        <!-- Message/Special Requests -->
+        <div class="form-group">
+            <label for="<%= formId %>-message" class="form-label">
+                <%= isTransfer ? 'Additional Information' : 'Special Requests' %>
+            </label>
+            <textarea id="<%= formId %>-message" name="message" 
+                class="form-control" rows="3" 
+                placeholder="Any special requirements or requests"></textarea>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit" class="btn-book w-full">
+            <i class="fas fa-calendar-check mr-2"></i>
+            <%= submitButtonText %>
+        </button>
+        
+        <!-- Booking Guarantee Text -->
+        <div class="text-center text-sm text-gray-500 mt-3">
+            <i class="fas fa-shield-alt mr-1"></i>
+            Secure booking · No payment required now
+        </div>
+    </form>
+    
+    <!-- Success/Error Messages -->
+    <div class="alert alert-success hidden mt-4" id="<%= formId %>-success">
+        <i class="fas fa-check-circle"></i>
+        <span>Booking successful! We'll contact you shortly.</span>
+    </div>
+    
+    <div class="alert alert-error hidden mt-4" id="<%= formId %>-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>An error occurred. Please try again.</span>
+    </div>
+</div>
+
+<!-- Client-side validation and submission script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('<%= formId %>');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset UI state
+            resetFormErrors();
+            document.getElementById('<%= formId %>-success').classList.add('hidden');
+            document.getElementById('<%= formId %>-error').classList.add('hidden');
+            
+            // Basic form validation
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Show loading state
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+            
+            // Prepare form data
+            const formData = new FormData(form);
+            const formObject = {};
+            
+            formData.forEach((value, key) => {
+                // Handle nested objects with array notation, like passengers[adults]
+                if (key.includes('[') && key.includes(']')) {
+                    const mainKey = key.substring(0, key.indexOf('['));
+                    const subKey = key.substring(key.indexOf('[') + 1, key.indexOf(']'));
+                    
+                    if (!formObject[mainKey]) {
+                        formObject[mainKey] = {};
+                    }
+                    
+                    formObject[mainKey][subKey] = value;
+                } else {
+                    formObject[key] = value;
+                }
+            });
+            
+            // Submit booking via AJAX
+            fetch('/api/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formObject)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Server error');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Show success message
+                document.getElementById('<%= formId %>-success').classList.remove('hidden');
+                
+                // Reset the form
+                form.reset();
+                
+                // Redirect if URL is provided
+                <% if (typeof redirectUrl !== 'undefined') { %>
+                setTimeout(() => {
+                    window.location.href = '<%= redirectUrl %>';
+                }, 2000);
+                <% } %>
+            })
+            .catch(error => {
+                console.error('Error submitting booking:', error);
+                const errorElement = document.getElementById('<%= formId %>-error');
+                errorElement.querySelector('span').textContent = error.message || 'An error occurred. Please try again.';
+                errorElement.classList.remove('hidden');
+            })
+            .finally(() => {
+                // Restore button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            });
+        });
+        
+        // Form validation function
+        function validateForm() {
+            let isValid = true;
+            
+            // Validate required fields
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    showError(field.id, 'This field is required');
+                    isValid = false;
+                }
+            });
+            
+            // Validate email format
+            const emailField = document.getElementById('<%= formId %>-email');
+            if (emailField && emailField.value && !isValidEmail(emailField.value)) {
+                showError('<%= formId %>-email', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            // Validate phone format (basic)
+            const phoneField = document.getElementById('<%= formId %>-phone');
+            if (phoneField && phoneField.value && !isValidPhone(phoneField.value)) {
+                showError('<%= formId %>-phone', 'Please enter a valid phone number');
+                isValid = false;
+            }
+            
+            <% if (isTransfer) { %>
+            // For transfers, ensure total passengers matches numberOfPeople
+            const adultsField = document.getElementById('<%= formId %>-adults');
+            const childrenField = document.getElementById('<%= formId %>-children');
+            const infantsField = document.getElementById('<%= formId %>-infants');
+            const peopleField = document.getElementById('<%= formId %>-numberOfPeople');
+            
+            if (adultsField && childrenField && infantsField && peopleField) {
+                const totalPassengers = 
+                    parseInt(adultsField.value || 0) + 
+                    parseInt(childrenField.value || 0) + 
+                    parseInt(infantsField.value || 0);
+                
+                if (totalPassengers !== parseInt(peopleField.value)) {
+                    showError('<%= formId %>-numberOfPeople', 
+                        'Total passengers must match number of people');
+                    isValid = false;
+                }
+            }
+            <% } %>
+            
+            return isValid;
+        }
+        
+        // Helper functions for validation
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function isValidPhone(phone) {
+            // Allow for international formats
+            return phone.length >= 8 && /^[+\d\s()\-]+$/.test(phone);
+        }
+        
+        function showError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + '-error');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+                
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.classList.add('error');
+                    field.focus();
+                }
+            }
+        }
+        
+        function resetFormErrors() {
+            const errorElements = form.querySelectorAll('.error-message');
+            errorElements.forEach(element => {
+                element.textContent = '';
+                element.classList.add('hidden');
+            });
+            
+            const errorFields = form.querySelectorAll('.error');
+            errorFields.forEach(field => {
+                field.classList.remove('error');
+            });
+        }
+        
+        <% if (isTransfer) { %>
+        // For transfers, sync passengers count with total people
+        const peopleField = document.getElementById('<%= formId %>-numberOfPeople');
+        const adultsField = document.getElementById('<%= formId %>-adults');
+        const childrenField = document.getElementById('<%= formId %>-children');
+        const infantsField = document.getElementById('<%= formId %>-infants');
+        
+        if (peopleField) {
+            peopleField.addEventListener('change', function() {
+                // If only one field has value, update it to match total
+                if (adultsField && !childrenField.value && !infantsField.value) {
+                    adultsField.value = this.value;
+                }
+            });
+        }
+        
+        // When passenger counts change, update total
+        [adultsField, childrenField, infantsField].forEach(field => {
+            if (field) {
+                field.addEventListener('change', function() {
+                    const total = 
+                        parseInt(adultsField.value || 0) + 
+                        parseInt(childrenField.value || 0) + 
+                        parseInt(infantsField.value || 0);
+                    
+                    if (peopleField && total > 0) {
+                        peopleField.value = total;
+                    }
+                });
+            }
+        });
+        <% } %>
+    }
+});
+</script>
+
+<!-- Styles for the form -->
+<style>
+.booking-form-wrapper {
+    position: relative;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color, #0088cc);
+    box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.25);
+}
+
+.form-control.error {
+    border-color: #dc3545;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.btn-book {
+    display: inline-block;
+    background-color: var(--primary-color, #0088cc);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+    text-align: center;
+}
+
+.btn-book:hover {
+    background-color: var(--primary-color-dark, #006699);
+}
+
+.btn-book:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.hidden {
+    display: none;
+}
+</style> 

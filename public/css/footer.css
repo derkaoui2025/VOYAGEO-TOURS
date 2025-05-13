@@ -3,7 +3,7 @@
     background-color: #2c3e50;
     color: #fff;
     padding: 5rem 0 2rem;
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
 }
 
 .footer-content {
@@ -62,7 +62,7 @@
 
 .footer-links-column h4 {
     color: #f39c12;
-    font-size: 1.8rem;
+    /* font-size: 1.8rem; */
     margin-bottom: 2rem;
     font-weight: 600;
     position: relative;

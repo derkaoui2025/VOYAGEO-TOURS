@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= activity.title %> | Voyageo Tours Morocco</title>
+    <meta name="description" content="<%= activity.description.substring(0, 160) %>">
+    <meta name="keywords" content="Morocco activities, <%= activity.title %>, <%= activity.location || 'Morocco' %>, Morocco experiences, <%= activity.category || 'adventure' %>, authentic Moroccan culture">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',
+                        secondary: '#2c3e50',
+                        accent: '#e67e22',
+                    },
+                    maxWidth: {
+                        'screen-xl': '1280px',
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- JSON-LD Structured Data for Activity -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "TouristAttraction",
+            "name": "<%= activity.title %>",
+            "description": "<%= activity.description.substring(0, 160) %>",
+            "url": "https://voyageo-tours.com/activities/<%= activity.slug %>",
+            "image": "<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : '/images/morocco-share.jpg' %>",
+            "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "Morocco",
+                "addressLocality": "<%= activity.location || 'Morocco' %>"
+            },
+            "priceRange": "<%= activity.price %> MAD",
+            "touristType": ["Adventure tourists", "Cultural tourists", "Experience seekers"]
+        }
+    </script>
+    
+    <style>
+        /* Minimal design system */
+        .thumbnail {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        
+        .thumbnail:hover {
+            opacity: 0.8;
+        }
+        
+        .thumbnail.active {
+            border: 2px solid #3498db;
+            opacity: 1;
+        }
+
+        /* Sticky booking sidebar */
+        @media (min-width: 1024px) {
+            .booking-sidebar {
+                position: sticky;
+                top: 90px;
+            }
+        }
+        
+        /* Contact button styles */
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.875rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .email-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .email-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #1fac54;
+        }
+        
+        .phone-btn {
+            background-color: #333;
+            color: white;
+        }
+        
+        .phone-btn:hover {
+            background-color: #222;
+        }
+    </style>
+</head>
+
+<body class="text-gray-800 bg-gray-50">
+    <!-- Include Navbar -->
+    <%- include('../partials/navbar') %>
+
+    <main class="pt-[74px] pb-12">
+        <!-- Activity Header -->
+        <div class="w-full relative overflow-hidden">
+            <% if (activity.gallery && activity.gallery.length > 0) { %>
+                <img id="main-image" src="<%= activity.gallery[0] %>" alt="<%= activity.title %>" class="w-full h-[40vh] md:h-[50vh] object-cover">
+            <% } else { %>
+                <div class="w-full h-[40vh] md:h-[50vh] bg-gray-300 flex items-center justify-center">
+                    <span class="text-gray-500 text-lg">No image available</span>
+                </div>
+            <% } %>
+            
+            <!-- Overlay with title -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6 md:p-10">
+                <div class="container mx-auto">
+                    <div class="max-w-4xl">
+                        <h1 class="text-2xl md:text-4xl text-white font-bold mb-2"><%= activity.title %></h1>
+                        <div class="flex flex-wrap items-center gap-4 text-white">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
+                                <span><%= activity.location || 'Morocco' %></span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-2 text-warning"></i>
+                                <span><%= activity.duration %> <%= activity.durationType %></span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-tag mr-2 text-warning"></i>
+                                <span>From <%= activity.price.toLocaleString() %> MAD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Thumbnail Gallery -->
+        <div class="container mx-auto px-4 -mt-6 relative z-10">
+            <% if (activity.gallery && activity.gallery.length > 1) { %>
+                <div class="bg-white border border-gray-200 p-3 overflow-x-auto">
+                    <div class="flex gap-3">
+                        <% activity.gallery.forEach((image, index) => { %>
+                            <div class="thumbnail <%= index === 0 ? 'active' : '' %>" data-image="<%= image %>" onclick="changeMainImage('<%= image %>', this)">
+                                <img src="<%= image %>" alt="<%= activity.title %> - Image <%= index + 1 %>" class="w-20 h-14 md:w-24 md:h-16 object-cover">
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+            <% if (activity.galleryHtml) { %>
+                <div class="mt-8">
+                    <%- activity.galleryHtml %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 mt-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Activity Details -->
+                <div class="w-full lg:w-2/3">
+                    <!-- Navigation Tabs -->
+                    <div class="mb-6 border-b border-gray-200">
+                        <nav class="flex space-x-6" id="activity-nav">
+                            <a href="#about" class="py-3 border-b-2 border-primary font-medium text-primary">About</a>
+                            <a href="#included" class="py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700">What's Included</a>
+                            <a href="#info" class="py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700">Info</a>
+                        </nav>
+                    </div>
+
+                    <!-- Description Section -->
+                    <div id="about" class="bg-white border border-gray-200 p-6 mb-8">
+                        <h2 class="text-2xl font-semibold text-secondary mb-4">About This Activity</h2>
+                        <div class="prose max-w-none text-gray-700">
+                            <%- activity.description %>
+                        </div>
+                    </div>
+                    
+                    <!-- What's Included Section -->
+                    <div id="included" class="bg-white border border-gray-200 p-6 mb-8">
+                        <h2 class="text-2xl font-semibold text-secondary mb-4">What's Included</h2>
+                        
+                        <% if (activity.includes && activity.includes.length > 0) { %>
+                            <div class="text-gray-700 mb-6">
+                                <%- activity.includes %>
+                            </div>
+                        <% } else { %>
+                            <p class="text-gray-500 italic">No information available</p>
+                        <% } %>
+                        
+                        <% if (activity.notIncludes && activity.notIncludes.length > 0) { %>
+                            <h3 class="text-xl font-semibold text-secondary mt-6 mb-4">Not Included</h3>
+                            <div class="text-gray-700">
+                                <%- activity.notIncludes %>
+                            </div>
+                        <% } %>
+                    </div>
+                    
+                    <!-- Additional Information -->
+                    <div id="info" class="bg-white border border-gray-200 p-6 mb-8">
+                        <h2 class="text-2xl font-semibold text-secondary mb-4">Additional Information</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-gray-50 border border-gray-200">
+                                <h3 class="font-semibold text-lg mb-2">Activity Duration</h3>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-clock text-warning mr-3 text-xl"></i>
+                                    <span><%= activity.duration %> <%= activity.durationType %></span>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-gray-50 border border-gray-200">
+                                <h3 class="font-semibold text-lg mb-2">Location</h3>
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fas fa-map-marker-alt text-warning mr-3 text-xl"></i>
+                                    <span><%= activity.location || 'Morocco' %></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h3 class="font-semibold text-lg mb-3">Important Notes</h3>
+                            <ul class="text-gray-700">
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-info-circle text-primary mr-2 mt-1"></i>
+                                    <span>Confirmation will be received at time of booking</span>
+                                </li>
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-info-circle text-primary mr-2 mt-1"></i>
+                                    <span>Not recommended for travelers with mobility issues</span>
+                                </li>
+                                <li class="flex items-start mb-2">
+                                    <i class="fas fa-info-circle text-primary mr-2 mt-1"></i>
+                                    <span>Please arrive 15 minutes before activity starts</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Booking Sidebar -->
+                <div class="w-full lg:w-1/3">
+                    <div class="booking-sidebar bg-white border border-gray-200 p-6">
+                        <h2 class="text-xl font-semibold mb-6 pb-4 border-b">Book This Activity</h2>
+                        
+                        <div class="space-y-5">
+                            <!-- Price info -->
+                            <div class="mb-6">
+                                <div class="flex items-center">
+                                    <span class="text-2xl font-bold mr-2">
+                                        <%= activity.price %> MAD
+                                    </span>
+                                    <span class="text-sm text-gray-600">
+                                        per person
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Email button -->
+                            <a href="mailto:info@voyageo-tours.com?subject=Booking inquiry for <%= activity.title %>" class="contact-btn email-btn">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email Us</span>
+                            </a>
+                            
+                            <!-- WhatsApp button -->
+                            <a href="https://wa.me/212661123456?text=Hello, I'd like to book the <%= activity.title %> activity" target="_blank" class="contact-btn whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>WhatsApp</span>
+                            </a>
+                            
+                            <!-- Phone button -->
+                            <a href="tel:+212661123456" class="contact-btn phone-btn">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>Call Us</span>
+                            </a>
+                            
+                            <div class="text-center text-sm text-gray-500 mt-6">
+                                <p>Our team is available 24/7 to assist you</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Other Activities -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-8">Other Activities You Might Like</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <% otherActivities.forEach(function(otherActivity) { %>
+                    <a href="/activities/<%= otherActivity.slug %>" class="activity-card bg-white border border-gray-200 overflow-hidden hover:border-gray-300 transition-all duration-300">
+                        <div class="relative h-48">
+                            <% 
+                            // Determine the correct image source with fallbacks
+                            let imageSrc = '';
+                            if (otherActivity.featuredImage) {
+                                imageSrc = otherActivity.featuredImage;
+                            } else if (otherActivity.gallery && otherActivity.gallery.length > 0) {
+                                imageSrc = otherActivity.gallery[0];
+                            } else if (otherActivity.mainImage) {
+                                imageSrc = otherActivity.mainImage;
+                            } else {
+                                imageSrc = '/images/placeholder.jpg';
+                            }
+                            %>
+                            <img src="<%= imageSrc %>" alt="<%= otherActivity.title %>" class="object-cover w-full h-full">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2"><%= otherActivity.title %></h3>
+                            <p class="text-gray-600 text-sm mb-2">
+                                <i class="fas fa-map-marker-alt text-warning"></i> 
+                                <%= otherActivity.location || 'Morocco' %>
+                            </p>
+                            <div class="flex justify-between items-center mt-3">
+                                <div class="text-warning font-bold"><%= otherActivity.price %> MAD</div>
+                                <div class="text-sm text-gray-500">View Details</div>
+                            </div>
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Contact Sheet -->
+    <div id="mobile-contact-sheet" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-lg p-6 transform transition-transform duration-300" id="sheet-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold">Contact Us</h3>
+                <button id="close-sheet" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <a href="mailto:info@voyageo-tours.com?subject=Booking inquiry for <%= activity.title %>" class="contact-btn email-btn">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email Us</span>
+                </a>
+                
+                <a href="https://wa.me/212661123456?text=Hello, I'd like to book the <%= activity.title %> activity" target="_blank" class="contact-btn whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </a>
+                
+                <a href="tel:+212661123456" class="contact-btn phone-btn">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Call Us</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Sticky Contact Button -->
+    <div class="lg:hidden fixed bottom-4 left-4 z-30">
+        <button id="open-sheet" class="w-24 h-14 rounded-full bg-primary text-white shadow-lg flex items-center justify-center">
+            i want this
+           
+        </button>
+    </div>
+
+    <!-- Replace included footer with custom footer -->
+    <footer class="bg-white border-t border-gray-200 py-10 mt-12">
+        <div class="container mx-auto max-w-screen-xl px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-600 hover:text-primary">Home</a></li>
+                        <li><a href="/tours" class="text-gray-600 hover:text-primary">All Tours</a></li>
+                        <li><a href="/activities" class="text-gray-600 hover:text-primary">Activities</a></li>
+                        <li><a href="/customize" class="text-gray-600 hover:text-primary">Custom Tours</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Activity Categories -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Activity Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/activities?category=Adventure" class="text-gray-600 hover:text-primary">Adventure Activities</a></li>
+                        <li><a href="/activities?category=Cultural" class="text-gray-600 hover:text-primary">Cultural Experiences</a></li>
+                        <li><a href="/activities?category=Food" class="text-gray-600 hover:text-primary">Food & Culinary</a></li>
+                        <li><a href="/activities?category=Wellness" class="text-gray-600 hover:text-primary">Wellness Activities</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Popular Destinations -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Popular Destinations</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/activities?location=Marrakech" class="text-gray-600 hover:text-primary">Marrakech</a></li>
+                        <li><a href="/activities?location=Essaouira" class="text-gray-600 hover:text-primary">Essaouira</a></li>
+                        <li><a href="/activities?location=Fes" class="text-gray-600 hover:text-primary">Fes</a></li>
+                        <li><a href="/activities?location=Chefchaouen" class="text-gray-600 hover:text-primary">Chefchaouen</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 mt-8 pt-8 text-center text-sm text-gray-500">
+                <p>© <%= new Date().getFullYear() %> Voyageo Tours Morocco. Experience authentic Morocco activities with expert local guides.</p>
+                <p class="mt-2">Moroccan cooking classes, desert excursions, city tours, hammam experiences, Atlas Mountains trekking, camel rides, and authentic cultural experiences.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gallery functionality
+        function changeMainImage(imageSrc, thumbnail) {
+            document.getElementById('main-image').src = imageSrc;
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            thumbnail.classList.add('active');
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('#activity-nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+                
+                // Update active tab
+                document.querySelectorAll('#activity-nav a').forEach(a => {
+                    a.classList.remove('border-primary', 'text-primary');
+                    a.classList.add('border-transparent', 'text-gray-500');
+                });
+                this.classList.add('border-primary', 'text-primary');
+                this.classList.remove('border-transparent', 'text-gray-500');
+            });
+        });
+
+        // Mobile contact sheet
+        const openSheetBtn = document.getElementById('open-sheet');
+        const closeSheetBtn = document.getElementById('close-sheet');
+        const contactSheet = document.getElementById('mobile-contact-sheet');
+        const sheetContent = document.getElementById('sheet-content');
+
+        if (openSheetBtn && closeSheetBtn && contactSheet) {
+            openSheetBtn.addEventListener('click', () => {
+                contactSheet.classList.remove('hidden');
+                setTimeout(() => {
+                    sheetContent.classList.add('translate-y-0');
+                }, 10);
+            });
+
+            closeSheetBtn.addEventListener('click', () => {
+                sheetContent.classList.remove('translate-y-0');
+                setTimeout(() => {
+                    contactSheet.classList.add('hidden');
+                }, 300);
+            });
+
+            contactSheet.addEventListener('click', (e) => {
+                if (e.target === contactSheet) {
+                    sheetContent.classList.remove('translate-y-0');
+                    setTimeout(() => {
+                        contactSheet.classList.add('hidden');
+                    }, 300);
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

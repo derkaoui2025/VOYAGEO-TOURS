@@ -1,22 +1,73 @@
 <!-- Hero Section -->
-<section class="hero" <% if (typeof headerImagePath !== 'undefined') { %>style="background-image: url('<%= headerImagePath %>'); background-size: cover; background-position: center;"<% } %>>
-    <% if (typeof headerImagePath === 'undefined') { %>
-    <!-- Video Background with performance optimization -->
-    <video class="hero-video" autoplay loop muted playsinline preload="metadata">
-        <!-- Video sources will be added via JavaScript for better performance -->
-    </video>
-    <% } %>
-    
-    <!-- Overlay -->
-    <div class="hero-overlay"></div>
+<section class="relative py-20 md:py-24 bg-secondary mt-[74px] overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center" 
+         <% if (typeof headerImagePath !== 'undefined') { %>
+            style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<%= headerImagePath %>');"
+         <% } else { %>
+            style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/headers/morocco-banner.jpg');"
+         <% } %>
+    ></div>
     
     <!-- Hero Content -->
-    <div class="hero-content">
-        <h1><%= heroTitle %></h1>
-        <p><%= heroSubtitle %></p>
-        <div class="hero-btns">
-            <a href="/tours" class="btn btn-primary">Explore Tours</a>
-            <a href="/customize" class="btn btn-outline">Customize Your Trip</a>
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="max-w-3xl text-center mx-auto text-white">
+            <!-- Title with clean underline -->
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-montserrat animate-fadeIn">
+                <%= typeof heroTitle !== 'undefined' ? heroTitle : 'Discover Morocco' %>
+            </h1>
+            <div class="w-20 h-1 bg-warning mx-auto mb-6 animate-fadeIn" style="animation-delay: 0.2s;"></div>
+            
+            <!-- Subtitle -->
+            <p class="text-lg md:text-xl text-gray-200 mb-8 animate-fadeIn" style="animation-delay: 0.4s;">
+                <%= typeof heroSubtitle !== 'undefined' ? heroSubtitle : 'Explore the beauty and culture of Morocco with our expert guides' %>
+            </p>
+            
+            <!-- Optional CTA Buttons -->
+            <% if (typeof showButtons === 'undefined' || showButtons) { %>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeInUp" style="animation-delay: 0.6s;">
+                <a href="/tours" class="bg-warning hover:bg-warning/90 text-white font-semibold py-3 px-6 rounded-md transition-all duration-300">
+                    Explore Tours
+                </a>
+                <a href="/customize" class="bg-transparent hover:bg-white/20 border-2 border-white text-white font-semibold py-3 px-6 rounded-md transition-all duration-300">
+                    Customize Trip
+                </a>
+            </div>
+            <% } %>
         </div>
     </div>
-</section> 
+</section>
+
+<style>
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+        animation: fadeIn 1s forwards;
+    }
+    .animate-fadeInUp {
+        animation: fadeInUp 1s forwards;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Trigger animations for elements with animation delays
+        const animatedElements = document.querySelectorAll('[style*="animation-delay"]');
+        animatedElements.forEach(element => {
+            const delay = parseFloat(element.style.animationDelay) * 1000;
+            element.style.opacity = 0;
+            setTimeout(() => {
+                element.style.opacity = 1;
+                if (element.style.transform) {
+                    element.style.transform = 'translateY(0)';
+                }
+            }, delay);
+        });
+    });
+</script> 

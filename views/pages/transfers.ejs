@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #2c3e50;
+            --gray-light: #f5f5f5;
+            --gray-medium: #e0e0e0;
+            --gray-text: #666;
+            --border-radius: 8px;
+        }
+        
+        .hero {
+            height: 40vh;
+            max-height: 400px;
+        }
+        
+        .filter-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-tag:hover, .filter-tag.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .card {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gray-medium);
+            background-color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                height: 30vh;
+                max-height: 300px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .hero {
+                height: 25vh;
+                max-height: 250px;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.75rem;
+            }
+            
+            .hero-content p {
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include navbar -->
+    <%- include('../partials/navbar') %>
+    
+    <!-- Hero Section -->
+    <div class="hero relative">
+        <!-- Hero Background -->
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/morocco-transfer.jpg');">
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-4 h-full flex items-center relative z-10">
+            <div class="hero-content text-white max-w-3xl">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4"><%= heroTitle %></h1>
+                <p class="text-lg md:text-xl mb-6"><%= heroSubtitle %></p>
+                <a href="/transfers/custom" class="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                    Request Custom Transfer
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filters & Transfers Section -->
+    <div class="container mx-auto px-4 py-12">
+        <!-- Filters -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Popular Transfer Routes</h2>
+            
+            <div class="filter-tags">
+                <button class="filter-tag active" data-filter="all">All Transfers</button>
+                <button class="filter-tag" data-filter="marrakech">From Marrakech</button>
+                <button class="filter-tag" data-filter="fez">From Fez</button>
+                <button class="filter-tag" data-filter="casablanca">From Casablanca</button>
+                <button class="filter-tag" data-filter="tangier">From Tangier</button>
+            </div>
+        </div>
+        
+        <!-- Transfers Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transfers-grid">
+            <% if (transfers && transfers.length > 0) { %>
+                <% transfers.forEach(transfer => { %>
+                    <div class="card overflow-hidden transfer-card" 
+                         data-start="<%= transfer.startCity.toLowerCase() %>" 
+                         data-end="<%= transfer.endCity.toLowerCase() %>">
+                        <a href="/transfers/<%= transfer.slug %>" class="block relative">
+                            <% if (transfer.gallery && transfer.gallery.length > 0) { %>
+                                <img src="<%= transfer.gallery[0] %>" alt="<%= transfer.startCity %> to <%= transfer.endCity %>" class="w-full h-56 object-cover">
+                            <% } else { %>
+                                <img src="/images/placeholder-transfer.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %>" class="w-full h-56 object-cover">
+                            <% } %>
+                            <div class="absolute top-4 right-4 bg-primary text-white py-1 px-3 rounded-full text-sm font-bold">
+                                <%= transfer.vehicleType %>
+                            </div>
+                        </a>
+                        
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <a href="/transfers/<%= transfer.slug %>">
+                                    <h3 class="text-xl font-bold hover:text-primary transition duration-300">
+                                        <%= transfer.startCity %> to <%= transfer.endCity %>
+                                    </h3>
+                                </a>
+                                <div class="text-xl font-bold text-primary"><%= transfer.price %> EUR</div>
+                            </div>
+                            
+                            <div class="mb-4 text-gray-600">
+                                <div class="flex items-center mb-1">
+                                    <i class="far fa-clock mr-2"></i>
+                                    <span><%= transfer.duration %></span>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <i class="fas fa-users mr-2"></i>
+                                    <span>Up to <%= transfer.maxPassengers %> passengers</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-car mr-2"></i>
+                                    <span><%= transfer.vehicleType %></span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div class="text-sm text-gray-500">
+                                    <i class="fas fa-calendar-alt mr-1"></i> Available daily
+                                </div>
+                                <a href="/transfers/<%= transfer.slug %>" class="text-primary font-medium hover:underline">
+                                    View details →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="col-span-3 text-center py-16">
+                    <i class="fas fa-car-side text-5xl text-gray-300 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-600 mb-2">No transfers available yet</h3>
+                    <p class="text-gray-500">Please check back later or request a custom transfer.</p>
+                    <a href="/transfers/custom" class="inline-block mt-4 bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        Request Custom Transfer
+                    </a>
+                </div>
+            <% } %>
+        </div>
+        
+        <!-- Custom Transfer Call to Action -->
+        <div class="mt-16 bg-gray-100 rounded-lg p-8 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">Need a Custom Transfer?</h2>
+            <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+                We can arrange transfers between any cities in Morocco tailored to your specific needs and schedule.
+            </p>
+            <a href="/transfers/custom" class="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                Request Custom Transfer
+            </a>
+        </div>
+    </div>
+    
+    <!-- Include footer -->
+    <%- include('../partials/footer') %>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter functionality
+            const filterTags = document.querySelectorAll('.filter-tag');
+            const transferCards = document.querySelectorAll('.transfer-card');
+            
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // Remove active class from all tags
+                    filterTags.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tag
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    
+                    // Show/hide transfers based on filter
+                    transferCards.forEach(card => {
+                        if (filter === 'all') {
+                            card.style.display = 'block';
+                        } else {
+                            const startCity = card.dataset.start;
+                            if (startCity.includes(filter)) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

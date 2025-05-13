@@ -2,37 +2,93 @@ const express = require('express');
 const router = express.Router();
 const Tour = require('../models/Tour');
 const CustomTour = require('../models/CustomTour');
-const Booking = require('../models/Booking');
 const Excursion = require('../models/Excursion');
-const ExcursionBooking = require('../models/ExcursionBooking');
+const Transfer = require('../models/Transfer');
+const Activity = require('../models/Activity');
 const dotenv = require('dotenv');
 // const blogRoutes = require('./blog/publicRoutes')
+
+// Import controllers
+const transferController = require('../controllers/transferController');
+const activityController = require('../controllers/activityPublicController');
+const bookingController = require('../controllers/bookingController');
 
 // Load environment variables
 dotenv.config();
 
-// Home page with featured tours
+// Home page route
 router.get('/', async (req, res) => {
   try {
-    // Get featured tours for the homepage
-    const featuredTours = await Tour.find({ featured: true, hidden: false })
+    // Initialize arrays that will hold our data
+    let featuredTours = [];
+    let featuredExcursions = [];
+    let featuredActivities = [];
+    let popularTransfers = [];
+
+    // First try to get featured items
+    featuredTours = await Tour.find({ isFeatured: true })
       .sort('-createdAt')
-      .limit(3);
+      .limit(6);
     
-    res.render('pages/home', { 
-      pageTitle: 'Home',
-      heroTitle: 'Discover the Magic of Morocco',
-      heroSubtitle: 'Experience authentic adventures with our expert local guides',
-      featuredTours // Pass featured tours to the template
+    featuredExcursions = await Excursion.find({ isFeatured: true })
+      .sort('-createdAt')
+      .limit(6);
+    
+    featuredActivities = await Activity.find({ isFeatured: true })
+      .sort('-createdAt')
+      .limit(6);
+      
+    // Fetch featured transfers
+    popularTransfers = await Transfer.find({ isFeatured: true })
+      .sort('-createdAt')
+      .limit(4);
+    
+    // If we don't have enough featured items, get regular items
+    if (featuredTours.length < 3) {
+      const additionalTours = await Tour.find({ hidden: false, isFeatured: { $ne: true } })
+        .sort('-createdAt')
+        .limit(6 - featuredTours.length);
+      featuredTours = [...featuredTours, ...additionalTours];
+    }
+    
+    if (featuredExcursions.length < 4) {
+      const additionalExcursions = await Excursion.find({ isFeatured: { $ne: true } })
+        .sort('-createdAt')
+        .limit(6 - featuredExcursions.length);
+      featuredExcursions = [...featuredExcursions, ...additionalExcursions];
+    }
+    
+    if (featuredActivities.length < 3) {
+      const additionalActivities = await Activity.find({ isFeatured: { $ne: true } })
+        .sort('-createdAt')
+        .limit(6 - featuredActivities.length);
+      featuredActivities = [...featuredActivities, ...additionalActivities];
+    }
+    
+    if (popularTransfers.length < 4) {
+      const additionalTransfers = await Transfer.find({ isFeatured: { $ne: true } })
+        .sort({ popularity: -1, createdAt: -1 })
+        .limit(4 - popularTransfers.length);
+      popularTransfers = [...popularTransfers, ...additionalTransfers];
+    }
+    
+    // Log what we found to help with debugging
+    console.log(`Found ${featuredTours.length} tours, ${featuredExcursions.length} excursions, ${featuredActivities.length} activities, ${popularTransfers.length} transfers`);
+    
+    res.render('pages/home', {
+      pageTitle: 'Voyageo Tours - Discover Morocco',
+      featuredTours,
+      featuredExcursions,
+      featuredActivities,
+      popularTransfers
     });
-  } catch (err) {
-    console.error('Error fetching featured tours:', err);
-    // Still render the page even if there's an error
-    res.render('pages/home', { 
-      pageTitle: 'Home',
-      heroTitle: 'Discover the Magic of Morocco',
-      heroSubtitle: 'Experience authentic adventures with our expert local guides',
-      featuredTours: []
+  } catch (error) {
+    console.error('Error loading home page:', error);
+    res.status(500).render('pages/error', {
+      pageTitle: 'Error',
+      heroTitle: 'Something Went Wrong',
+      heroSubtitle: 'We apologize for the inconvenience',
+      message: 'Failed to load home page data'
     });
   }
 });
@@ -47,6 +103,7 @@ router.get('/tours', async (req, res) => {
       pageTitle: 'Morocco Tours',
       heroTitle: 'Our Morocco Tours',
       heroSubtitle: 'Carefully crafted experiences for unforgettable journeys',
+      headerImagePath: '/images/headers/tours-banner.jpg', // Tours page image
       tours // Pass all tours to the template
     });
   } catch (err) {
@@ -55,6 +112,7 @@ router.get('/tours', async (req, res) => {
       pageTitle: 'Morocco Tours',
       heroTitle: 'Our Morocco Tours',
       heroSubtitle: 'Carefully crafted experiences for unforgettable journeys',
+      headerImagePath: '/images/headers/tours-banner.jpg',
       tours: []
     });
   }
@@ -64,29 +122,79 @@ router.get('/tours', async (req, res) => {
 router.get('/tours/:destinationSlug', async (req, res) => {
   try {
     // Find tour by slug
-    const tour = await Tour.findOne({ slug: req.params.destinationSlug, hidden: false });
+    const tour = await Tour.findOne({ slug: req.params.destinationSlug, hidden: false })
+      .select('-mainImagePublicId'); // Exclude fields not needed in UI
     
     if (!tour) {
       return res.status(404).render('pages/404', {
         pageTitle: 'Tour Not Found',
         heroTitle: 'Tour Not Found',
-        heroSubtitle: 'The tour you were looking for doesn\'t exist'
+        heroSubtitle: 'The tour you were looking for doesn\'t exist',
+        headerImagePath: '/images/headers/error-banner.jpg'
       });
     }
     
+    // Use tour's first image as header if available, otherwise default to a tours banner
+    const headerImagePath = tour.images && tour.images.length > 0 
+      ? tour.images[0] 
+      : '/images/headers/tour-details-banner.jpg';
+    
+    // Find related tours based on category or starting location (limit to 3)
+    const relatedTours = await Tour.find({
+      _id: { $ne: tour._id }, // Exclude current tour
+      $or: [
+        { category: tour.category },
+        { startLocation: tour.startLocation }
+      ],
+      hidden: false
+    })
+    .sort({ rating: -1 })
+    .limit(3)
+    .select('title slug mainImage price duration startLocation');
+    
+    // Create meta description for SEO
+    const metaDescription = tour.description.length > 160 
+      ? tour.description.substring(0, 157) + '...'
+      : tour.description;
+      
+    // Create JSON-LD structured data for rich results
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "TouristTrip",
+      "name": tour.title,
+      "description": tour.description,
+      "image": tour.mainImage,
+      "offers": {
+        "@type": "Offer",
+        "price": tour.price,
+        "priceCurrency": "MAD"
+      },
+      "tourOperator": {
+        "@type": "Organization",
+        "name": "Voyageo Tours"
+      }
+    };
+    
     res.render('pages/destination', { 
-      pageTitle: `${tour.title}`,
+      pageTitle: `${tour.title} | Voyageo Tours`,
+      metaDescription,
+      metaKeywords: `morocco tour, ${tour.category.toLowerCase()}, ${tour.startLocation.toLowerCase()}, travel`,
+      structuredData: JSON.stringify(structuredData),
       heroTitle: `${tour.title}`,
       heroSubtitle: tour.description.substring(0, 120) + '...',
+      headerImagePath,
       tour,
+      relatedTours,
       destination: req.params.destinationSlug
     });
   } catch (err) {
     console.error('Error fetching tour details:', err);
-    res.status(404).render('pages/404', {
-      pageTitle: 'Tour Not Found',
-      heroTitle: 'Tour Not Found',
-      heroSubtitle: 'The tour you were looking for doesn\'t exist'
+    res.status(500).render('pages/error', {
+      pageTitle: 'Error',
+      heroTitle: 'Something Went Wrong',
+      heroSubtitle: 'We encountered an error while loading this tour',
+      headerImagePath: '/images/headers/error-banner.jpg',
+      error: process.env.NODE_ENV === 'development' ? err.message : null
     });
   }
 });
@@ -97,6 +205,7 @@ router.get('/customize', (req, res) => {
     pageTitle: 'Customize Your Tour',
     heroTitle: 'Create Your Custom Morocco Journey',
     heroSubtitle: 'Design your perfect adventure tailored to your preferences',
+    headerImagePath: '/images/headers/customize-banner.jpg',
     success: req.query.success || false,
     recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || 'YOUR_RECAPTCHA_SITE_KEY'
   });
@@ -129,6 +238,7 @@ router.post('/customize', async (req, res) => {
         pageTitle: 'Customize Your Tour',
         heroTitle: 'Create Your Custom Morocco Journey',
         heroSubtitle: 'Design your perfect adventure tailored to your preferences',
+        headerImagePath: '/images/headers/customize-banner.jpg',
         error: 'Incorrect security answer. Please try again.',
         formData: req.body
       });
@@ -156,6 +266,7 @@ router.post('/customize', async (req, res) => {
       pageTitle: 'Customize Your Tour',
       heroTitle: 'Create Your Custom Morocco Journey',
       heroSubtitle: 'Design your perfect adventure tailored to your preferences',
+      headerImagePath: '/images/headers/customize-banner.jpg',
       error: 'There was an error processing your request. Please try again.',
       formData: req.body
     });
@@ -167,7 +278,8 @@ router.get('/car-rental', (req, res) => {
   res.render('pages/car-rental', { 
     pageTitle: 'Rent A Car',
     heroTitle: 'Rent a Car in Morocco',
-    heroSubtitle: 'Explore Morocco at your own pace with our reliable vehicles'
+    heroSubtitle: 'Explore Morocco at your own pace with our reliable vehicles',
+    headerImagePath: '/images/headers/car-rental-banner.jpg'
   });
 });
 
@@ -176,7 +288,8 @@ router.get('/contact', (req, res) => {
   res.render('pages/contact', { 
     pageTitle: 'Contact Us',
     heroTitle: 'Get in Touch',
-    heroSubtitle: 'We\'re here to help plan your perfect Morocco adventure'
+    heroSubtitle: 'We\'re here to help plan your perfect Morocco adventure',
+    headerImagePath: '/images/headers/contact-banner.jpg'
   });
 });
 
@@ -185,7 +298,8 @@ router.get('/faqs', (req, res) => {
   res.render('pages/faqs', { 
     pageTitle: 'Traveler\'s Guide: FAQs',
     heroTitle: 'Frequently Asked Questions',
-    heroSubtitle: 'Everything you need to know for your Morocco journey'
+    heroSubtitle: 'Everything you need to know for your Morocco journey',
+    headerImagePath: '/images/headers/faq-banner.jpg'
   });
 });
 
@@ -194,7 +308,8 @@ router.get('/privacy-policy', (req, res) => {
   res.render('pages/privacy-policy', { 
     pageTitle: 'Privacy Policy',
     heroTitle: 'Privacy Policy',
-    heroSubtitle: 'How we protect and manage your information'
+    heroSubtitle: 'How we protect and manage your information',
+    headerImagePath: '/images/headers/legal-banner.jpg'
   });
 });
 
@@ -203,82 +318,13 @@ router.get('/terms-of-service', (req, res) => {
   res.render('pages/terms-of-service', { 
     pageTitle: 'Terms of Service',
     heroTitle: 'Terms of Service',
-    heroSubtitle: 'Our commitment to you and what we expect in return'
+    heroSubtitle: 'Our commitment to you and what we expect in return',
+    headerImagePath: '/images/headers/legal-banner.jpg'
   });
 });
 
-// POST /api/bookings - Create a new booking
-router.post('/api/bookings', async (req, res) => {
-  try {
-    const { fullName, email, tourId, tourDate, guestCount, specialRequests } = req.body;
-    
-    // Validate required fields
-    if (!fullName || !email || !tourId || !tourDate || !guestCount) {
-      return res.status(400).json({
-        success: false,
-        message: 'Missing required fields'
-      });
-    }
-    
-    // Validate email format
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid email format'
-      });
-    }
-    
-    // Find tour to calculate total price
-    const tour = await Tour.findById(tourId);
-    
-    if (!tour) {
-      return res.status(404).json({
-        success: false,
-        message: 'Tour not found'
-      });
-    }
-    
-    // Calculate total price
-    const totalPrice = tour.price * guestCount;
-    
-    // Create new booking
-    const booking = new Booking({
-      fullName,
-      email,
-      tourId,
-      tourDate: new Date(tourDate),
-      guestCount: parseInt(guestCount),
-      specialRequests: specialRequests || '',
-      totalPrice,
-      status: 'pending'
-    });
-    
-    // Save booking to database
-    await booking.save();
-    
-    // Return success response
-    res.status(201).json({
-      success: true,
-      message: 'Booking created successfully',
-      booking: {
-        id: booking._id,
-        fullName: booking.fullName,
-        email: booking.email,
-        tourDate: booking.tourDate,
-        guestCount: booking.guestCount,
-        totalPrice: booking.totalPrice,
-        status: booking.status
-      }
-    });
-  } catch (error) {
-    console.error('Error creating booking:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to create booking'
-    });
-  }
-});
+// Unified Booking API Routes
+router.post('/api/bookings', bookingController.createBooking);
 
 // All excursions page
 router.get('/excursions', async (req, res) => {
@@ -290,6 +336,7 @@ router.get('/excursions', async (req, res) => {
       pageTitle: 'Day Excursions',
       heroTitle: 'Day Excursions From Major Cities',
       heroSubtitle: 'Explore the beauty of Morocco with our guided day trips',
+      headerImagePath: '/images/headers/excursions-banner.jpg',
       excursions
     });
   } catch (err) {
@@ -298,6 +345,7 @@ router.get('/excursions', async (req, res) => {
       pageTitle: 'Day Excursions',
       heroTitle: 'Day Excursions From Major Cities',
       heroSubtitle: 'Explore the beauty of Morocco with our guided day trips',
+      headerImagePath: '/images/headers/excursions-banner.jpg',
       excursions: []
     });
   }
@@ -305,6 +353,7 @@ router.get('/excursions', async (req, res) => {
 
 // Single excursion details page
 router.get('/excursions/:slug', async (req, res) => {
+  
   try {
     // Find excursion by slug
     const excursion = await Excursion.findOne({ slug: req.params.slug });
@@ -313,7 +362,8 @@ router.get('/excursions/:slug', async (req, res) => {
       return res.status(404).render('pages/404', {
         pageTitle: 'Excursion Not Found',
         heroTitle: 'Excursion Not Found',
-        heroSubtitle: 'The excursion you were looking for doesn\'t exist'
+        heroSubtitle: 'The excursion you were looking for doesn\'t exist',
+        headerImagePath: '/images/headers/error-banner.jpg'
       });
     }
     
@@ -323,10 +373,19 @@ router.get('/excursions/:slug', async (req, res) => {
       _id: { $ne: excursion._id } // exclude current excursion
     }).limit(3);
     
+    // Use excursion's image as header if available, otherwise default
+    const headerImagePath = excursion.image 
+      ? excursion.image 
+      : '/images/headers/excursion-details-banner.jpg';
+    
+    // Set the content type explicitly
+    res.setHeader('Content-Type', 'text/html');
+    
     res.render('pages/excursion-details', { 
       pageTitle: excursion.title,
       heroTitle: excursion.title,
       heroSubtitle: `${excursion.duration} ${excursion.durationType} excursion from ${excursion.startLocation}`,
+      headerImagePath,
       excursion,
       relatedExcursions
     });
@@ -335,129 +394,28 @@ router.get('/excursions/:slug', async (req, res) => {
     res.status(404).render('pages/404', {
       pageTitle: 'Excursion Not Found',
       heroTitle: 'Excursion Not Found',
-      heroSubtitle: 'The excursion you were looking for doesn\'t exist'
+      heroSubtitle: 'The excursion you were looking for doesn\'t exist',
+      headerImagePath: '/images/headers/error-banner.jpg'
     });
   }
 });
 
-// POST /api/excursion-bookings - Create a new excursion booking
-router.post('/api/excursion-bookings', async (req, res) => {
-  try {
-    console.log('Received excursion booking request:', req.body);
-    const { fullName, email, excursionId, excursionDate, guestCount, phone } = req.body;
-    
-    // Validate required fields
-    if (!fullName || !email || !excursionId || !excursionDate || !guestCount) {
-      console.log('Missing required fields:', { fullName, email, excursionId, excursionDate, guestCount });
-      return res.status(400).json({
-        success: false,
-        message: 'Missing required fields'
-      });
-    }
-    
-    // Validate email format
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!emailRegex.test(email)) {
-      console.log('Invalid email format:', email);
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid email format'
-      });
-    }
-    
-    // Find excursion to calculate total price (if applicable)
-    console.log('Looking up excursion with ID:', excursionId);
-    const excursion = await Excursion.findById(excursionId);
-    
-    if (!excursion) {
-      console.log('Excursion not found for ID:', excursionId);
-      return res.status(404).json({
-        success: false,
-        message: 'Excursion not found'
-      });
-    }
-    
-    console.log('Found excursion:', {
-      title: excursion.title,
-      type: excursion.excursionType,
-      price: excursion.price
-    });
-    
-    // Calculate total price if excursion has a price
-    let totalPrice;
-    if (excursion.price) {
-      // For private excursions, price is per group
-      // For public excursions, price is per person
-      totalPrice = excursion.excursionType === 'private' 
-        ? excursion.price 
-        : excursion.price * guestCount;
-      
-      console.log('Calculated total price:', totalPrice);
-    }
-    
-    // Create new excursion booking
-    const booking = new ExcursionBooking({
-      fullName,
-      email,
-      excursionId,
-      excursionDate: new Date(excursionDate),
-      guestCount: parseInt(guestCount),
-      phone: phone || '',
-      totalPrice,
-      status: 'pending'
-    });
-    
-    console.log('Created booking object:', booking);
-    
-    // Save booking to database
-    const savedBooking = await booking.save();
-    console.log('Booking saved successfully with ID:', savedBooking._id);
-    
-    // Return success response
-    res.status(201).json({
-      success: true,
-      message: 'Excursion booking created successfully',
-      booking: {
-        id: savedBooking._id,
-        fullName: savedBooking.fullName,
-        email: savedBooking.email,
-        excursionDate: savedBooking.excursionDate,
-        guestCount: savedBooking.guestCount,
-        totalPrice: savedBooking.totalPrice,
-        status: savedBooking.status
-      }
-    });
-  } catch (error) {
-    console.error('Error creating excursion booking:', error);
-    console.error('Request body:', req.body);
-    console.error('Error details:', error.stack);
-    
-    // Check for MongoDB validation errors
-    if (error.name === 'ValidationError') {
-      const validationErrors = Object.values(error.errors).map(err => err.message);
-      console.error('Validation errors:', validationErrors);
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        errors: validationErrors
-      });
-    }
-    
-    // Check for MongoDB duplicate key error
-    if (error.code === 11000) {
-      console.error('Duplicate key error:', error.keyValue);
-      return res.status(400).json({
-        success: false,
-        message: 'Duplicate booking error'
-      });
-    }
-    
-    res.status(500).json({
-      success: false,
-      message: 'Failed to create excursion booking'
-    });
-  }
-});
+// All transfers page
+router.get('/transfers', transferController.renderTransfersList);
+
+// Custom transfer request page
+router.get('/transfers/custom', transferController.renderCustomTransferForm);
+
+// Process custom transfer request
+router.post('/transfers/custom', transferController.createCustomTransferRequest);
+
+// Single transfer details page
+router.get('/transfers/:slug', transferController.renderTransferDetails);
+
+// Activities routes
+router.get('/activities', activityController.getAllActivities);
+router.get('/activities/:slug', activityController.getActivityBySlug);
+router.post('/api/activity-bookings', activityController.bookActivity);
 
 // Mount blog routes at /blog
 // router.use('/blog', blogRoutes);

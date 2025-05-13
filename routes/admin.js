@@ -8,21 +8,32 @@ const CustomTour = require('../models/CustomTour');
 const User = require('../models/User');
 const ExcursionBooking = require('../models/ExcursionBooking');
 const Excursion = require('../models/Excursion');
+const Transfer = require('../models/Transfer');
+const TransferBooking = require('../models/TransferBooking');
+const Activity = require('../models/Activity');
+const ActivityBooking = require('../models/ActivityBooking');
 
 // Import middleware
 const isAdmin = require('../middleware/isAdmin');
 
-// Import controllers for bookings
-const bookingController = require('../controllers/admin/bookingController');
-// Import controller for excursions
+// Import controllers
+const unifiedBookingController = require('../controllers/admin/unifiedBookingController');
 const excursionController = require('../controllers/admin/excursionController');
-// Import controller for excursion bookings
-const excursionBookingController = require('../controllers/admin/excursionBookingController');
-// Import controller for blog posts
 const blogController = require('../controllers/admin/blogController');
+const transferController = require('../controllers/admin/transferController');
+const activityController = require('../controllers/admin/activityController');
+const customTransferController = require('../controllers/admin/customTransferController');
 
-// Import Cloudinary config for excursion gallery uploads
-const { excursionGalleryUpload, processExcursionGallery, uploadBlogImage } = require('../config/cloudinary');
+// Import Cloudinary config for uploads
+const { 
+  excursionGalleryUpload, 
+  processExcursionGallery, 
+  uploadBlogImage,
+  activityGalleryUpload, 
+  processActivityGallery,
+  transferGalleryUpload, 
+  processTransferGallery 
+} = require('../config/cloudinary');
 
 // GET /admin/login - Display login form
 router.get('/login', (req, res) => {
@@ -72,6 +83,9 @@ router.get('/logout', (req, res) => {
 // GET /admin/dashboard - Admin dashboard
 router.get('/dashboard', isAdmin, async (req, res) => {
   try {
+    // Import CustomTransferRequest
+    const CustomTransferRequest = require('../models/CustomTransferRequest');
+
     // Get statistics
     const stats = {
       tours: await Tour.countDocuments(),
@@ -79,7 +93,13 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       customTours: await CustomTour.countDocuments(),
       users: await User.countDocuments(),
       excursions: await Excursion.countDocuments(),
-      excursionBookings: await ExcursionBooking.countDocuments()
+      excursionBookings: await ExcursionBooking.countDocuments(),
+      transfers: await Transfer.countDocuments(),
+      transferBookings: await TransferBooking.countDocuments(),
+      activities: await Activity.countDocuments(),
+      activityBookings: await ActivityBooking.countDocuments(),
+      customTransfersPending: await CustomTransferRequest.countDocuments({ status: 'pending' }),
+      customTransfersTotal: await CustomTransferRequest.countDocuments()
     };
     
     // Get recent bookings (limit to 5)
@@ -93,6 +113,12 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       .sort('-createdAt')
       .limit(5)
       .populate('excursionId', 'title');
+    
+    // Get recent activity bookings (limit to 5)
+    const recentActivityBookings = await ActivityBooking.find()
+      .sort('-createdAt')
+      .limit(5)
+      .populate('activityId', 'title');
     
     // Format booking data for display
     const formattedBookings = recentBookings.map(booking => ({
@@ -112,6 +138,17 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       email: booking.email,
       excursionName: booking.excursionId ? booking.excursionId.title : 'Unknown Excursion',
       excursionDate: booking.excursionDate,
+      guestCount: booking.guestCount,
+      status: booking.status
+    }));
+    
+    // Format activity booking data for display
+    const formattedActivityBookings = recentActivityBookings.map(booking => ({
+      _id: booking._id,
+      fullName: booking.fullName,
+      email: booking.email,
+      activityName: booking.activityId ? booking.activityId.title : 'Unknown Activity',
+      activityDate: booking.activityDate,
       guestCount: booking.guestCount,
       status: booking.status
     }));
@@ -164,6 +201,7 @@ router.get('/dashboard', isAdmin, async (req, res) => {
         stats,
         recentBookings: formattedBookings,
         recentExcursionBookings: formattedExcursionBookings,
+        recentActivityBookings: formattedActivityBookings,
         recentActivity,
         popularTours,
         success: req.query.success,
@@ -178,6 +216,7 @@ router.get('/dashboard', isAdmin, async (req, res) => {
         stats,
         recentBookings: formattedBookings,
         recentExcursionBookings: formattedExcursionBookings,
+        recentActivityBookings: formattedActivityBookings,
         recentActivity,
         popularTours,
         success: req.query.success,
@@ -192,6 +231,7 @@ router.get('/dashboard', isAdmin, async (req, res) => {
       stats: {},
       recentBookings: [],
       recentExcursionBookings: [],
+      recentActivityBookings: [],
       recentActivity: [],
       popularTours: [],
       error: 'Error loading dashboard data'
@@ -199,19 +239,13 @@ router.get('/dashboard', isAdmin, async (req, res) => {
   }
 });
 
-// Booking Routes
-router.get('/bookings', isAdmin, bookingController.getAllBookings);
-router.get('/bookings/export', isAdmin, bookingController.exportBookingsCsv);
-router.get('/bookings/export-excel', isAdmin, bookingController.exportBookingsExcel);
-router.get('/bookings/:id', isAdmin, bookingController.getBookingDetails);
-router.post('/bookings/:id/status', isAdmin, bookingController.updateBookingStatus);
-router.delete('/bookings/:id', isAdmin, bookingController.deleteBooking);
-
-// Excursion Booking Routes
-router.get('/excursion-bookings', isAdmin, excursionBookingController.getAllExcursionBookings);
-router.get('/excursion-bookings/:id', isAdmin, excursionBookingController.getBookingDetails);
-router.post('/excursion-bookings/:id/status', isAdmin, excursionBookingController.updateBookingStatus);
-router.delete('/excursion-bookings/:id', isAdmin, excursionBookingController.deleteBooking);
+// Unified Booking Routes
+router.get('/bookings', isAdmin, unifiedBookingController.getAllBookings);
+router.get('/bookings/export', isAdmin, unifiedBookingController.exportBookingsCsv);
+router.get('/bookings/export-excel', isAdmin, unifiedBookingController.exportBookingsExcel);
+router.get('/bookings/:id', isAdmin, unifiedBookingController.getBookingDetails);
+router.post('/bookings/:id/status', isAdmin, unifiedBookingController.updateBookingStatus);
+router.delete('/bookings/:id', isAdmin, unifiedBookingController.deleteBooking);
 
 // Custom Tours Routes
 router.get('/custom-tours', isAdmin, async (req, res) => {
@@ -329,5 +363,30 @@ router.post('/blog/:id', isAdmin, uploadBlogImage.single('image'), blogControlle
 router.delete('/blog/:id', isAdmin, blogController.deletePost);
 router.post('/blog/:id/toggle-featured', isAdmin, blogController.toggleFeaturedStatus);
 router.post('/blog/:id/toggle-status', isAdmin, blogController.togglePostStatus);
+
+// Transfer routes
+router.get('/transfers', isAdmin, transferController.getAllTransfers);
+router.get('/transfers/create', isAdmin, transferController.showCreateForm);
+router.post('/transfers', isAdmin, transferGalleryUpload.array('gallery', 10), processTransferGallery, transferController.createTransfer);
+router.get('/transfers/edit/:id', isAdmin, transferController.showEditForm);
+router.put('/transfers/:id', isAdmin, transferGalleryUpload.array('gallery', 10), processTransferGallery, transferController.updateTransfer);
+router.delete('/transfers/:id', isAdmin, transferController.deleteTransfer);
+router.delete('/transfers/:id/images/:imageIndex', isAdmin, transferController.deleteImage);
+
+// Activity routes
+router.get('/activities', isAdmin, activityController.getAllActivities);
+router.get('/activities/create', isAdmin, activityController.showCreateForm);
+router.post('/activities', isAdmin, activityGalleryUpload.array('gallery', 10), processActivityGallery, activityController.createActivity);
+router.get('/activities/:id/edit', isAdmin, activityController.showEditForm);
+router.put('/activities/:id', isAdmin, activityGalleryUpload.array('gallery', 10), processActivityGallery, activityController.updateActivity);
+router.post('/activities/:id', isAdmin, activityGalleryUpload.array('gallery', 10), processActivityGallery, activityController.updateActivity);
+router.delete('/activities/:id', isAdmin, activityController.deleteActivity);
+router.delete('/activities/:id/images/:imageIndex', isAdmin, activityController.deleteImage);
+
+// Custom Transfer Request routes
+router.get('/custom-transfers', isAdmin, customTransferController.getAllCustomTransfers);
+router.get('/custom-transfers/:id', isAdmin, customTransferController.getCustomTransferDetails);
+router.post('/custom-transfers/:id/status', isAdmin, customTransferController.updateCustomTransferStatus);
+router.delete('/custom-transfers/:id', isAdmin, customTransferController.deleteCustomTransfer);
 
 module.exports = router; 

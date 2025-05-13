@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+    <style>
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .activity-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            transition: transform 0.3s ease;
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .activity-image {
+            height: 220px;
+            overflow: hidden;
+        }
+        
+        .activity-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .activity-content {
+            padding: 1.5rem;
+        }
+        
+        .activity-content h3 {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .activity-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+        }
+        
+        .activity-meta .item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-meta .item svg {
+            margin-right: 0.5rem;
+        }
+        
+        .activity-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .activity-price small {
+            font-size: 1.2rem;
+            font-weight: normal;
+            color: #666;
+            display: block;
+        }
+        
+        .activity-description {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: #444;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    <%- include('../partials/hero') %>
+    
+    <section class="section">
+        <div class="container">
+            <div class="section-intro text-center">
+                <h2 class="section-title">Local Activities in Morocco</h2>
+                <p class="lead">Experience authentic Moroccan culture through our carefully selected activities. Immerse yourself in local traditions, learn new skills, and create lasting memories.</p>
+            </div>
+            
+            <% if (activities && activities.length > 0) { %>
+                <div class="activities-grid">
+                    <% activities.forEach(activity => { %>
+                        <div class="activity-card animate">
+                            <div class="activity-image">
+                                <img class="lazy-image" data-src="<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : '/images/placeholder.jpg' %>" alt="<%= activity.title %>" width="300" height="220">
+                            </div>
+                            <div class="activity-content">
+                                <h3><%= activity.title %></h3>
+                                <div class="activity-meta">
+                                    <div class="item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <%= activity.duration %> <%= activity.durationType %>
+                                    </div>
+                                    <div class="item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg>
+                                        <%= activity.location || 'Various Locations' %>
+                                    </div>
+                                </div>
+                                <div class="activity-price">
+                                    <%= activity.price %> EUR
+                                    <small>per person</small>
+                                </div>
+                                <a href="/activities/<%= activity.slug %>" class="btn btn-primary btn-block">View Details</a>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="text-center my-5">
+                    <div class="mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="text-muted mx-auto">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                        </svg>
+                    </div>
+                    <h3>No Activities Found</h3>
+                    <p>Please check back later for upcoming activities.</p>
+                </div>
+            <% } %>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="section-title text-center">Frequently Asked Questions</h2>
+            
+            <div class="accordion mt-5">
+                <div class="accordion-item">
+                    <h3 class="accordion-header">How do I book an activity?</h3>
+                    <div class="accordion-body">
+                        <p>Booking an activity is simple! Just select the activity you're interested in, click on "View Details," and you'll find a booking form on the activity page. Fill in your details, select your preferred date, and submit your request. Our team will get back to you promptly to confirm your booking.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h3 class="accordion-header">What is included in the activity price?</h3>
+                    <div class="accordion-body">
+                        <p>Each activity has different inclusions, which are clearly listed on the individual activity page. Generally, the price includes the activity itself, any necessary equipment, and in some cases, transportation and meals. Please check the specific activity details for complete information on what's included.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h3 class="accordion-header">Can I customize an activity for my group?</h3>
+                    <div class="accordion-body">
+                        <p>Yes, many of our activities can be customized for private groups or special occasions. If you have specific requirements or would like to arrange a private session, please contact us directly and we'll be happy to help create a tailored experience for you.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h3 class="accordion-header">What is the cancellation policy?</h3>
+                    <div class="accordion-body">
+                        <p>We understand that plans can change. For most activities, we offer free cancellation up to 48 hours before the scheduled time. Cancellations made less than 48 hours in advance may incur a fee. Please refer to the specific activity details for any unique cancellation policies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="section cta-section" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/morocco-bg.jpg') center/cover;">
+        <div class="container text-center text-white">
+            <h2>Ready to Experience Authentic Morocco?</h2>
+            <p class="lead mb-4">Choose from our hand-picked activities or contact us to create a custom experience</p>
+            <div class="cta-buttons">
+                <a href="/contact" class="btn btn-primary mr-3">Contact Us</a>
+                <a href="/customize" class="btn btn-outline-light">Customize Your Experience</a>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer') %>
+    
+    <script>
+        // Accordion functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const body = this.nextElementSibling;
+                    
+                    if (this.classList.contains('active')) {
+                        body.style.maxHeight = body.scrollHeight + 'px';
+                    } else {
+                        body.style.maxHeight = '0';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

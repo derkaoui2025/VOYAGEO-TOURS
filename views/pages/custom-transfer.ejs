@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #2c3e50;
+            --gray-light: #f5f5f5;
+            --gray-medium: #e0e0e0;
+            --gray-text: #666;
+            --border-radius: 8px;
+        }
+        
+        .hero {
+            height: 40vh;
+            max-height: 400px;
+        }
+        
+        .card {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gray-medium);
+            background-color: white;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .info-box {
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+        }
+        
+        .info-icon {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                height: 30vh;
+                max-height: 300px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .hero {
+                height: 25vh;
+                max-height: 250px;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.75rem;
+            }
+            
+            .hero-content p {
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include navbar -->
+    <%- include('../partials/navbar') %>
+    
+    <!-- Hero Section -->
+    <div class="hero relative">
+        <!-- Hero Background -->
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/morocco-transfer-custom.jpg');">
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-4 h-full flex items-center relative z-10">
+            <div class="hero-content text-white max-w-3xl">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4"><%= heroTitle %></h1>
+                <p class="text-lg md:text-xl mb-6"><%= heroSubtitle %></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom Transfer Form Section -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Form Column -->
+            <div class="w-full lg:w-2/3">
+                <div class="card p-8">
+                    <% if (success) { %>
+                        <div class="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded mb-6 flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span>Your custom transfer request has been submitted successfully! We'll contact you shortly.</span>
+                        </div>
+                    <% } %>
+                    
+                    <% if (locals.error) { %>
+                        <div class="bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded mb-6 flex items-center">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            <span><%= error %></span>
+                        </div>
+                    <% } %>
+                    
+                    <h2 class="text-2xl font-bold mb-6">Custom Transfer Request Form</h2>
+                    
+                    <form action="/transfers/custom" method="POST" id="custom-transfer-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" class="form-control" required 
+                                    value="<%= locals.formData ? formData.fullName : '' %>">
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                <input type="email" id="email" name="email" class="form-control" required
+                                    value="<%= locals.formData ? formData.email : '' %>">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" class="form-control" required
+                                    value="<%= locals.formData ? formData.phone : '' %>">
+                            </div>
+                            
+                            <div>
+                                <label for="passengerCount" class="block text-sm font-medium text-gray-700 mb-1">Number of Passengers *</label>
+                                <select id="passengerCount" name="passengerCount" class="form-control" required>
+                                    <% for(let i = 1; i <= 15; i++) { %>
+                                        <option value="<%= i %>" <%= locals.formData && formData.passengerCount == i ? 'selected' : '' %>>
+                                            <%= i %> <%= i === 1 ? 'passenger' : 'passengers' %>
+                                        </option>
+                                    <% } %>
+                                    <option value="16+">16+ passengers</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="startCity" class="block text-sm font-medium text-gray-700 mb-1">Start City/Location *</label>
+                                <input type="text" id="startCity" name="startCity" class="form-control" required
+                                    value="<%= locals.formData ? formData.startCity : '' %>">
+                            </div>
+                            
+                            <div>
+                                <label for="endCity" class="block text-sm font-medium text-gray-700 mb-1">End City/Location *</label>
+                                <input type="text" id="endCity" name="endCity" class="form-control" required
+                                    value="<%= locals.formData ? formData.endCity : '' %>">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="departureDate" class="block text-sm font-medium text-gray-700 mb-1">Departure Date *</label>
+                                <input type="text" id="departureDate" name="departureDate" class="form-control" required
+                                    value="<%= locals.formData ? formData.departureDate : '' %>">
+                            </div>
+                            
+                            <div>
+                                <label for="departureTime" class="block text-sm font-medium text-gray-700 mb-1">Preferred Departure Time</label>
+                                <select id="departureTime" name="departureTime" class="form-control">
+                                    <option value="morning" <%= locals.formData && formData.departureTime === 'morning' ? 'selected' : '' %>>Morning (6am - 10am)</option>
+                                    <option value="midday" <%= locals.formData && formData.departureTime === 'midday' ? 'selected' : '' %>>Midday (10am - 2pm)</option>
+                                    <option value="afternoon" <%= locals.formData && formData.departureTime === 'afternoon' ? 'selected' : '' %>>Afternoon (2pm - 6pm)</option>
+                                    <option value="evening" <%= locals.formData && formData.departureTime === 'evening' ? 'selected' : '' %>>Evening (6pm - 10pm)</option>
+                                    <option value="night" <%= locals.formData && formData.departureTime === 'night' ? 'selected' : '' %>>Night (10pm - 6am)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="additionalInfo" class="block text-sm font-medium text-gray-700 mb-1">Additional Requirements or Information</label>
+                            <textarea id="additionalInfo" name="additionalInfo" rows="5" class="form-control" placeholder="Please share any specific requirements, preferred vehicle type, stops along the way, or other details that will help us meet your needs."><%= locals.formData ? formData.additionalInfo : '' %></textarea>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button type="submit" class="btn-primary">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Info Column -->
+            <div class="w-full lg:w-1/3">
+                <div class="info-box mb-8">
+                    <h3 class="text-xl font-bold mb-4">Why Choose Our Custom Transfers</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle info-icon mt-1"></i>
+                            <span>Professional, experienced drivers familiar with Morocco's roads</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle info-icon mt-1"></i>
+                            <span>Comfortable, air-conditioned vehicles suitable for your group size</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle info-icon mt-1"></i>
+                            <span>Flexible departure times to fit your schedule</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle info-icon mt-1"></i>
+                            <span>Optional stops at points of interest along your route</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle info-icon mt-1"></i>
+                            <span>Door-to-door service from your accommodation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle info-icon mt-1"></i>
+                            <span>Competitive pricing with no hidden fees</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h3 class="text-xl font-bold mb-4">What Happens Next?</h3>
+                    <ol class="space-y-4">
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-0.5">1</div>
+                            <div>
+                                <strong>Submit Your Request</strong>
+                                <p class="text-gray-600">Fill out the form with your transfer details and requirements.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-0.5">2</div>
+                            <div>
+                                <strong>Quick Response</strong>
+                                <p class="text-gray-600">Our team will review your request and contact you within 24 hours with a quote.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-0.5">3</div>
+                            <div>
+                                <strong>Confirm Your Booking</strong>
+                                <p class="text-gray-600">Once you approve the quote, we'll finalize the details and confirm your transfer.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 mt-0.5">4</div>
+                            <div>
+                                <strong>Enjoy Your Transfer</strong>
+                                <p class="text-gray-600">Your driver will pick you up at the scheduled time and location for a comfortable journey.</p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Include footer -->
+    <%- include('../partials/footer') %>
+    
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize date picker
+            flatpickr("#departureDate", {
+                minDate: "today",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "F j, Y",
+            });
+            
+            // Form validation
+            const form = document.getElementById('custom-transfer-form');
+            
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+                
+                // Basic validation
+                const requiredFields = ['fullName', 'email', 'phone', 'startCity', 'endCity', 'departureDate'];
+                
+                requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (!field.value.trim()) {
+                        field.classList.add('border-red-500');
+                        isValid = false;
+                    } else {
+                        field.classList.remove('border-red-500');
+                    }
+                });
+                
+                // Email validation
+                const emailField = document.getElementById('email');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (emailField.value.trim() && !emailRegex.test(emailField.value.trim())) {
+                    emailField.classList.add('border-red-500');
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    event.preventDefault();
+                    
+                    // Scroll to the top of the form
+                    form.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Show error message
+                    if (!document.querySelector('.form-error-message')) {
+                        const errorMessage = document.createElement('div');
+                        errorMessage.className = 'bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded mb-6 flex items-center form-error-message';
+                        errorMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i><span>Please fill in all required fields correctly.</span>';
+                        form.insertBefore(errorMessage, form.firstChild);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

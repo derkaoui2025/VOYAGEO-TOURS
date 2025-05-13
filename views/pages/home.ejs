@@ -2,292 +2,742 @@
 <html lang="en">
 <head>
     <%- include('../partials/head') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
     <style>
-        /* Custom styles for the new tours layout */
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.8rem;
-            color: var(--secondary-color);
-            margin-bottom: 4rem;
-            font-style: italic;
-        }
-        
-        .horizontal-tour-card {
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 3rem;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-        
-        .horizontal-tour-image {
-            width: 35%;
-            min-width: 250px;
+        /* Custom styles for homepage */
+        .hero-video-container {
+            position: relative;
+            height: 85vh;
+            width: 100%;
             overflow: hidden;
         }
         
-        .horizontal-tour-image img {
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
         
-        .horizontal-tour-content {
-            width: 45%;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .horizontal-tour-price {
-            width: 20%;
-            min-width: 150px;
-            padding: 2rem;
-            background-color: #f8f9fa;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-left: 1px solid #eee;
-        }
-        
-        .horizontal-tour-content h3 {
-            margin-bottom: 1.5rem;
-            font-size: 2.2rem;
-            color: var(--secondary-color);
-        }
-        
-        .tour-detail {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
-        }
-        
-        .tour-detail svg {
-            margin-right: 1rem;
-            color: var(--primary-color);
-        }
-        
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .current-price {
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 2rem;
-        }
-        
-        .view-details-btn {
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            text-align: center;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .experience-card {
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .experience-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+        
+        .swiper-pagination-bullet {
+            background: white;
+            opacity: 0.7;
+        }
+        
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #e67e22;
+        }
+        
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section-heading {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #e67e22;
         }
         
         @media (max-width: 768px) {
-            .horizontal-tour-card {
-                flex-direction: column;
-            }
-            
-            .horizontal-tour-image,
-            .horizontal-tour-content,
-            .horizontal-tour-price {
-                width: 100%;
-                min-width: auto;
-            }
-            
-            .horizontal-tour-price {
-                border-left: none;
-                border-top: 1px solid #eee;
+            .hero-video-container {
+                height: 70vh;
             }
         }
     </style>
 </head>
-<body>
+
+<body class="bg-gray-50 font-opensans text-gray-800">
     <%- include('../partials/navbar') %>
     
-    <%- include('../partials/hero') %>
+    <!-- Hero Section with Video Background -->
+    <div class="hero-video-container">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="/videos/morocco-hero.mp4" type="video/mp4">
+            <!-- Fallback image if video doesn't load -->
+            <img src="/images/headers/morocco-banner.jpg" alt="Morocco Landscapes">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content flex items-center justify-center">
+            <div class="container mx-auto px-4 text-center text-white">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 font-montserrat">Discover The Magic of Morocco</h1>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Unforgettable adventures through ancient cities, breathtaking landscapes, and the vibrant culture of Morocco</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="/tours" class="btn bg-warning hover:bg-warning/90 text-white border-0 px-8 py-3 rounded-md">Explore Tours</a>
+                    <a href="/contact" class="btn bg-transparent hover:bg-white/10 text-white border border-white px-8 py-3 rounded-md">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Services Overview Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading inline-block mb-4">Our Services</h2>
+                <p class="text-xl text-gray-600 mt-8 max-w-3xl mx-auto">Experience the best of Morocco with our professional services tailored to create unforgettable memories</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Service 1: Tours -->
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('/images/services/tours.jpg')"></div>
+                    <div class="p-6">
+                        <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mb-4">
+                            <i class="fas fa-route text-warning text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-secondary">Tours</h3>
+                        <p class="text-gray-600 mb-4">Multi-day adventures exploring Morocco's most stunning destinations with experienced guides.</p>
+                        <a href="/tours" class="text-warning font-medium hover:underline flex items-center">
+                            Discover Tours <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 2: Excursions -->
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('/images/services/excursions.jpg')"></div>
+                    <div class="p-6">
+                        <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mb-4">
+                            <i class="fas fa-hiking text-warning text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-secondary">Excursions</h3>
+                        <p class="text-gray-600 mb-4">Day trips to remarkable locations including desert excursions and mountain experiences.</p>
+                        <a href="/excursions" class="text-warning font-medium hover:underline flex items-center">
+                            Browse Excursions <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 3: Activities -->
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('/images/services/activities.jpg')"></div>
+                    <div class="p-6">
+                        <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mb-4">
+                            <i class="fas fa-star text-warning text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-secondary">Activities</h3>
+                        <p class="text-gray-600 mb-4">Cultural experiences, workshops, and authentic Moroccan activities led by local experts.</p>
+                        <a href="/activities" class="text-warning font-medium hover:underline flex items-center">
+                            Explore Activities <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 4: Transfers -->
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('/images/services/transfers.jpg')"></div>
+                    <div class="p-6">
+                        <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-warning text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-secondary">Transfers</h3>
+                        <p class="text-gray-600 mb-4">Comfortable and reliable transportation between cities and airports across Morocco.</p>
+                        <a href="/transfers" class="text-warning font-medium hover:underline flex items-center">
+                            View Transfers <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- Featured Tours Section -->
-    <section class="section featured-tours">
-        <div class="container">
-            <h2 class="section-title text-center">MOROCCO DESERT TOUR</h2>
-            <p class="section-subtitle">Our Popular Experiences</p>
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading">Popular Tours</h2>
+                    <p class="text-xl text-gray-600 mt-8">Discover our most beloved Morocco adventures</p>
+                </div>
+                <a href="/tours" class="mt-4 md:mt-0 bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-md font-medium">View All Tours</a>
+            </div>
             
             <% if (featuredTours && featuredTours.length > 0) { %>
-                <% featuredTours.forEach(tour => { %>
-                    <div class="horizontal-tour-card animate">
-                        <div class="horizontal-tour-image">
-                            <img class="lazy-image" data-src="<%= tour.mainImage %>" alt="<%= tour.title %>" width="400" height="300">
-                        </div>
-                        <div class="horizontal-tour-content">
-                            <h3><%= tour.title %></h3>
-                            <div class="tour-detail">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                <span><%= tour.duration %> DAYS</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <% featuredTours.slice(0, 3).forEach(tour => { %>
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl">
+                            <a href="/tours/<%= tour.slug %>" class="block">
+                                <div class="relative h-64 overflow-hidden">
+                                    <img 
+                                        src="<%= tour.mainImage %>" 
+                                        alt="<%= tour.title %>" 
+                                        class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                    >
+                                    <div class="absolute top-4 left-4 bg-warning text-white px-4 py-1 rounded-full text-sm font-medium">
+                                        <%= tour.duration %> Days
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600 text-sm flex items-center">
+                                        <i class="fas fa-map-marker-alt text-warning mr-2"></i>
+                                        <%= tour.startLocation %>
+                                    </span>
+                                    <span class="text-warning font-bold">
+                                        <%= tour.price.toLocaleString() %> MAD
+                                    </span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-3 text-secondary">
+                                    <a href="/tours/<%= tour.slug %>" class="hover:text-warning transition-colors">
+                                        <%= tour.title %>
+                                    </a>
+                                </h3>
+                                <p class="text-gray-600 mb-4 line-clamp-2">
+                                    <%= tour.shortDescription || tour.description.substring(0, 120) + '...' %>
+                                </p>
+                                <a href="/tours/<%= tour.slug %>" class="inline-block w-full text-center bg-warning hover:bg-warning/90 text-white font-semibold py-2 px-4 rounded transition-all duration-300">
+                                    View Details
+                                </a>
                             </div>
-                            <div class="tour-detail">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                <span><%= tour.startLocation %></span>
-                            </div>
-                            <% if (tour.accommodation) { %>
-                            <div class="tour-detail">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                </svg>
-                                <span><%= tour.accommodation %></span>
-                            </div>
-                            <% } %>
                         </div>
-                        <div class="horizontal-tour-price">
-                            <div class="original-price">From $<%= Math.round(tour.price * 1.2) %></div>
-                            <div class="current-price"><%= tour.price %> EUR</div>
-                            <a href="/tours/<%= tour.slug %>" class="btn btn-primary view-details-btn">VIEW DETAILS</a>
-                        </div>
-                    </div>
-                <% }); %>
+                    <% }) %>
+                </div>
             <% } else { %>
-                <!-- no tours found  -->
-                <div class="text-center" style="margin-top: 4rem;">
-                    <h2>No tours found</h2>
+                <div class="text-center my-16 bg-white rounded-lg p-8 shadow-sm">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-route text-gray-400 text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl text-gray-600 mb-2">No tours available yet</h2>
+                    <p class="text-gray-500">Check back soon for exciting Morocco tours!</p>
                 </div>
             <% } %>
+        </div>
+    </section>
+    
+    <!-- Featured Excursions Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading">Day Excursions</h2>
+                    <p class="text-xl text-gray-600 mt-8">Explore Morocco's best day trips from major cities</p>
+                </div>
+                <a href="/excursions" class="mt-4 md:mt-0 bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-md font-medium">View All Excursions</a>
+            </div>
             
-            <div class="text-center" style="margin-top: 4rem;">
-                <a href="/tours" class="btn btn-secondary">View All Tours</a>
+            <% if (typeof featuredExcursions !== 'undefined' && featuredExcursions && featuredExcursions.length > 0) { %>
+                <!-- Desktop & Tablet Layout -->
+                <div class="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <% featuredExcursions.slice(0, 4).forEach((excursion, index) => { %>
+                        <div class="<%= index === 0 ? 'md:col-span-2 md:row-span-2' : '' %>">
+                            <div class="bg-white rounded-xl overflow-hidden shadow-md h-full transition-all duration-300 hover:shadow-lg border border-gray-100">
+                                <div class="relative <%= index === 0 ? 'h-72' : 'h-56' %> overflow-hidden">
+                                    <img 
+                                        src="<%= excursion.gallery && excursion.gallery.length > 0 ? excursion.gallery[0] : '/images/placeholder.jpg' %>" 
+                                        alt="<%= excursion.title %>"
+                                        class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                    >
+                                    <div class="absolute top-4 left-4 bg-warning text-white px-3 py-1 rounded-full text-xs font-medium">
+                                        <%= excursion.duration %> <%= excursion.durationType %>
+                                    </div>
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-<%= index === 0 ? '0' : '80' %>"></div>
+                                </div>
+                                
+                                <div class="p-5">
+                                    <div class="flex items-start justify-between">
+                                        <h3 class="text-lg <%= index === 0 ? 'text-xl' : '' %> font-bold text-secondary mb-3">
+                                            <%= excursion.title %>
+                                        </h3>
+                                       
+                                    </div>
+                                    
+                                    <div class="flex items-center text-gray-600 mb-4">
+                                        <i class="fas fa-map-marker-alt text-warning mr-2"></i>
+                                        <span><%= excursion.startLocation %></span>
+                                    </div>
+                                    
+                                    <% if (index === 0 && excursion.shortDescription) { %>
+                                        <p class="text-gray-600 mb-4 line-clamp-2"><%= excursion.shortDescription %></p>
+                                    <% } %>
+                                    
+                                    <a href="/excursions/<%= excursion.slug %>" class="inline-block w-full text-center bg-warning hover:bg-warning/90 text-white font-semibold py-2 px-4 rounded transition-all duration-300">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+                
+                <!-- Mobile Carousel -->
+                <div class="md:hidden">
+                    <div class="swiper excursions-swiper">
+                        <div class="swiper-wrapper pb-12">
+                            <% featuredExcursions.forEach(excursion => { %>
+                                <div class="swiper-slide p-2">
+                                    <div class="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                                        <div class="relative h-48 overflow-hidden">
+                                            <img 
+                                                src="<%= excursion.gallery && excursion.gallery.length > 0 ? excursion.gallery[0] : '/images/placeholder.jpg' %>" 
+                                                alt="<%= excursion.title %>" 
+                                                class="w-full h-full object-cover"
+                                            >
+                                            <div class="absolute top-3 left-3 bg-warning text-white px-3 py-1 rounded-full text-xs font-medium">
+                                                <%= excursion.duration %> <%= excursion.durationType %>
+                                            </div>
+                                        </div>
+                                        <div class="p-4">
+                                            <div class="flex justify-between items-start mb-2">
+                                                <h3 class="text-lg font-bold text-secondary"><%= excursion.title %></h3>
+                                            </div>
+                                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                                <i class="fas fa-map-marker-alt text-warning mr-2"></i>
+                                                <span><%= excursion.startLocation %></span>
+                                            </div>
+                                            <a href="/excursions/<%= excursion.slug %>" class="inline-block w-full text-center bg-warning hover:bg-warning/90 text-white font-semibold py-2 px-4 rounded transition-all duration-300">
+                                                View Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="text-center my-16 bg-white rounded-lg p-8 shadow-sm border border-gray-100">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-hiking text-gray-400 text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl text-gray-600 mb-2">No excursions available yet</h2>
+                    <p class="text-gray-500">Check back soon for exciting day trips around Morocco!</p>
+                </div>
+            <% } %>
+        </div>
+    </section>
+    
+    <!-- Activities & Transfers Combined Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Activities Side -->
+                <div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-bold text-secondary section-heading">Local Activities</h2>
+                            <p class="text-lg text-gray-600 mt-8">Experience authentic Moroccan culture</p>
+                        </div>
+                        <a href="/activities" class="mt-4 sm:mt-0 text-warning font-medium hover:underline flex items-center">
+                            All Activities <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <% if (typeof featuredActivities !== 'undefined' && featuredActivities && featuredActivities.length > 0) { %>
+                        <!-- Desktop View -->
+                        <div class="hidden sm:block">
+                            <div class="space-y-6">
+                                <% featuredActivities.slice(0, 3).forEach(activity => { %>
+                                    <div class="flex bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+                                        <div class="w-1/3 min-w-[100px] relative">
+                                            <a href="/activities/<%= activity.slug %>">
+                                                <img 
+                                                    src="<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : '/images/placeholder.jpg' %>" 
+                                                    alt="<%= activity.title %>" 
+                                                    class="w-full h-full object-cover"
+                                                >
+                                            </a>
+                                        </div>
+                                        <div class="w-2/3 p-4">
+                                            <h3 class="text-lg font-semibold mb-1 text-secondary">
+                                                <a href="/activities/<%= activity.slug %>" class="hover:text-warning transition-colors">
+                                                    <%= activity.title %>
+                                                </a>
+                                            </h3>
+                                            <div class="flex items-center text-sm text-gray-600 mb-2">
+                                                <i class="fas fa-map-marker-alt text-warning mr-1"></i>
+                                                <span><%= activity.location || 'Morocco' %></span>
+                                                <span class="mx-2">•</span>
+                                                <i class="fas fa-clock text-warning mr-1"></i>
+                                                <span><%= activity.duration %> <%= activity.durationType %></span>
+                                            </div>
+                                            <div class="flex justify-between items-center mt-2">
+                                                <span class="text-warning font-bold"><%= activity.price.toLocaleString() %> MAD</span>
+                                                <a href="/activities/<%= activity.slug %>" class="text-sm text-secondary hover:text-warning">More Info →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                        
+                        <!-- Mobile View Carousel -->
+                        <div class="sm:hidden">
+                            <div class="swiper activities-swiper">
+                                <div class="swiper-wrapper pb-10">
+                                    <% featuredActivities.forEach(activity => { %>
+                                        <div class="swiper-slide p-2">
+                                            <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                                                <div class="relative h-48">
+                                                    <img 
+                                                        src="<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : '/images/placeholder.jpg' %>" 
+                                                        alt="<%= activity.title %>" 
+                                                        class="w-full h-full object-cover"
+                                                    >
+                                                    <div class="absolute top-2 left-2 bg-warning text-white text-xs px-2 py-1 rounded-full">
+                                                        <%= activity.duration %> <%= activity.durationType %>
+                                                    </div>
+                                                </div>
+                                                <div class="p-4">
+                                                    <h3 class="text-lg font-semibold mb-1 text-secondary">
+                                                        <%= activity.title %>
+                                                    </h3>
+                                                    <div class="flex justify-between mt-2">
+                                                        <span class="text-gray-600 text-sm flex items-center">
+                                                            <i class="fas fa-map-marker-alt text-warning mr-1"></i>
+                                                            <%= activity.location || 'Morocco' %>
+                                                        </span>
+                                                        <span class="text-warning font-bold"><%= activity.price.toLocaleString() %> MAD</span>
+                                                    </div>
+                                                    <a href="/activities/<%= activity.slug %>" class="mt-3 inline-block w-full text-center bg-warning/90 hover:bg-warning text-white text-sm py-2 px-3 rounded">
+                                                        View Details
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }) %>
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center my-8 bg-white p-8 rounded-lg shadow-sm">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-star text-gray-400 text-xl"></i>
+                            </div>
+                            <h2 class="text-xl text-gray-600 mb-2">No activities available yet</h2>
+                            <p class="text-gray-500">Check back soon for authentic Moroccan activities!</p>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <!-- Transfers Side -->
+                <div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-bold text-secondary section-heading">City Transfers</h2>
+                            <p class="text-lg text-gray-600 mt-8">Comfortable transportation between Moroccan cities</p>
+                        </div>
+                        <a href="/transfers" class="mt-4 sm:mt-0 text-warning font-medium hover:underline flex items-center">
+                            All Transfers <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="grid grid-cols-1 gap-4">
+                            <% if (typeof popularTransfers !== 'undefined' && popularTransfers && popularTransfers.length > 0) { %>
+                                <% popularTransfers.forEach((transfer, index) => { 
+                                    const isLast = index === popularTransfers.length - 1;
+                                %>
+                                    <div class="flex items-center justify-between p-4 <%= !isLast ? 'border-b' : '' %>">
+                                        <div>
+                                            <div class="font-semibold text-secondary"><%= transfer.startCity %> → <%= transfer.endCity %></div>
+                                            <div class="text-sm text-gray-600"><%= transfer.duration %> • <%= transfer.vehicleType || 'Private Vehicle' %></div>
+                                        </div>
+                                        <a href="/transfers/<%= transfer.slug %>" class="bg-warning text-white px-4 py-2 rounded text-sm hover:bg-warning/90 transition-colors">View</a>
+                                    </div>
+                                <% }); %>
+                            <% } else { %>
+                                <!-- Display message when no transfers are available -->
+                                <div class="text-center p-6">
+                                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-car text-gray-400 text-xl"></i>
+                                    </div>
+                                    <h3 class="text-xl text-gray-600 mb-2">No transfers available yet</h3>
+                                    <p class="text-gray-500 mb-6">Check back soon for Morocco city transfers</p>
+                                </div>
+                            <% } %>
+                        </div>
+                        
+                        <div class="mt-6 text-center">
+                            <a href="/transfers/custom" class="inline-block w-full py-3 bg-secondary hover:bg-secondary/90 text-white rounded transition-colors">
+                                <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
     
-    <!-- Why Choose Us Section -->
-    <section class="section why-choose-us" style="padding: 4rem 0; background-color: #f8f9fa;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
-            <h2 class="section-title text-center" style="font-size: 2.5rem; color: #2c3e50; margin-bottom: 3rem;">Why Choose Voyageo Tours?</h2>
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading inline-block">What Our Clients Say</h2>
+                <p class="text-xl text-gray-600 mt-8 max-w-3xl mx-auto">Read authentic reviews from travelers who experienced our services</p>
+            </div>
             
-            <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-                <div class="feature-item animate" style="text-align: center; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div class="feature-icon" style="margin-bottom: 1.5rem; color: #f39c12;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
+            <div class="swiper testimonial-swiper">
+                <div class="swiper-wrapper pb-12">
+                    <!-- Testimonial 1 -->
+                    <div class="swiper-slide p-4">
+                        <div class="testimonial-card bg-gray-50 rounded-lg p-6 h-full">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center mr-4">
+                                    <span class="text-warning font-bold">JM</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">James Miller</h4>
+                                    <div class="flex text-warning">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 italic">
+                                "Our 7-day desert tour was absolutely incredible! Mohammed, our guide, was knowledgeable and personable. The accommodations were comfortable and the food was delicious. Highly recommend!"
+                            </p>
+                            <div class="mt-4 text-sm text-gray-500">Marrakech to Merzouga Desert Tour</div>
+                        </div>
                     </div>
-                    <h3 style="font-size: 1.5rem; color: #2c3e50; margin-bottom: 1rem;">10+ Years Experience</h3>
-                    <p style="color: #666; line-height: 1.6;">With over a decade of experience, we know Morocco like the back of our hand.</p>
-                </div>
-                
-                <div class="feature-item animate" style="text-align: center; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div class="feature-icon" style="margin-bottom: 1.5rem; color: #f39c12;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="swiper-slide p-4">
+                        <div class="testimonial-card bg-gray-50 rounded-lg p-6 h-full">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center mr-4">
+                                    <span class="text-warning font-bold">SC</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Sarah Chen</h4>
+                                    <div class="flex text-warning">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 italic">
+                                "The cooking class in Fes was a highlight of our trip! We learned to make authentic tagine and couscous, and the host family was so welcoming. A must-do for any foodie visiting Morocco."
+                            </p>
+                            <div class="mt-4 text-sm text-gray-500">Traditional Moroccan Cooking Class</div>
+                        </div>
                     </div>
-                    <h3 style="font-size: 1.5rem; color: #2c3e50; margin-bottom: 1rem;">Local Expert Guides</h3>
-                    <p style="color: #666; line-height: 1.6;">Our guides are knowledgeable locals who are passionate about sharing their culture.</p>
-                </div>
-                
-                <div class="feature-item animate" style="text-align: center; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div class="feature-icon" style="margin-bottom: 1.5rem; color: #f39c12;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                        </svg>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="swiper-slide p-4">
+                        <div class="testimonial-card bg-gray-50 rounded-lg p-6 h-full">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center mr-4">
+                                    <span class="text-warning font-bold">DP</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">David Patterson</h4>
+                                    <div class="flex text-warning">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 italic">
+                                "We used Voyageo for all our transfers in Morocco. The drivers were always on time, professional, and the vehicles were comfortable. Made traveling between cities so much easier!"
+                            </p>
+                            <div class="mt-4 text-sm text-gray-500">Multiple City Transfers</div>
+                        </div>
                     </div>
-                    <h3 style="font-size: 1.5rem; color: #2c3e50; margin-bottom: 1rem;">5-Star Rated</h3>
-                    <p style="color: #666; line-height: 1.6;">Consistently rated 5 stars on TripAdvisor, Google, and other travel platforms.</p>
-                </div>
-                
-                <div class="feature-item animate" style="text-align: center; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div class="feature-icon" style="margin-bottom: 1.5rem; color: #f39c12;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                            <line x1="12" y1="17" x2="12" y2="21"></line>
-                        </svg>
+                    
+                    <!-- Testimonial 4 -->
+                    <div class="swiper-slide p-4">
+                        <div class="testimonial-card bg-gray-50 rounded-lg p-6 h-full">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center mr-4">
+                                    <span class="text-warning font-bold">EJ</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Emma Johnson</h4>
+                                    <div class="flex text-warning">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 italic">
+                                "The day trip to Ouzoud Falls was breathtaking! Our guide was informative and took us to the best spots for photos. Saw lots of monkeys too! Perfectly organized excursion."
+                            </p>
+                            <div class="mt-4 text-sm text-gray-500">Ouzoud Waterfalls Day Trip</div>
+                        </div>
                     </div>
-                    <h3 style="font-size: 1.5rem; color: #2c3e50; margin-bottom: 1rem;">Customizable Tours</h3>
-                    <p style="color: #666; line-height: 1.6;">Every trip can be tailored to your preferences, interests, and schedule.</p>
                 </div>
+                <div class="swiper-pagination"></div>
             </div>
         </div>
     </section>
     
-    <section class="section testimonials" style="padding: 4rem 0; background-color: white;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
-            <h2 class="section-title text-center" style="font-size: 2.5rem; color: #2c3e50; margin-bottom: 3rem;">What Our Travelers Say</h2>
-            
-            <div class="testimonials-slider" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                <div class="testimonial-item animate" style="background: #f8f9fa; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div class="testimonial-content" style="margin-bottom: 1.5rem;">
-                        <p style="color: #666; line-height: 1.6; font-style: italic;">"Our 10-day tour of Morocco exceeded all expectations. The accommodations were excellent, the food delicious, and our guide Mohammed was knowledgeable and fun!"</p>
-                    </div>
-                    <div class="testimonial-author" style="display: flex; align-items: center;">
-                        <img class="lazy-image" data-src="/images/testimonials/client1.jpg" alt="Sarah Wilson" width="60" height="60" style="border-radius: 50%; margin-right: 1rem;">
-                        <div>
-                            <h4 style="color: #2c3e50; margin-bottom: 0.25rem;">Sarah Wilson</h4>
-                            <p style="color: #666;">United Kingdom</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-item animate" style="background: #f8f9fa; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div class="testimonial-content" style="margin-bottom: 1.5rem;">
-                        <p style="color: #666; line-height: 1.6; font-style: italic;">"The Sahara desert experience was magical. Sleeping under the stars and riding camels at sunrise are memories I'll cherish forever. Voyageo Tours made everything perfect!"</p>
-                    </div>
-                    <div class="testimonial-author" style="display: flex; align-items: center;">
-                        <img class="lazy-image" data-src="/images/testimonials/client2.jpg" alt="David Thompson" width="60" height="60" style="border-radius: 50%; margin-right: 1rem;">
-                        <div>
-                            <h4 style="color: #2c3e50; margin-bottom: 0.25rem;">David Thompson</h4>
-                            <p style="color: #666;">United States</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-item animate" style="background: #f8f9fa; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <div class="testimonial-content" style="margin-bottom: 1.5rem;">
-                        <p style="color: #666; line-height: 1.6; font-style: italic;">"As a solo female traveler, I was concerned about visiting Morocco alone. Voyageo Tours ensured I felt safe and comfortable throughout my entire journey. Highly recommend!"</p>
-                    </div>
-                    <div class="testimonial-author" style="display: flex; align-items: center;">
-                        <img class="lazy-image" data-src="/images/testimonials/client3.jpg" alt="Emma Rodriguez" width="60" height="60" style="border-radius: 50%; margin-right: 1rem;">
-                        <div>
-                            <h4 style="color: #2c3e50; margin-bottom: 0.25rem;">Emma Rodriguez</h4>
-                            <p style="color: #666;">Australia</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section class="section cta" style="padding: 4rem 0; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/morocco-bg.jpg') center/cover; color: white;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
-            <div class="cta-content animate" style="text-align: center;">
-                <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Ready to Experience Morocco?</h2>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Let us help you plan the perfect Moroccan adventure tailored to your interests.</p>
-                <div class="cta-buttons" style="display: flex; gap: 1rem; justify-content: center;">
-                    <a href="/customize" class="btn btn-primary" style="background: #f39c12; color: white; padding: 1rem 2rem; border-radius: 4px; text-decoration: none; font-weight: bold;">Customize Your Tour</a>
-                    <a href="/contact" class="btn btn-outline" style="border: 2px solid white; color: white; padding: 1rem 2rem; border-radius: 4px; text-decoration: none; font-weight: bold;">Contact Us</a>
-                </div>
+    <!-- Custom Morocco Experience CTA -->
+    <section class="py-20 bg-cover bg-center relative" style="background-image: url('/images/custom-tour-bg.jpg');">
+        <div class="absolute inset-0 bg-black/70"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center text-white">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Create Your Custom Morocco Experience</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">
+                Looking for something unique? Let us design a personalized itinerary tailored to your preferences and interests.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/customize" class="btn bg-warning hover:bg-warning/90 text-white border-0 px-8 py-3 rounded-md">
+                    <i class="fas fa-pencil-alt mr-2"></i> Customize Your Tour
+                </a>
+                <a href="/transfers/custom" class="btn bg-white hover:bg-white/90 text-secondary border-0 px-8 py-3 rounded-md">
+                    <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
+                </a>
             </div>
         </div>
     </section>
     
     <%- include('../partials/footer') %>
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize testimonials slider
+            const testimonialSwiper = new Swiper('.testimonial-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    },
+                }
+            });
+            
+            // Initialize excursions slider for mobile
+            const excursionsSwiper = new Swiper('.excursions-swiper', {
+                slidesPerView: 1.2,
+                spaceBetween: 10,
+                centeredSlides: false,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1.5,
+                    },
+                }
+            });
+            
+            // Initialize activities slider for mobile
+            const activitiesSwiper = new Swiper('.activities-swiper', {
+                slidesPerView: 1.2,
+                spaceBetween: 10,
+                centeredSlides: false,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1.5,
+                    },
+                }
+            });
+            
+            // Lazy load images
+            const lazyImages = document.querySelectorAll('.lazy-image');
+            
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const image = entry.target;
+                            image.src = image.dataset.src;
+                            image.classList.remove('lazy-image');
+                            imageObserver.unobserve(image);
+                        }
+                    });
+                });
+                
+                lazyImages.forEach(image => {
+                    imageObserver.observe(image);
+                });
+            } else {
+                // Fallback for browsers without intersection observer
+                lazyImages.forEach(image => {
+                    image.src = image.dataset.src;
+                });
+            }
+        });
+    </script>
 </body>
 </html> 

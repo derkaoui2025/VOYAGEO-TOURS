@@ -1,3 +1,7 @@
+// THIS FILE IS DEPRECATED AND RENAMED TO .old
+// Use unifiedBookingController.js instead.
+// This is kept for reference only but routes now use unifiedBookingController.js
+
 const Booking = require('../../models/Booking');
 const Tour = require('../../models/Tour');
 const ExcelJS = require('exceljs');

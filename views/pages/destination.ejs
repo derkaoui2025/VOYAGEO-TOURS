@@ -1,446 +1,696 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <meta name="description" content="<%= metaDescription %>">
+    <meta name="keywords" content="<%= metaKeywords %>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',
+                        secondary: '#2c3e50',
+                        accent: '#e67e22',
+                    },
+                    maxWidth: {
+                        'screen-xl': '1280px',
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json"><%- structuredData %></script>
 </head>
-<body>
+<body class="text-gray-800 bg-gray-50">
     <%- include('../partials/navbar') %>
 
-    <div class="tour-container">
-        <!-- Main content area -->
-        <main class="tour-main">
-            <!-- Image Gallery -->
-            <div class="tour-gallery">
-                <div class="gallery-main">
-                    <img src="<%= tour.mainImage %>" alt="<%= tour.title %>">
-                </div>
-                <div class="gallery-nav">
-                    <div class="gallery-thumb active">
-                        <img src="<%= tour.mainImage %>" alt="Main view">
-                    </div>
-                    <% if (tour.images && tour.images.length > 0) { %>
-                        <% tour.images.slice(0, 4).forEach(image => { %>
-                            <div class="gallery-thumb">
-                                <img src="<%= image %>" alt="Tour view">
-                            </div>
-                        <% }); %>
-                    <% } %>
-                </div>
-            </div>
-
-            <!-- Tour Header -->
-            <div class="tour-header">
-                <div class="tour-title">
-                    <h1><%= tour.title %></h1>
-                    <div class="tour-price-mobile">
-                        <div class="price-current-mobile">€<%= tour.price %></div>
-                        <div class="price-per-mobile">per person</div>
-                    </div>
-                </div>
-                
-                <div class="tour-meta">
-                    <div class="meta-item">
-                        <i class="fas fa-clock"></i>
+    <!-- Hero Section with Main Image -->
+    <section class="relative w-full h-[70vh] max-h-[600px] mb-8" aria-label="Tour hero image">
+        <img 
+            id="mainImage" 
+            src="<%= tour.mainImage %>" 
+            alt="<%= tour.title %> - Featured image" 
+            class="w-full h-full object-cover"
+            loading="eager"
+        >
+        
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 md:p-8">
+            <div class="container mx-auto max-w-screen-xl px-4">
+                <h1 class="text-white text-3xl md:text-5xl font-bold leading-tight"><%= tour.title %></h1>
+                <div class="flex flex-wrap gap-6 text-white mt-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-clock mr-2 text-primary"></i>
                         <span><%= tour.duration %> <%= tour.duration === 1 ? 'Day' : 'Days' %></span>
                     </div>
-                    <div class="meta-item">
-                        <i class="fas fa-map-marker-alt"></i>
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
                         <span><%= tour.startLocation %></span>
                     </div>
-                    <div class="meta-item">
-                        <i class="fas fa-users"></i>
+                    <div class="flex items-center">
+                        <i class="fas fa-users mr-2 text-primary"></i>
                         <span>Max <%= tour.groupSize %> people</span>
                     </div>
-                    <div class="meta-item">
-                        <i class="fas fa-star"></i>
-                        <span>4.9 (128 reviews)</span>
+                    <div class="flex items-center">
+                        <i class="fas fa-star mr-2 text-yellow-400"></i>
+                        <span><%= tour.rating %> (<%= tour.reviewsCount %> reviews)</span>
                     </div>
                 </div>
             </div>
-
-            <!-- Tour Overview -->
-            <div class="tour-section">
-                <h2 class="section-title">Tour Overview</h2>
-                <div class="tour-overview">
-                    <%= tour.description %>
-                </div>
-            </div>
-
-            <!-- Tour Highlights -->
-            <div class="tour-section">
-                <h2 class="section-title">Tour Highlights</h2>
-                <div class="highlights-grid">
-                    <div class="highlight-item">
-                        <div class="highlight-icon">
-                            <i class="fas fa-map-marked-alt"></i>
-                        </div>
-                        <div class="highlight-text">
-                            Explore the stunning landscapes of <%= tour.startLocation %>
-                        </div>
+        </div>
+    </section>
+    
+    <!-- Image Gallery Thumbnails -->
+    <div class="container mx-auto max-w-screen-xl px-4 mb-8">
+        <div class="flex gap-3 overflow-x-auto py-4 px-2 -mx-2 scrollbar-none bg-white border border-gray-200" id="thumbnails" role="region" aria-label="Tour image gallery">
+            <button 
+                class="thumbnail-item active h-20 w-32 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary" 
+                data-img="<%= tour.mainImage %>"
+                aria-label="View main tour image"
+            >
+                <img src="<%= tour.mainImage %>" alt="Main view" class="h-full w-full object-cover">
+            </button>
+            
+            <% if (tour.images && tour.images.length > 0) { %>
+                <% tour.images.forEach((image, index) => { %>
+                    <button 
+                        class="thumbnail-item h-20 w-32 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary" 
+                        data-img="<%= image %>"
+                        aria-label="View tour image <%= index + 1 %>"
+                    >
+                        <img src="<%= image %>" alt="Tour view <%= index + 1 %>" class="h-full w-full object-cover">
+                    </button>
+                <% }); %>
+            <% } %>
+            
+            <% if (tour.mapImage) { %>
+                <button 
+                    class="thumbnail-item h-20 w-32 flex-shrink-0 relative focus:outline-none focus:ring-2 focus:ring-primary" 
+                    data-img="<%= tour.mapImage %>"
+                    aria-label="View tour route map"
+                >
+                    <img src="<%= tour.mapImage %>" alt="Tour route map" class="h-full w-full object-cover">
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <span class="text-white text-xs font-semibold bg-black/50 px-2 py-1">MAP</span>
                     </div>
-                    <div class="highlight-item">
-                        <div class="highlight-icon">
-                            <i class="fas fa-utensils"></i>
-                        </div>
-                        <div class="highlight-text">
-                            Experience authentic local cuisine
-                        </div>
-                    </div>
-                    <div class="highlight-item">
-                        <div class="highlight-icon">
-                            <i class="fas fa-camera"></i>
-                        </div>
-                        <div class="highlight-text">
-                            Capture breathtaking photo opportunities
-                        </div>
-                    </div>
-                    <div class="highlight-item">
-                        <div class="highlight-icon">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="highlight-text">
-                            Learn about rich cultural history with expert guides
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tour Itinerary -->
-            <div class="tour-section">
-                <h2 class="section-title">Tour Itinerary</h2>
-                <div class="itinerary-list">
-                    <% if (tour.itinerary && tour.itinerary.length > 0) { %>
-                        <% tour.itinerary.forEach((day, index) => { %>
-                            <div class="itinerary-item">
-                                <div class="itinerary-day">
-                                    <div class="itinerary-heading">
-                                        <div class="day-badge">Day <%= index + 1 %></div>
-                                        <div class="day-title"><%= day.title || `Day ${index + 1}` %></div>
-                                    </div>
-                                    <div class="itinerary-content">
-                                        <%= day.description %>
-                                        
-                                        <% if (day.activities && day.activities.length > 0) { %>
-                                            <ul class="activity-list">
-                                                <% day.activities.forEach(activity => { %>
-                                                    <li><%= activity %></li>
-                                                <% }); %>
-                                            </ul>
-                                        <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                        <% }); %>
-                    <% } else { %>
-                        <!-- Default itinerary if none provided -->
-                        <div class="itinerary-item">
-                            <div class="itinerary-day">
-                                <div class="itinerary-heading">
-                                    <div class="day-badge">Day 1</div>
-                                    <div class="day-title">Start of the Journey</div>
-                                </div>
-                                <div class="itinerary-content">
-                                    Begin your adventure in <%= tour.startLocation %> with a warm welcome from your guide.
-                                    <ul class="activity-list">
-                                        <li>Morning pickup from your hotel</li>
-                                        <li>Visit key cultural sites</li>
-                                        <li>Enjoy a traditional lunch</li>
-                                        <li>Evening relaxation at accommodation</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="itinerary-item">
-                            <div class="itinerary-day">
-                                <div class="itinerary-heading">
-                                    <div class="day-badge">Day 2</div>
-                                    <div class="day-title">Exploration Day</div>
-                                </div>
-                                <div class="itinerary-content">
-                                    Discover the hidden gems and breathtaking landscapes of the region.
-                                    <ul class="activity-list">
-                                        <li>Scenic morning drive</li>
-                                        <li>Guided tour of important sites</li>
-                                        <li>Authentic cultural experiences</li>
-                                        <li>Return to accommodation</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-
-            <!-- Includes & Excludes -->
-            <div class="tour-section">
-                <h2 class="section-title">What's Included</h2>
-                <div class="includes-excludes">
-                    <div class="includes-box">
-                        <h3 class="box-title"><i class="fas fa-check-circle"></i> Tour Includes</h3>
-                        <ul class="includes-list">
-                            <% if (tour.includes && tour.includes.length > 0) { %>
-                                <% tour.includes.forEach(item => { %>
-                                    <li><%= item %></li>
-                                <% }); %>
-                            <% } else { %>
-                                <li>Professional English-speaking guide</li>
-                                <li>Transportation in air-conditioned vehicle</li>
-                                <li>Entrance fees to monuments</li>
-                                <li>Bottled water during the tour</li>
-                                <li>Hotel pickup and drop-off</li>
+                </button>
+            <% } %>
+        </div>
+    </div>
+    
+    <!-- Main Content Area -->
+    <main class="container mx-auto max-w-screen-xl px-4 pb-16">
+        <div class="flex flex-col lg:flex-row gap-10">
+            <!-- Left Column: Tour Details -->
+            <div class="w-full lg:w-2/3">
+                <!-- Section Navigation -->
+                <nav class="border-b border-gray-200 mb-10 sticky top-0 bg-white z-10 -mx-4 px-4" aria-label="Tour sections">
+                    <div class="max-w-screen-xl mx-auto">
+                        <ul class="flex space-x-8 text-sm overflow-x-auto py-4">
+                            <li><a href="#overview" class="nav-link text-primary font-medium px-1 py-2 border-b-2 border-primary">Overview</a></li>
+                            <li><a href="#itinerary" class="nav-link text-gray-500 hover:text-primary px-1 py-2 border-b-2 border-transparent">Itinerary</a></li>
+                            <li><a href="#includes" class="nav-link text-gray-500 hover:text-primary px-1 py-2 border-b-2 border-transparent">What's Included</a></li>
+                            <li><a href="#accommodation" class="nav-link text-gray-500 hover:text-primary px-1 py-2 border-b-2 border-transparent">Accommodation</a></li>
+                            <% if (relatedTours && relatedTours.length > 0) { %>
+                                <li><a href="#related" class="nav-link text-gray-500 hover:text-primary px-1 py-2 border-b-2 border-transparent">Related Tours</a></li>
                             <% } %>
                         </ul>
+                    </div>
+                </nav>
+                
+                <!-- Overview Section -->
+                <section id="overview" class="mb-16 bg-white p-8 border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">Tour Overview</h2>
+                    <div class="prose prose-lg max-w-none">
+                        <p class="text-gray-700 leading-relaxed"><%= tour.description %></p>
                     </div>
                     
-                    <div class="excludes-box">
-                        <h3 class="box-title"><i class="fas fa-times-circle"></i> Tour Excludes</h3>
-                        <ul class="excludes-list">
-                            <% if (tour.excludes && tour.excludes.length > 0) { %>
-                                <% tour.excludes.forEach(item => { %>
-                                    <li><%= item %></li>
-                                <% }); %>
-                            <% } else { %>
-                                <li>International airfare</li>
-                                <li>Personal expenses</li>
-                                <li>Optional activities</li>
-                                <li>Travel insurance</li>
-                                <li>Gratuities</li>
-                            <% } %>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tour Map -->
-            <div class="tour-section">
-                <h2 class="section-title">Tour Map</h2>
-                <div class="tour-map">
-                    <% if (tour.mapImage) { %>
-                        <img src="<%= tour.mapImage %>" alt="Map of <%= tour.title %>">
+                    <% if (tour.category) { %>
+                        <div class="mt-8 inline-block bg-gray-100 py-2 px-4 text-sm">
+                            <span class="font-medium">Category:</span> <%= tour.category %>
+                        </div>
+                    <% } %>
+                </section>
+                
+                <!-- Itinerary Section -->
+                <section id="itinerary" class="mb-16 bg-white p-8 border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-8 pb-2 border-b border-gray-200">Itinerary</h2>
+                    
+                    <% if (tour.itinerary && tour.itinerary.length > 0) { %>
+                        <div class="space-y-12">
+                            <% tour.itinerary.forEach((day, index) => { %>
+                                <div class="border-l-4 border-primary pl-6">
+                                    <div class="flex items-center mb-4">
+                                        <div class="bg-primary text-white font-bold h-10 w-10 flex items-center justify-center -ml-8 shadow-md">
+                                            <%= day.day %>
+                                        </div>
+                                        <h3 class="text-xl font-semibold ml-4"><%= day.title %></h3>
+                                    </div>
+                                    
+                                    <div class="prose prose-lg max-w-none">
+                                        <p class="text-gray-700 mb-4"><%= day.description %></p>
+                                    </div>
+                                    
+                                    <% if (day.distance) { %>
+                                        <div class="flex items-center text-sm text-gray-500 mb-3 bg-gray-50 p-2 inline-block">
+                                            <i class="fas fa-route mr-2 text-primary"></i>
+                                            <span>Distance: <%= day.distance %></span>
+                                        </div>
+                                    <% } %>
+                                    
+                                    <% if (day.highlights && day.highlights.length > 0) { %>
+                                        <div class="mt-6 bg-gray-50 p-4">
+                                            <h4 class="text-sm font-semibold uppercase text-gray-500 mb-3">Highlights</h4>
+                                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                <% day.highlights.forEach(highlight => { %>
+                                                    <li class="flex items-start">
+                                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                                        <span><%= highlight %></span>
+                                                    </li>
+                                                <% }); %>
+                                            </ul>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            <% }); %>
+                        </div>
                     <% } else { %>
-                        <img src="/images/maps/morocco-map-generic.jpg" alt="Map of Morocco">
+                        <div class="bg-gray-50 p-6 text-center">
+                            <p class="text-gray-500 italic">Detailed itinerary information available upon request.</p>
+                            <a href="mailto:info@voyageo-tours.com?subject=Itinerary request for <%= tour.title %>" class="inline-block mt-4 text-primary hover:underline">
+                                <i class="fas fa-envelope mr-1"></i> Request detailed itinerary
+                            </a>
+                        </div>
                     <% } %>
-                </div>
-            </div>
-
-            <!-- FAQs Section -->
-            <div class="tour-section">
-                <h2 class="section-title">Frequently Asked Questions</h2>
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            What is the best time to visit <%= tour.startLocation %>?
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            The best time to visit <%= tour.startLocation %> is during spring (March to May) and fall (September to November) when the weather is pleasant and not too hot.
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            Is this tour suitable for children?
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            Yes, this tour is suitable for children aged 6 and above. Children must be accompanied by an adult.
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            What should I bring on this tour?
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            We recommend bringing comfortable walking shoes, a hat, sunscreen, sunglasses, a camera, and a light jacket or sweater for evenings.
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            What is the cancellation policy?
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            Full refund if canceled at least 24 hours in advance. No refund for cancellations less than 24 hours before the start time.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-          
-        </main>
-
-        <!-- Booking Sidebar -->
-        <aside class="booking-sidebar">
-            <div class="booking-form">
-                <div class="booking-header">
-                    <h2>Book This Tour</h2>
-                </div>
-                <div class="booking-prices">
-                    <% if (tour.oldPrice) { %>
-                        <div class="price-original">€<%= tour.oldPrice %></div>
-                    <% } %>
-                    <div class="price-current">€<%= tour.price %></div>
-                    <div class="price-per">per person</div>
-                </div>
-                <div class="booking-form-content">
-                    <form id="tour-booking-form" action="/api/bookings" method="POST">
-                        <input type="hidden" name="tourId" value="<%= tour._id %>">
-                        <input type="hidden" name="tourSlug" value="<%= tour.slug %>">
-                        
-                        <div class="form-group">
-                            <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" class="form-control">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="tourDate">Tour Date</label>
-                            <input type="date" id="tourDate" name="tourDate" class="form-control" required min="<%= new Date().toISOString().split('T')[0] %>">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="guestCount">Number of Guests</label>
-                            <select id="guestCount" name="guestCount" class="form-control" required>
-                                <% for(let i = 1; i <= 10; i++) { %>
-                                    <option value="<%= i %>"><%= i %> <%= i === 1 ? 'person' : 'people' %></option>
+                </section>
+                
+                <!-- Includes/Excludes Section -->
+                <section id="includes" class="mb-16 bg-white p-8 border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-8 pb-2 border-b border-gray-200">What's Included</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-5 flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Includes</span>
+                            </h3>
+                            <ul class="space-y-3">
+                                <% if (tour.includes && tour.includes.length > 0) { %>
+                                    <% tour.includes.forEach(item => { %>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                            <span><%= item %></span>
+                                        </li>
+                                    <% }); %>
+                                <% } else { %>
+                                    <li class="text-gray-500 italic">No inclusions specified</li>
                                 <% } %>
-                            </select>
+                            </ul>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="specialRequests">Special Requests</label>
-                            <textarea id="specialRequests" name="specialRequests" class="form-control" rows="3"></textarea>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-5 flex items-center">
+                                <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                                <span>Excludes</span>
+                            </h3>
+                            <ul class="space-y-3">
+                                <% if (tour.excludes && tour.excludes.length > 0) { %>
+                                    <% tour.excludes.forEach(item => { %>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                                            <span><%= item %></span>
+                                        </li>
+                                    <% }); %>
+                                <% } else { %>
+                                    <li class="text-gray-500 italic">No exclusions specified</li>
+                                <% } %>
+                            </ul>
                         </div>
-                    </form>
-                </div>
-                <div class="booking-footer">
-                    <button type="submit" form="tour-booking-form" class="btn-book">
-                        <i class="fas fa-calendar-check"></i> Book Now
-                    </button>
-                    <div class="booking-guarantee">
-                        <i class="fas fa-shield-alt"></i> Secure booking · Free cancellation 24h before
+                    </div>
+                </section>
+                
+                <!-- Accommodation Section -->
+                <section id="accommodation" class="mb-16 bg-white p-8 border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">Accommodation</h2>
+                    <div class="bg-gray-50 p-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-bed text-primary text-2xl mt-1 mr-4"></i>
+                            <div class="prose prose-lg max-w-none">
+                                <p class="text-gray-700 leading-relaxed"><%= tour.accommodation %></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Related Tours Section -->
+                <% if (relatedTours && relatedTours.length > 0) { %>
+                    <section id="related" class="mb-12 bg-white p-8 border border-gray-200">
+                        <h2 class="text-2xl font-bold mb-8 pb-2 border-b border-gray-200">Similar Tours You May Like</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <% relatedTours.forEach(relatedTour => { %>
+                                <a href="/tours/<%= relatedTour.slug %>" class="group block bg-white border border-gray-200 hover:border-primary transition-all duration-300">
+                                    <div class="h-48 overflow-hidden">
+                                        <img 
+                                            src="<%= relatedTour.mainImage %>" 
+                                            alt="<%= relatedTour.title %>" 
+                                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                            loading="lazy"
+                                        >
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="font-semibold text-lg group-hover:text-primary transition-colors"><%= relatedTour.title %></h3>
+                                        <div class="flex justify-between mt-3">
+                                            <div class="flex items-center text-sm">
+                                                <i class="fas fa-clock mr-1 text-primary"></i>
+                                                <%= relatedTour.duration %> <%= relatedTour.duration === 1 ? 'day' : 'days' %>
+                                            </div>
+                                            <div class="text-primary font-semibold">
+                                                <%= relatedTour.price %> MAD
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            <% }); %>
+                        </div>
+                    </section>
+                <% } %>
+            </div>
+            
+            <!-- Right Column: Booking Sidebar -->
+            <div class="w-full lg:w-1/3">
+                <div class="bg-white border border-gray-200 p-8 sticky top-20">
+                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">Book This Tour</h2>
+                    
+                    <!-- Price -->
+                    <div class="mb-8">
+                        <div class="flex items-baseline">
+                            <span class="text-4xl font-bold text-primary"><%= tour.price %> MAD</span>
+                            <span class="text-sm text-gray-500 ml-2">per person</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Tour Details Summary -->
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between pb-2 border-b border-gray-100">
+                            <span class="text-gray-600">Duration</span>
+                            <span class="font-medium"><%= tour.duration %> <%= tour.duration === 1 ? 'day' : 'days' %></span>
+                        </div>
+                        <div class="flex justify-between pb-2 border-b border-gray-100">
+                            <span class="text-gray-600">Group Size</span>
+                            <span class="font-medium">Up to <%= tour.groupSize %> people</span>
+                        </div>
+                        <div class="flex justify-between pb-2 border-b border-gray-100">
+                            <span class="text-gray-600">Starting Point</span>
+                            <span class="font-medium"><%= tour.startLocation %></span>
+                        </div>
+                        <% if (tour.category) { %>
+                            <div class="flex justify-between pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">Category</span>
+                                <span class="font-medium"><%= tour.category %></span>
+                            </div>
+                        <% } %>
+                    </div>
+                    
+                    <!-- Desktop Contact buttons -->
+                    <div class="space-y-4 hidden lg:block">
+                        <a 
+                            href="mailto:info@voyageo-tours.com?subject=Tour inquiry for <%= tour.title %>" 
+                            class="flex items-center justify-center bg-primary hover:bg-primary/90 text-white p-4 w-full transition-colors"
+                            aria-label="Send email inquiry"
+                        >
+                            <i class="fas fa-envelope mr-2"></i>
+                            <span>Email Inquiry</span>
+                        </a>
+                        
+                        <a 
+                            href="https://wa.me/212661123456?text=Hello, I'd like to book the <%= tour.title %> tour" 
+                            target="_blank"
+                            rel="noopener" 
+                            class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white p-4 w-full transition-colors"
+                            aria-label="Contact via WhatsApp"
+                        >
+                            <i class="fab fa-whatsapp mr-2"></i>
+                            <span>WhatsApp</span>
+                        </a>
+                        
+                        <a 
+                            href="tel:+212661123456" 
+                            class="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-4 w-full transition-colors"
+                            aria-label="Call us"
+                        >
+                            <i class="fas fa-phone-alt mr-2"></i>
+                            <span>Call Us</span>
+                        </a>
+                    </div>
+                    
+                    <div class="text-center text-sm text-gray-500 mt-6 hidden lg:block">
+                        <p>Our team is available 24/7 to assist you</p>
                     </div>
                 </div>
             </div>
-        </aside>
+        </div>
+    </main>
+    
+    <!-- Mobile Contact Button -->
+    <div class="fixed bottom-6 left-6 z-30 lg:hidden">
+        <button 
+            id="contactBtn" 
+            class="bg-primary text-white h-12 w-24 flex items-center justify-center shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            aria-label="Contact options"
+            aria-expanded="false"
+            aria-controls="contactSheet"
+        >
+           i want this
+        </button>
     </div>
-
-    <!-- Mobile Booking Button -->
-    <button class="booking-mobile-btn" id="mobile-booking-btn">
-        <i class="fas fa-calendar-check"></i> Book Now - €<%= tour.price %> per person
-    </button>
-
-    <!-- Mobile Booking Modal -->
-    <div class="booking-modal" id="booking-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Book <%= tour.title %></h3>
-                <button class="modal-close" id="close-modal">
-                    <i class="fas fa-times"></i>
+    
+    <!-- Mobile Contact Sheet Modal -->
+    <div 
+        id="contactSheet" 
+        class="fixed inset-0 bg-black/50 z-40 hidden" 
+        role="dialog" 
+        aria-modal="true" 
+        aria-labelledby="contactSheetTitle"
+    >
+        <div 
+            class="absolute bottom-0 left-0 right-0 bg-white transform translate-y-full transition-transform duration-300" 
+            id="sheetContent"
+        >
+            <div class="w-16 h-1 bg-gray-300 mx-auto my-3 rounded-full"></div>
+            
+            <div class="p-8">
+                <h3 id="contactSheetTitle" class="text-xl font-bold mb-6">Contact Us</h3>
+                
+                <div class="space-y-4">
+                    <a 
+                        href="mailto:info@voyageo-tours.com?subject=Tour inquiry for <%= tour.title %>" 
+                        class="flex items-center p-4 border border-gray-200 w-full hover:border-primary transition-colors"
+                    >
+                        <div class="bg-primary/10 text-primary h-12 w-12 flex items-center justify-center mr-4">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <div class="font-medium">Email Us</div>
+                            <div class="text-sm text-gray-500">info@voyageo-tours.com</div>
+                        </div>
+                    </a>
+                    
+                    <a 
+                        href="https://wa.me/212661123456?text=Hello, I'd like to book the <%= tour.title %> tour" 
+                        target="_blank"
+                        rel="noopener"
+                        class="flex items-center p-4 border border-gray-200 w-full hover:border-green-500 transition-colors"
+                    >
+                        <div class="bg-green-500/10 text-green-500 h-12 w-12 flex items-center justify-center mr-4">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <div class="font-medium">WhatsApp</div>
+                            <div class="text-sm text-gray-500">+212 661 123 456</div>
+                        </div>
+                    </a>
+                    
+                    <a 
+                        href="tel:+212661123456" 
+                        class="flex items-center p-4 border border-gray-200 w-full hover:border-gray-800 transition-colors"
+                    >
+                        <div class="bg-gray-800/10 text-gray-800 h-12 w-12 flex items-center justify-center mr-4">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <div class="font-medium">Call Us</div>
+                            <div class="text-sm text-gray-500">+212 661 123 456</div>
+                        </div>
+                    </a>
+                </div>
+                
+                <button 
+                    id="closeSheet" 
+                    class="mt-8 w-full py-4 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                    Close
                 </button>
-            </div>
-            <div class="modal-body">
-                <!-- Booking form content will be cloned here via JavaScript -->
             </div>
         </div>
     </div>
 
-   
-
-    <%- include('../partials/footer') %>
+    <!-- Replace included footer with simple hard-coded footer -->
+    <footer class="bg-white border-t border-gray-200 py-10 mt-12">
+        <div class="container mx-auto max-w-screen-xl px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-600 hover:text-primary">Home</a></li>
+                        <li><a href="/tours" class="text-gray-600 hover:text-primary">All Tours</a></li>
+                        <li><a href="/activities" class="text-gray-600 hover:text-primary">Activities</a></li>
+                        <li><a href="/customize" class="text-gray-600 hover:text-primary">Custom Tours</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Tour Categories -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Tour Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/tours?category=Adventure" class="text-gray-600 hover:text-primary">Adventure Tours</a></li>
+                        <li><a href="/tours?category=Cultural" class="text-gray-600 hover:text-primary">Cultural Tours</a></li>
+                        <li><a href="/tours?category=Desert" class="text-gray-600 hover:text-primary">Desert Experiences</a></li>
+                        <li><a href="/tours?category=Mountain" class="text-gray-600 hover:text-primary">Mountain Treks</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Popular Destinations -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Popular Destinations</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/tours?location=Marrakech" class="text-gray-600 hover:text-primary">Marrakech</a></li>
+                        <li><a href="/tours?location=Fes" class="text-gray-600 hover:text-primary">Fes</a></li>
+                        <li><a href="/tours?location=Sahara" class="text-gray-600 hover:text-primary">Sahara Desert</a></li>
+                        <li><a href="/tours?location=Atlas" class="text-gray-600 hover:text-primary">Atlas Mountains</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 mt-8 pt-8 text-center text-sm text-gray-500">
+                <p>© <%= new Date().getFullYear() %> Voyageo Tours Morocco. Experience authentic Morocco tours with expert local guides.</p>
+                <p class="mt-2">Morocco desert tours, imperial cities, mountain treks, cultural experiences, camel trekking, and customized adventures.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Gallery functionality
-            const galleryMain = document.querySelector('.gallery-main img');
-            const galleryThumbs = document.querySelectorAll('.gallery-thumb');
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements 
+            const mainImg = document.getElementById('mainImage');
+            const thumbnails = document.querySelectorAll('.thumbnail-item');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contactBtn = document.getElementById('contactBtn');
+            const contactSheet = document.getElementById('contactSheet');
+            const sheetContent = document.getElementById('sheetContent');
+            const closeSheet = document.getElementById('closeSheet');
             
-            galleryThumbs.forEach(thumb => {
-                thumb.addEventListener('click', function() {
+            // Image gallery functionality
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', () => {
                     // Update main image
-                    galleryMain.src = this.querySelector('img').src;
+                    const imgSrc = thumb.dataset.img;
+                    mainImg.src = imgSrc;
                     
                     // Update active state
-                    galleryThumbs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
                 });
-            });
-            
-            // FAQ functionality
-            const faqQuestions = document.querySelectorAll('.faq-question');
-            
-            faqQuestions.forEach(question => {
-                question.addEventListener('click', function() {
-                    // Toggle active state
-                    this.classList.toggle('active');
-                    
-                    // Toggle answer visibility
-                    const answer = this.nextElementSibling;
-                    if (answer.style.display === 'block') {
-                        answer.style.display = 'none';
-                    } else {
-                        answer.style.display = 'block';
+                
+                // Keyboard accessibility
+                thumb.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        thumb.click();
                     }
                 });
             });
             
-            // Mobile booking functionality
-            const mobileBookBtn = document.getElementById('mobile-booking-btn');
-            const bookingModal = document.getElementById('booking-modal');
-            const closeModalBtn = document.getElementById('close-modal');
-            const bookingForm = document.querySelector('.booking-form-content');
-            const modalBody = document.querySelector('.modal-body');
+            // Helper function for throttling events
+            const throttle = (fn, delay) => {
+                let lastCall = 0;
+                return function(...args) {
+                    const now = new Date().getTime();
+                    if (now - lastCall < delay) {
+                        return;
+                    }
+                    lastCall = now;
+                    return fn(...args);
+                };
+            };
             
-            // Clone the booking form for the modal
-            if (bookingForm && modalBody) {
-                modalBody.innerHTML = bookingForm.innerHTML;
-            }
-            
-            // Open modal
-            if (mobileBookBtn) {
-                mobileBookBtn.addEventListener('click', function() {
-                    bookingModal.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
+            // Section navigation highlighting
+            const updateActiveLink = throttle(() => {
+                const scrollPosition = window.scrollY + 100;
+                
+                // Find all sections by id
+                const sections = document.querySelectorAll('section[id]');
+                
+                // Find which section is currently in view
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSection = section.getAttribute('id');
+                    }
                 });
-            }
+                
+                // Update navigation highlighting
+                if (currentSection) {
+                    navLinks.forEach(link => {
+                        // Reset all links
+                        link.classList.remove('text-primary', 'font-medium', 'border-primary');
+                        link.classList.add('text-gray-500', 'border-transparent');
+                        
+                        // Set active link
+                        if (link.getAttribute('href') === `#${currentSection}`) {
+                            link.classList.remove('text-gray-500', 'border-transparent');
+                            link.classList.add('text-primary', 'font-medium', 'border-primary');
+                        }
+                    });
+                }
+            }, 100);
             
-            // Close modal
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', function() {
-                    bookingModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
+            window.addEventListener('scroll', updateActiveLink);
+            
+            // Smooth scrolling for section navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update URL fragment without scrolling
+                        history.pushState(null, null, targetId);
+                        
+                        // Update active link
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-primary', 'font-medium', 'border-primary');
+                            link.classList.add('text-gray-500', 'border-transparent');
+                        });
+                        
+                        this.classList.remove('text-gray-500', 'border-transparent');
+                        this.classList.add('text-primary', 'font-medium', 'border-primary');
+                    }
                 });
+            });
+            
+            // Mobile contact sheet functionality
+            contactBtn.addEventListener('click', () => {
+                // Open the sheet
+                contactSheet.classList.remove('hidden');
+                contactBtn.setAttribute('aria-expanded', 'true');
+                
+                // Prevent page scrolling when sheet is open
+                document.body.style.overflow = 'hidden';
+                
+                // Animate in the sheet content
+                requestAnimationFrame(() => {
+                    sheetContent.classList.remove('translate-y-full');
+                });
+            });
+            
+            function closeContactSheet() {
+                // Animate out the sheet
+                sheetContent.classList.add('translate-y-full');
+                contactBtn.setAttribute('aria-expanded', 'false');
+                
+                // Re-enable page scrolling
+                document.body.style.overflow = '';
+                
+                // Hide the modal after animation completes
+                setTimeout(() => {
+                    contactSheet.classList.add('hidden');
+                }, 300);
             }
             
-            // Close modal when clicking outside content
-            window.addEventListener('click', function(event) {
-                if (event.target === bookingModal) {
-                    bookingModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
+            // Close button handler
+            closeSheet.addEventListener('click', closeContactSheet);
+            
+            // Background click handler
+            contactSheet.addEventListener('click', (e) => {
+                if (e.target === contactSheet) {
+                    closeContactSheet();
                 }
             });
             
-            // Price calculation for booking form
-            const guestCountSelect = document.getElementById('guestCount');
-            if (guestCountSelect) {
-                guestCountSelect.addEventListener('change', function() {
-                    const basePrice = <%= tour.price %>;
-                    const guests = parseInt(this.value);
-                    const totalPrice = basePrice * guests;
-                    
-                    // Update displayed price if needed
-                    // This is optional as the backend will calculate final price
-                });
+            // Escape key handler
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !contactSheet.classList.contains('hidden')) {
+                    closeContactSheet();
+                }
+            });
+            
+            // Swipe down to close sheet
+            let startY, moveY;
+            
+            sheetContent.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+            });
+            
+            sheetContent.addEventListener('touchmove', (e) => {
+                moveY = e.touches[0].clientY;
+                const diff = moveY - startY;
+                
+                // Only allow swiping down, not up
+                if (diff > 0) {
+                    sheetContent.style.transform = `translateY(${diff}px)`;
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            sheetContent.addEventListener('touchend', () => {
+                if (moveY && moveY - startY > 100) {
+                    // If swiped down far enough, close the sheet
+                    closeContactSheet();
+                } else {
+                    // Otherwise snap back to original position
+                    sheetContent.style.transform = '';
+                }
+                
+                // Reset touch tracking
+                startY = null;
+                moveY = null;
+            });
+            
+            // Initialize page by triggering scroll event
+            updateActiveLink();
+            
+            // Check for URL fragment on page load and scroll to it
+            if (window.location.hash) {
+                const targetElement = document.querySelector(window.location.hash);
+                if (targetElement) {
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
             }
         });
     </script>

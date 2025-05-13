@@ -4,239 +4,443 @@
     <%- include('../partials/head') %>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-    <% 
-    const getStatusBadgeClass = (status) => {
-      switch(status) {
-        case 'confirmed': return 'badge-success';
-        case 'pending': return 'badge-warning';
-        case 'completed': return 'badge-primary';
-        case 'cancelled': return 'badge-error';
-        default: return 'badge-ghost';
-      }
-    };
-    %>
-
-    <%- include('../partials/header') %>
-
-    <div class="content-wrapper">
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Tour Bookings</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tour Bookings</li>
-                        </ol>
+<body class="bg-base-200 min-h-screen">
+    <div class="drawer lg:drawer-open">
+        <input id="main-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col">
+            <!-- Header -->
+            <div class="navbar bg-base-100 shadow-sm z-10 lg:hidden">
+                <div class="flex-none">
+                    <label for="main-drawer" class="btn btn-square btn-ghost drawer-button">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <a class="text-xl font-bold text-primary">Voyageo Admin</a>
+                </div>
+                <div class="flex-none">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                                <i class="fas fa-user text-lg"></i>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                            <li><a><i class="fas fa-user-cog mr-2"></i> Profile</a></li>
+                            <li><a><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                            <li><a href="/admin/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Main content -->
-        <div class="content">
-            <div class="container-fluid">
-                <div class="p-4">
-                    <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <h1 class="text-2xl font-bold">Booking Management</h1>
-                        <div class="flex gap-2">
-                            <button id="export-csv" class="btn btn-outline btn-sm">
-                                <i class="fas fa-file-csv mr-2"></i> Export CSV
-                            </button>
-                            <button id="export-excel" class="btn btn-outline btn-sm btn-success">
-                                <i class="fas fa-file-excel mr-2"></i> Export Excel
-                            </button>
-                        </div>
+            <!-- Main Content -->
+            <div class="flex flex-col flex-1 p-4 md:p-6 overflow-y-auto">
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Bookings Management</h1>
+                        <p class="text-gray-500">View and manage all booking records</p>
                     </div>
-                    <!-- back to dashboard   -->
-                    <a href="/admin/dashboard" class="btn btn-outline btn-sm">
-                        <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
-                    </a>
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <div class="dropdown dropdown-end">
+                            <label tabindex="0" class="btn btn-primary">
+                                <i class="fas fa-file-export mr-2"></i>Export
+                                <i class="fas fa-chevron-down ml-2"></i>
+                            </label>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <li><a href="/admin/bookings/export<%= Object.entries(query).length ? '?' + new URLSearchParams(query).toString() : '' %>">
+                                    <i class="fas fa-file-csv mr-2"></i>CSV Export
+                                </a></li>
+                                <li><a href="/admin/bookings/export-excel<%= Object.entries(query).length ? '?' + new URLSearchParams(query).toString() : '' %>">
+                                    <i class="fas fa-file-excel mr-2"></i>Excel Export
+                                </a></li>
+                            </ul>
+                        </div>
+                        <a href="/admin/dashboard" class="btn btn-outline btn-neutral">
+                            <i class="fas fa-arrow-left mr-2"></i>Back
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Alert Messages -->
+                <% if (error) { %>
+                    <div class="alert alert-error shadow-lg mb-6">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span><%= error %></span>
+                        <button class="btn btn-ghost btn-sm btn-circle ml-auto">✕</button>
+                    </div>
+                <% } %>
+                
+                <% if (success) { %>
+                    <div class="alert alert-success shadow-lg mb-6">
+                        <i class="fas fa-check-circle"></i>
+                        <span><%= success %></span>
+                        <button class="btn btn-ghost btn-sm btn-circle ml-auto">✕</button>
+                    </div>
+                <% } %>
+
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+                    <div class="stat bg-base-100 rounded-box shadow">
+                        <div class="stat-figure text-primary">
+                            <i class="fas fa-calendar-check text-3xl"></i>
+                        </div>
+                        <div class="stat-title">Total Bookings</div>
+                        <div class="stat-value text-primary"><%= total %></div>
+                        <div class="stat-desc">Across all booking types</div>
+                    </div>
                     
-                    <!-- Filter Card -->
-                    <div class="card bg-base-100 shadow-sm mb-6">
-                        <div class="card-body p-4">
-                            <h2 class="card-title text-lg mb-4">Filter Bookings</h2>
-                            <form id="filter-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div class="form-control w-full">
-                                    <label class="label">
-                                        <span class="label-text">Status</span>
-                                    </label>
-                                    <select id="status" name="status" class="select select-bordered w-full">
-                                        <option value="">All Statuses</option>
-                                        <option value="pending" <%= filters.status === 'pending' ? 'selected' : '' %>>Pending</option>
-                                        <option value="confirmed" <%= filters.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
-                                        <option value="completed" <%= filters.status === 'completed' ? 'selected' : '' %>>Completed</option>
-                                        <option value="cancelled" <%= filters.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
-                                    </select>
-                                </div>
-                                <div class="form-control w-full">
-                                    <label class="label">
-                                        <span class="label-text">Search</span>
-                                    </label>
-                                    <input type="text" id="search" name="search" value="<%= filters.search %>" placeholder="Search by name or email" class="input input-bordered w-full">
-                                </div>
-                                <div class="form-control w-full">
-                                    <label class="label">
-                                        <span class="label-text">Start Date</span>
-                                    </label>
-                                    <input type="date" id="startDate" name="startDate" value="<%= filters.startDate %>" class="input input-bordered w-full">
-                                </div>
-                                <div class="form-control w-full">
-                                    <label class="label">
-                                        <span class="label-text">End Date</span>
-                                    </label>
-                                    <input type="date" id="endDate" name="endDate" value="<%= filters.endDate %>" class="input input-bordered w-full">
-                                </div>
-                                <div class="col-span-1 md:col-span-2 lg:col-span-4 flex justify-end gap-2 mt-2">
-                                    <button type="button" id="clear-filters" class="btn btn-ghost">Clear</button>
-                                    <button type="submit" class="btn btn-primary">Apply Filters</button>
-                                </div>
-                            </form>
+                    <div class="stat bg-base-100 rounded-box shadow">
+                        <div class="stat-figure text-warning">
+                            <i class="fas fa-clock text-3xl"></i>
                         </div>
+                        <div class="stat-title">Pending</div>
+                        <div class="stat-value text-warning"><%= statusCounts.pending || 0 %></div>
+                        <div class="stat-desc">Awaiting confirmation</div>
                     </div>
+                    
+                    <div class="stat bg-base-100 rounded-box shadow">
+                        <div class="stat-figure text-success">
+                            <i class="fas fa-check-circle text-3xl"></i>
+                        </div>
+                        <div class="stat-title">Confirmed</div>
+                        <div class="stat-value text-success"><%= statusCounts.confirmed || 0 %></div>
+                        <div class="stat-desc">Ready for service</div>
+                    </div>
+                    
+                    <div class="stat bg-base-100 rounded-box shadow">
+                        <div class="stat-figure text-error">
+                            <i class="fas fa-ban text-3xl"></i>
+                        </div>
+                        <div class="stat-title">Cancelled</div>
+                        <div class="stat-value text-error"><%= statusCounts.cancelled || 0 %></div>
+                        <div class="stat-desc">No longer active</div>
+                    </div>
+                </div>
 
-                    <!-- Bookings Table -->
-                    <div class="card bg-base-100 shadow-sm mb-6 overflow-x-auto">
-                        <div class="card-body p-0">
-                            <table class="table table-zebra w-full">
-                                <thead>
+                <!-- Filter Panel -->
+                <div class="collapse collapse-arrow bg-base-100 rounded-box shadow mb-6">
+                    <input type="checkbox" class="peer" /> 
+                    <div class="collapse-title bg-primary/5 text-primary-content peer-checked:bg-primary peer-checked:text-primary-content font-medium flex items-center">
+                        <i class="fas fa-filter mr-2"></i>
+                        Filter & Search Options
+                    </div>
+                    <div class="collapse-content bg-base-100">
+                        <form action="/admin/bookings" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+                            <!-- Search -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold"><i class="fas fa-search mr-2"></i>Search</span>
+                                </label>
+                                <input type="text" class="input input-bordered w-full" id="search" name="search" 
+                                    placeholder="Name, Email, Phone or Item" value="<%= searchTerm %>">
+                            </div>
+                            
+                            <!-- Booking Type -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold"><i class="fas fa-tag mr-2"></i>Booking Type</span>
+                                </label>
+                                <select class="select select-bordered w-full" id="type" name="type">
+                                    <option value="">All Types</option>
+                                    <option value="tour" <%= bookingType === 'tour' ? 'selected' : '' %>>
+                                        Tours (<%= typeCounts.tour || 0 %>)
+                                    </option>
+                                    <option value="excursion" <%= bookingType === 'excursion' ? 'selected' : '' %>>
+                                        Excursions (<%= typeCounts.excursion || 0 %>)
+                                    </option>
+                                    <option value="activity" <%= bookingType === 'activity' ? 'selected' : '' %>>
+                                        Activities (<%= typeCounts.activity || 0 %>)
+                                    </option>
+                                    <option value="transfer" <%= bookingType === 'transfer' ? 'selected' : '' %>>
+                                        Transfers (<%= typeCounts.transfer || 0 %>)
+                                    </option>
+                                    <option value="custom" <%= bookingType === 'custom' ? 'selected' : '' %>>
+                                        Custom (<%= typeCounts.custom || 0 %>)
+                                    </option>
+                                </select>
+                            </div>
+                            
+                            <!-- Status -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold"><i class="fas fa-tasks mr-2"></i>Status</span>
+                                </label>
+                                <select class="select select-bordered w-full" id="status" name="status">
+                                    <option value="">All Statuses</option>
+                                    <option value="pending" <%= status === 'pending' ? 'selected' : '' %>>
+                                        Pending (<%= statusCounts.pending || 0 %>)
+                                    </option>
+                                    <option value="confirmed" <%= status === 'confirmed' ? 'selected' : '' %>>
+                                        Confirmed (<%= statusCounts.confirmed || 0 %>)
+                                    </option>
+                                    <option value="completed" <%= status === 'completed' ? 'selected' : '' %>>
+                                        Completed (<%= statusCounts.completed || 0 %>)
+                                    </option>
+                                    <option value="cancelled" <%= status === 'cancelled' ? 'selected' : '' %>>
+                                        Cancelled (<%= statusCounts.cancelled || 0 %>)
+                                    </option>
+                                </select>
+                            </div>
+                            
+                            <!-- Date Range -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold"><i class="fas fa-calendar mr-2"></i>Start Date</span>
+                                </label>
+                                <input type="date" class="input input-bordered w-full" id="startDate" name="startDate" value="<%= startDate %>">
+                            </div>
+                            
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold"><i class="fas fa-calendar-alt mr-2"></i>End Date</span>
+                                </label>
+                                <input type="date" class="input input-bordered w-full" id="endDate" name="endDate" value="<%= endDate %>">
+                            </div>
+                            
+                            <!-- Results per page -->
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold"><i class="fas fa-list-ol mr-2"></i>Results Per Page</span>
+                                </label>
+                                <select class="select select-bordered w-full" id="limit" name="limit">
+                                    <option value="10" <%= limit === 10 ? 'selected' : '' %>>10 items</option>
+                                    <option value="20" <%= limit === 20 ? 'selected' : '' %>>20 items</option>
+                                    <option value="50" <%= limit === 50 ? 'selected' : '' %>>50 items</option>
+                                    <option value="100" <%= limit === 100 ? 'selected' : '' %>>100 items</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Filter & Reset Buttons -->
+                            <div class="form-control md:col-span-3 pt-2">
+                                <div class="flex flex-wrap gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-filter mr-2"></i> Apply Filters
+                                    </button>
+                                    <a href="/admin/bookings" class="btn btn-outline">
+                                        <i class="fas fa-sync-alt mr-2"></i> Reset Filters
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Bookings Table -->
+                <div class="bg-base-100 rounded-box shadow-xl overflow-hidden">
+                    <div class="p-4 border-b border-base-300 bg-base-200/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                        <h2 class="text-xl font-bold">Booking Records</h2>
+                        <div class="badge badge-lg text-base-100 badge-primary font-medium"><%= total %> Total Records</div>
+                    </div>
+                    
+                    <div class="overflow-x-auto w-full">
+                        <% if (bookings && bookings.length > 0) { %>
+                            <table class="table table-zebra">
+                                <thead class="text-base-content bg-base-200/50">
                                     <tr>
-                                        <th>Guest</th>
-                                        <th>Tour</th>
-                                        <th>Date</th>
-                                        <th>Guests</th>
-                                        <th>Total</th>
+                                        <th class="hidden lg:table-cell">Type</th>
+                                        <th>Customer</th>
+                                        <th class="hidden md:table-cell">Item</th>
+                                        <th class="hidden lg:table-cell">Date</th>
+                                        <th class="hidden xl:table-cell">People</th>
+                                        <th class="hidden md:table-cell">Price</th>
                                         <th>Status</th>
+                                        <th class="hidden xl:table-cell">Created</th>
                                         <th class="text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% if (bookings && bookings.length > 0) { %>
-                                        <% bookings.forEach(booking => { %>
-                                            <tr>
-                                                <td>
-                                                    <div class="font-medium"><%= booking.fullName %></div>
-                                                    <div class="text-xs opacity-70"><%= booking.email %></div>
-                                                </td>
-                                                <td>
-                                                    <% if (booking.tourSlug) { %>
-                                                        <a href="/tours/<%= booking.tourSlug %>" target="_blank" class="link link-primary">
-                                                            <%= booking.tourName %>
-                                                        </a>
-                                                    <% } else { %>
-                                                        <%= booking.tourName %>
-                                                    <% } %>
-                                                </td>
-                                                <td>
-                                                    <div><%= new Date(booking.tourDate).toLocaleDateString() %></div>
-                                                    <div class="text-xs opacity-70">
-                                                        Booked: <%= new Date(booking.createdAt).toLocaleDateString() %>
-                                                    </div>
-                                                </td>
-                                                <td><%= booking.guestCount %></td>
-                                                <td class="font-medium">$<%= booking.totalPrice.toFixed(2) %></td>
-                                                <td>
-                                                    <div class="badge <%= getStatusBadgeClass(booking.status) %>">
+                                    <% bookings.forEach(booking => { %>
+                                        <tr class="hover">
+                                            <td class="hidden lg:table-cell">
+                                                <div class="badge 
+                                                    <%= booking.bookingType === 'tour' ? 'bg-primary text-primary-content' : 
+                                                        booking.bookingType === 'excursion' ? 'bg-success text-success-content' : 
+                                                        booking.bookingType === 'activity' ? 'bg-warning text-warning-content' : 
+                                                        booking.bookingType === 'transfer' ? 'bg-info text-info-content' : 
+                                                        'bg-neutral text-neutral-content' %> 
+                                                        p-3 font-medium">
+                                                    <%= booking.bookingType.charAt(0).toUpperCase() + booking.bookingType.slice(1) %>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="font-bold"><%= booking.fullName %></div>
+                                                <div class="text-sm opacity-70 hidden sm:block"><%= booking.email %></div>
+                                                <div class="text-xs opacity-70 hidden sm:block"><%= booking.phone %></div>
+                                                <!-- Mobile-only type indicator -->
+                                                <div class="badge badge-sm lg:hidden mb-1
+                                                    <%= booking.bookingType === 'tour' ? 'badge-primary' : 
+                                                        booking.bookingType === 'excursion' ? 'badge-success' : 
+                                                        booking.bookingType === 'activity' ? 'badge-warning' : 
+                                                        booking.bookingType === 'transfer' ? 'badge-info' : 
+                                                        'badge-neutral' %>">
+                                                    <%= booking.bookingType.charAt(0).toUpperCase() + booking.bookingType.slice(1) %>
+                                                </div>
+                                            </td>
+                                            <td class="hidden md:table-cell">
+                                                <span class="text-sm line-clamp-2"><%= booking.itemName %></span>
+                                            </td>
+                                            <td class="hidden lg:table-cell">
+                                                <span class="text-sm"><%= new Date(booking.date).toLocaleDateString() %></span>
+                                            </td>
+                                            <td class="hidden xl:table-cell">
+                                                <span class="font-medium"><%= booking.numberOfPeople %></span>
+                                            </td>
+                                            <td class="hidden md:table-cell">
+                                                <span class="font-medium"><%= booking.totalPrice.toLocaleString() %> MAD</span>
+                                            </td>
+                                            <td>
+                                                <div class="flex flex-col gap-1">
+                                                    <div class="badge 
+                                                        <%= booking.status === 'pending' ? 'badge-warning' : 
+                                                            booking.status === 'confirmed' ? 'badge-success' : 
+                                                            booking.status === 'completed' ? 'badge-info' : 
+                                                            'badge-error' %> p-2">
                                                         <%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %>
                                                     </div>
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="flex justify-end gap-2">
-                                                        <a href="/admin/bookings/<%= booking._id %>" class="btn btn-ghost btn-sm btn-square">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                        <button 
-                                                            data-booking-id="<%= booking._id %>" 
-                                                            class="btn btn-ghost btn-sm btn-square text-error delete-booking">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <% }); %>
-                                    <% } else { %>
-                                        <tr>
-                                            <td colspan="7" class="text-center py-8 opacity-70">
-                                                <div class="flex flex-col items-center gap-2">
-                                                    <i class="fas fa-search text-2xl"></i>
-                                                    <span>No bookings found matching your criteria.</span>
+                                                    <% if (booking.paymentStatus) { %>
+                                                        <div class="badge badge-sm
+                                                            <%= booking.paymentStatus === 'unpaid' ? 'badge-ghost' : 
+                                                                booking.paymentStatus === 'paid' ? 'badge-success' : 
+                                                                'badge-error' %>">
+                                                            <%= booking.paymentStatus.charAt(0).toUpperCase() + booking.paymentStatus.slice(1) %>
+                                                        </div>
+                                                    <% } %>
+                                                </div>
+                                            </td>
+                                            <td class="hidden xl:table-cell">
+                                                <span class="text-sm"><%= new Date(booking.createdAt).toLocaleDateString() %></span>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class="flex justify-end gap-1">
+                                                    <a href="/admin/bookings/<%= booking._id %>" class="btn btn-sm btn-primary btn-square">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-sm btn-success btn-square status-btn" 
+                                                        data-id="<%= booking._id %>" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                                        <i class="fas fa-check-circle"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-error btn-square delete-btn" 
+                                                        data-id="<%= booking._id %>" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
-                                    <% } %>
+                                    <% }) %>
                                 </tbody>
                             </table>
-                        </div>
+                        <% } else { %>
+                            <div class="flex flex-col items-center justify-center py-12 text-center">
+                                <div class="rounded-full bg-base-200 p-6 mb-4">
+                                    <i class="fas fa-search text-3xl opacity-40"></i>
+                                </div>
+                                <h3 class="text-lg font-bold mb-2">No Bookings Found</h3>
+                                <p class="text-base-content/60 max-w-md">
+                                    There are no booking records matching your filters. Try adjusting your search criteria or resetting the filters.
+                                </p>
+                                <a href="/admin/bookings" class="btn btn-primary mt-4">
+                                    <i class="fas fa-sync-alt mr-2"></i> Reset Filters
+                                </a>
+                            </div>
+                        <% } %>
                     </div>
 
                     <!-- Pagination -->
-                    <% if (pagination.totalPages > 1) { %>
-                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
-                            <div class="text-sm opacity-70">
-                                Showing <span class="font-medium"><%= ((pagination.currentPage - 1) * 10) + 1 %></span> to 
-                                <span class="font-medium"><%= Math.min(pagination.currentPage * 10, pagination.totalItems) %></span> of 
-                                <span class="font-medium"><%= pagination.totalItems %></span> bookings
-                            </div>
-                            <div class="join">
-                                <% if (pagination.hasPrevPage) { %>
-                                    <a href="?page=<%= pagination.currentPage - 1 %>&status=<%= filters.status %>&search=<%= filters.search %>&startDate=<%= filters.startDate %>&endDate=<%= filters.endDate %>" 
-                                        class="join-item btn btn-sm">
+                    <% if (total > 0) { %>
+                        <div class="p-4 border-t border-base-300">
+                            <div class="flex justify-center">
+                                <div class="join">
+                                    <a class="join-item btn <%= hasPrevPage ? '' : 'btn-disabled' %>" 
+                                        href="/admin/bookings?<%= new URLSearchParams({...query, page: currentPage - 1}).toString() %>">
                                         <i class="fas fa-chevron-left"></i>
                                     </a>
-                                <% } else { %>
-                                    <button disabled class="join-item btn btn-sm">
-                                        <i class="fas fa-chevron-left"></i>
-                                    </button>
-                                <% } %>
-                                
-                                <% for (let i = 1; i <= pagination.totalPages; i++) { %>
-                                    <% if (i === pagination.currentPage) { %>
-                                        <button class="join-item btn btn-sm btn-active"><%= i %></button>
-                                    <% } else if (
-                                        i === 1 || 
-                                        i === pagination.totalPages || 
-                                        (i >= pagination.currentPage - 1 && i <= pagination.currentPage + 1)
-                                    ) { %>
-                                        <a href="?page=<%= i %>&status=<%= filters.status %>&search=<%= filters.search %>&startDate=<%= filters.startDate %>&endDate=<%= filters.endDate %>" 
-                                            class="join-item btn btn-sm"><%= i %></a>
-                                    <% } else if (
-                                        i === pagination.currentPage - 2 || 
-                                        i === pagination.currentPage + 2
-                                    ) { %>
-                                        <button class="join-item btn btn-sm btn-disabled">...</button>
+                                    
+                                    <% for(let i = 1; i <= Math.min(totalPages, 5); i++) { %>
+                                        <a class="join-item btn <%= currentPage === i ? 'btn-active' : '' %>" 
+                                            href="/admin/bookings?<%= new URLSearchParams({...query, page: i}).toString() %>">
+                                            <%= i %>
+                                        </a>
                                     <% } %>
-                                <% } %>
-                                
-                                <% if (pagination.hasNextPage) { %>
-                                    <a href="?page=<%= pagination.currentPage + 1 %>&status=<%= filters.status %>&search=<%= filters.search %>&startDate=<%= filters.startDate %>&endDate=<%= filters.endDate %>" 
-                                        class="join-item btn btn-sm">
+                                    
+                                    <% if (totalPages > 5 && currentPage < totalPages - 2) { %>
+                                        <span class="join-item btn btn-disabled">...</span>
+                                        
+                                        <a class="join-item btn" 
+                                            href="/admin/bookings?<%= new URLSearchParams({...query, page: totalPages}).toString() %>">
+                                            <%= totalPages %>
+                                        </a>
+                                    <% } %>
+                                    
+                                    <a class="join-item btn <%= hasNextPage ? '' : 'btn-disabled' %>" 
+                                        href="/admin/bookings?<%= new URLSearchParams({...query, page: currentPage + 1}).toString() %>">
                                         <i class="fas fa-chevron-right"></i>
                                     </a>
-                                <% } else { %>
-                                    <button disabled class="join-item btn btn-sm">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </button>
-                                <% } %>
+                                </div>
+                            </div>
+                            <div class="text-sm text-center mt-2 text-base-content/70">
+                                Showing page <%= currentPage %> of <%= totalPages %> (<%= total %> total records)
                             </div>
                         </div>
                     <% } %>
                 </div>
             </div>
         </div>
+      
     </div>
 
-    <!-- Delete Confirmation Modal -->
-    <dialog id="delete-modal" class="modal">
+    <!-- Sidebar -->
+    <div class="drawer-side">
+        <label for="main-drawer" class="drawer-overlay"></label>
+        <%- include('../partials/sidebar', { activePage: 'bookings' }) %>
+    </div>
+
+    <!-- Status Modal -->
+    <dialog id="statusModal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg">Confirm Deletion</h3>
-            <p class="py-4">Are you sure you want to delete this booking? This action cannot be undone.</p>
+            <h3 class="font-bold text-lg mb-4">Update Booking Status</h3>
+            <form id="status-form">
+                <input type="hidden" id="status-booking-id">
+                
+                <div class="form-control mb-4">
+                    <label class="label" for="booking-status">
+                        <span class="label-text">Booking Status</span>
+                    </label>
+                    <select class="select select-bordered w-full" id="booking-status" name="status">
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                
+                <div class="form-control mb-6">
+                    <label class="label" for="payment-status">
+                        <span class="label-text">Payment Status</span>
+                    </label>
+                    <select class="select select-bordered w-full" id="payment-status" name="paymentStatus">
+                        <option value="unpaid">Unpaid</option>
+                        <option value="paid">Paid</option>
+                        <option value="refunded">Refunded</option>
+                    </select>
+                </div>
+                
+                <div class="alert alert-success hidden" id="status-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Status updated successfully!</span>
+                </div>
+                
+                <div class="alert alert-error hidden" id="status-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>An error occurred while updating the status.</span>
+                </div>
+            </form>
             <div class="modal-action">
-                <button id="cancel-delete" class="btn">Cancel</button>
-                <button id="confirm-delete" class="btn btn-error">Delete</button>
+                <form method="dialog">
+                    <button class="btn btn-ghost mr-2">Cancel</button>
+                </form>
+                <button class="btn btn-primary" id="save-status">Save Changes</button>
             </div>
         </div>
         <form method="dialog" class="modal-backdrop">
@@ -244,54 +448,165 @@
         </form>
     </dialog>
 
+    <!-- Delete Modal -->
+    <dialog id="deleteModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4 text-error">Delete Booking</h3>
+            <p>Are you sure you want to delete this booking? This action cannot be undone.</p>
+            
+            <div class="alert alert-success hidden mt-4" id="delete-success">
+                <i class="fas fa-check-circle"></i>
+                <span>Booking deleted successfully!</span>
+            </div>
+            
+            <div class="alert alert-error hidden mt-4" id="delete-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>An error occurred while deleting the booking.</span>
+            </div>
+            
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-ghost mr-2">Cancel</button>
+                </form>
+                <button class="btn btn-error" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Clear filters
-            document.getElementById('clear-filters').addEventListener('click', function() {
-                document.getElementById('status').value = '';
-                document.getElementById('search').value = '';
-                document.getElementById('startDate').value = '';
-                document.getElementById('endDate').value = '';
-                document.getElementById('filter-form').submit();
-            });
+            const statusModal = document.getElementById('statusModal');
+            const deleteModal = document.getElementById('deleteModal');
 
-            // Delete booking functionality
-            const deleteModal = document.getElementById('delete-modal');
-            const cancelDelete = document.getElementById('cancel-delete');
-            const confirmDelete = document.getElementById('confirm-delete');
-            let bookingToDelete = null;
-
-            // Show modal for delete confirmation
-            document.querySelectorAll('.delete-booking').forEach(button => {
+            // Status update functionality
+            const statusButtons = document.querySelectorAll('.status-btn');
+            const statusBookingId = document.getElementById('status-booking-id');
+            const saveStatusBtn = document.getElementById('save-status');
+            const statusSuccess = document.getElementById('status-success');
+            const statusError = document.getElementById('status-error');
+            
+            statusButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    bookingToDelete = this.dataset.bookingId;
-                    deleteModal.showModal();
+                    statusBookingId.value = this.dataset.id;
+                    
+                    // Set current values if available in the button data attributes
+                    const currentStatus = this.dataset.status;
+                    const currentPayment = this.dataset.payment;
+                    
+                    const statusSelect = document.getElementById('booking-status');
+                    const paymentSelect = document.getElementById('payment-status');
+                    
+                    if (currentStatus && statusSelect) {
+                        statusSelect.value = currentStatus;
+                    }
+                    
+                    if (currentPayment && paymentSelect) {
+                        paymentSelect.value = currentPayment;
+                    }
+                    
+                    statusSuccess.classList.add('hidden');
+                    statusError.classList.add('hidden');
+                    statusModal.showModal();
                 });
             });
 
-            // Hide modal when cancel is clicked
-            cancelDelete.addEventListener('click', function() {
-                deleteModal.close();
-                bookingToDelete = null;
+            saveStatusBtn.addEventListener('click', async function() {
+                const bookingId = statusBookingId.value;
+                const status = document.getElementById('booking-status').value;
+                const paymentStatus = document.getElementById('payment-status').value;
+                
+                try {
+                    const response = await fetch(`/admin/bookings/${bookingId}/status`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status, paymentStatus })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        statusSuccess.classList.remove('hidden');
+                        statusError.classList.add('hidden');
+                        
+                        // Reload page after short delay
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        statusError.textContent = data.message || 'An error occurred.';
+                        statusError.classList.remove('hidden');
+                        statusSuccess.classList.add('hidden');
+                    }
+                } catch (error) {
+                    console.error('Error updating status:', error);
+                    statusError.textContent = 'An error occurred while updating the status.';
+                    statusError.classList.remove('hidden');
+                    statusSuccess.classList.add('hidden');
+                }
             });
-
-            // Handle delete confirmation
-            confirmDelete.addEventListener('click', function() {
-                if (bookingToDelete) {
-                    window.location.href = `/admin/bookings/${bookingToDelete}/delete`;
+            
+            // Delete functionality
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            const confirmDeleteBtn = document.getElementById('confirm-delete');
+            const deleteSuccess = document.getElementById('delete-success');
+            const deleteError = document.getElementById('delete-error');
+            let deleteBookingId = null;
+            
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    deleteBookingId = this.dataset.id;
+                    deleteSuccess.classList.add('hidden');
+                    deleteError.classList.add('hidden');
+                    deleteModal.showModal();
+                });
+            });
+            
+            confirmDeleteBtn.addEventListener('click', async function() {
+                if (!deleteBookingId) return;
+                
+                try {
+                    const response = await fetch(`/admin/bookings/${deleteBookingId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        deleteSuccess.classList.remove('hidden');
+                        deleteError.classList.add('hidden');
+                        confirmDeleteBtn.disabled = true;
+                        
+                        // Reload page after short delay
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        deleteError.textContent = data.message || 'An error occurred.';
+                        deleteError.classList.remove('hidden');
+                        deleteSuccess.classList.add('hidden');
+                    }
+                } catch (error) {
+                    console.error('Error deleting booking:', error);
+                    deleteError.textContent = 'An error occurred while deleting the booking.';
+                    deleteError.classList.remove('hidden');
+                    deleteSuccess.classList.add('hidden');
                 }
             });
 
-            // Export CSV
-            document.getElementById('export-csv').addEventListener('click', function() {
-                const params = new URLSearchParams(window.location.search);
-                window.location.href = `/admin/bookings/export/csv?${params.toString()}`;
-            });
-
-            // Export Excel
-            document.getElementById('export-excel').addEventListener('click', function() {
-                const params = new URLSearchParams(window.location.search);
-                window.location.href = `/admin/bookings/export/excel?${params.toString()}`;
+            // Alert dismissal
+            document.querySelectorAll('.alert button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.alert').classList.add('hidden');
+                });
             });
         });
     </script>

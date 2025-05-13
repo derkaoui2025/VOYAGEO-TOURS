@@ -37,7 +37,7 @@
     padding: 1.2rem 1.5rem;
     margin: 0;
     border-bottom: 1px solid #ddd;
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -67,7 +67,7 @@
     border: 1px solid #a6a6a6;
     box-shadow: 0 1px 2px rgba(15,17,17,.15) inset;
     padding: 0.8rem 1rem;
-    font-size: 1.4rem;
+    /* font-size: 1.4rem; */
 }
 
 .form-control:focus, .form-select:focus {
@@ -89,7 +89,7 @@
 
 .invalid-feedback {
     color: var(--amazon-red);
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
     margin-top: 0.5rem;
     display: none;
 }
@@ -134,7 +134,7 @@
     right: 10px;
     top: 38px;
     z-index: 10;
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
 }
 
 /* Loading spinner animation within buttons */
@@ -344,7 +344,7 @@
 
 .itinerary-day {
     font-weight: 700;
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
     color: var(--amazon-primary);
 }
 

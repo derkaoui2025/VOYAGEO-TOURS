@@ -1,0 +1,21 @@
+<!-- Footer -->
+<footer class="bg-white border-t mt-10 py-4">
+    <div class="container mx-auto px-4 text-center text-gray-500">
+        <p>© <%= new Date().getFullYear() %> Voyageo Tours. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+    // Add any shared admin panel scripts here
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enable confirmation dialogs
+        document.querySelectorAll('[data-confirm]').forEach(element => {
+            element.addEventListener('click', function(e) {
+                if (!confirm(this.getAttribute('data-confirm'))) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script> 

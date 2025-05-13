@@ -39,6 +39,7 @@ exports.renderBlogHome = async (req, res) => {
       pageTitle: 'Voyageo Blog',
       heroTitle: 'Voyageo Tours Blog',
       heroSubtitle: 'Stories, tips, and insights for your Moroccan adventure',
+      headerImagePath: '/images/headers/blog-banner.jpg',
       featuredPosts,
       recentPosts,
       categories,
@@ -50,6 +51,7 @@ exports.renderBlogHome = async (req, res) => {
       pageTitle: 'Error',
       heroTitle: 'Something Went Wrong',
       heroSubtitle: 'We apologize for the inconvenience',
+      headerImagePath: '/images/headers/error-banner.jpg',
       message: 'Failed to load blog content'
     });
   }
@@ -110,6 +112,7 @@ exports.renderBlogPosts = async (req, res) => {
       pageTitle: 'All Blog Posts',
       heroTitle: 'Voyageo Blog Posts',
       heroSubtitle: 'Explore our latest articles and travel guides',
+      headerImagePath: '/images/headers/blog-posts-banner.jpg',
       posts,
       categories,
       archives: formattedArchives,
@@ -126,6 +129,7 @@ exports.renderBlogPosts = async (req, res) => {
       pageTitle: 'Error',
       heroTitle: 'Something Went Wrong',
       heroSubtitle: 'We apologize for the inconvenience',
+      headerImagePath: '/images/headers/error-banner.jpg',
       message: 'Failed to load blog posts'
     });
   }
@@ -146,7 +150,8 @@ exports.renderBlogPost = async (req, res) => {
       return res.status(404).render('pages/404', {
         pageTitle: 'Post Not Found',
         heroTitle: 'Post Not Found',
-        heroSubtitle: 'The blog post you were looking for doesn\'t exist'
+        heroSubtitle: 'The blog post you were looking for doesn\'t exist',
+        headerImagePath: '/images/headers/error-banner.jpg'
       });
     }
     
@@ -180,10 +185,16 @@ exports.renderBlogPost = async (req, res) => {
     // Generate current URL for social sharing
     const currentUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
     
+    // Use post's featured image if available, otherwise default
+    const headerImagePath = post.featuredImage 
+      ? post.featuredImage 
+      : '/images/headers/blog-post-banner.jpg';
+    
     res.render('pages/blog/post', {
       pageTitle: post.title,
       heroTitle: post.title,
       heroSubtitle: post.excerpt,
+      headerImagePath,
       post,
       relatedPosts,
       recentPosts,
@@ -196,6 +207,7 @@ exports.renderBlogPost = async (req, res) => {
       pageTitle: 'Error',
       heroTitle: 'Something Went Wrong',
       heroSubtitle: 'We apologize for the inconvenience',
+      headerImagePath: '/images/headers/error-banner.jpg',
       message: 'Failed to load blog post'
     });
   }
@@ -221,7 +233,8 @@ exports.renderBlogsByCategory = async (req, res) => {
       return res.status(404).render('pages/404', {
         pageTitle: 'Category Not Found',
         heroTitle: 'Category Not Found',
-        heroSubtitle: 'The blog category you were looking for doesn\'t exist or has no posts'
+        heroSubtitle: 'The blog category you were looking for doesn\'t exist or has no posts',
+        headerImagePath: '/images/headers/error-banner.jpg'
       });
     }
     
@@ -247,6 +260,7 @@ exports.renderBlogsByCategory = async (req, res) => {
       pageTitle: `${category} - Blog Posts`,
       heroTitle: category,
       heroSubtitle: `Explore our blog posts in the ${category} category`,
+      headerImagePath: '/images/headers/blog-category-banner.jpg',
       posts,
       currentCategory: category,
       categories,
@@ -263,6 +277,7 @@ exports.renderBlogsByCategory = async (req, res) => {
       pageTitle: 'Error',
       heroTitle: 'Something Went Wrong',
       heroSubtitle: 'We apologize for the inconvenience',
+      headerImagePath: '/images/headers/error-banner.jpg',
       message: 'Failed to load category posts'
     });
   }
@@ -288,7 +303,8 @@ exports.renderBlogsByTag = async (req, res) => {
       return res.status(404).render('pages/404', {
         pageTitle: 'Tag Not Found',
         heroTitle: 'Tag Not Found',
-        heroSubtitle: 'The blog tag you were looking for doesn\'t exist or has no posts'
+        heroSubtitle: 'The blog tag you were looking for doesn\'t exist or has no posts',
+        headerImagePath: '/images/headers/error-banner.jpg'
       });
     }
     
@@ -315,6 +331,7 @@ exports.renderBlogsByTag = async (req, res) => {
       pageTitle: `${tag} - Blog Posts`,
       heroTitle: `Tag: ${tag}`,
       heroSubtitle: `Explore our blog posts tagged with ${tag}`,
+      headerImagePath: '/images/headers/blog-tag-banner.jpg',
       posts,
       currentTag: tag,
       tags,
@@ -331,6 +348,7 @@ exports.renderBlogsByTag = async (req, res) => {
       pageTitle: 'Error',
       heroTitle: 'Something Went Wrong',
       heroSubtitle: 'We apologize for the inconvenience',
+      headerImagePath: '/images/headers/error-banner.jpg',
       message: 'Failed to load tagged posts'
     });
   }
@@ -348,7 +366,8 @@ exports.renderBlogsByArchive = async (req, res) => {
       return res.status(404).render('pages/404', {
         pageTitle: 'Invalid Archive',
         heroTitle: 'Invalid Archive',
-        heroSubtitle: 'The archive date you requested is invalid'
+        heroSubtitle: 'The archive date you requested is invalid',
+        headerImagePath: '/images/headers/error-banner.jpg'
       });
     }
     
@@ -370,7 +389,8 @@ exports.renderBlogsByArchive = async (req, res) => {
       return res.status(404).render('pages/404', {
         pageTitle: 'Archive Empty',
         heroTitle: 'No Posts Found',
-        heroSubtitle: 'There are no blog posts for the selected time period'
+        heroSubtitle: 'There are no blog posts for the selected time period',
+        headerImagePath: '/images/headers/error-banner.jpg'
       });
     }
     
@@ -415,6 +435,7 @@ exports.renderBlogsByArchive = async (req, res) => {
       pageTitle: `${monthName} ${year} - Blog Archive`,
       heroTitle: `${monthName} ${year}`,
       heroSubtitle: `Browse our blog posts from ${monthName} ${year}`,
+      headerImagePath: '/images/headers/blog-archive-banner.jpg',
       posts,
       currentArchive: {
         year,
@@ -435,6 +456,7 @@ exports.renderBlogsByArchive = async (req, res) => {
       pageTitle: 'Error',
       heroTitle: 'Something Went Wrong',
       heroSubtitle: 'We apologize for the inconvenience',
+      headerImagePath: '/images/headers/error-banner.jpg',
       message: 'Failed to load archive posts'
     });
   }
@@ -489,6 +511,7 @@ exports.renderSearchResults = async (req, res) => {
       pageTitle: `Search Results for "${query}"`,
       heroTitle: 'Search Results',
       heroSubtitle: `Showing results for "${query}"`,
+      headerImagePath: '/images/headers/blog-search-banner.jpg',
       posts,
       searchQuery: query,
       resultsCount: totalPosts,
@@ -505,6 +528,7 @@ exports.renderSearchResults = async (req, res) => {
       pageTitle: 'Error',
       heroTitle: 'Something Went Wrong',
       heroSubtitle: 'We apologize for the inconvenience',
+      headerImagePath: '/images/headers/error-banner.jpg',
       message: 'Failed to load search results'
     });
   }

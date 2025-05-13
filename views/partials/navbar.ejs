@@ -1,27 +1,200 @@
 <!-- Navbar -->
-<nav class="navbar">
-    <div class="container navbar-container">
-        <div class="navbar-logo">
+<nav class="fixed top-0 left-0 w-full z-50 bg-secondary shadow-md">
+    <div class="container mx-auto px-4 flex justify-between items-center py-4">
+        <div class="h-12">
             <a href="/">
-                <img src="/images/logo-voyageo-white.webp" alt="Voyageo Tours Logo" width="180" height="60">
+                <img src="/images/logo-voyageo-white.webp" alt="Voyageo Tours Logo" width="180" height="60" class="h-full w-auto">
             </a>
         </div>
         
-        <div class="navbar-toggle">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+        <div id="mobile-toggle" class="md:hidden cursor-pointer z-50">
+            <div class="w-6 h-0.5 bg-white mb-1.5 transition-all"></div>
+            <div class="w-6 h-0.5 bg-white mb-1.5 transition-all"></div>
+            <div class="w-6 h-0.5 bg-white transition-all"></div>
         </div>
         
-        <ul class="navbar-menu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/tours">Morocco Tours</a></li>
-            <li><a href="/excursions">Day Excursions</a></li>
-            <li><a href="/customize">Customize My Tour</a></li>
-            <li><a href="/car-rental">Rent A Car</a></li>
-            <li><a href="/blog">Blog</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="/faqs">Traveler's Guide: FAQs</a></li>
+        <ul id="navbar-menu" class="hidden md:flex items-center space-x-6 text-white">
+            <li><a href="/" class="py-2 hover:text-warning transition-colors">Home</a></li>
+            
+            <!-- Explore Dropdown -->
+            <li class="relative group">
+                <a href="#" class="py-2 flex items-center hover:text-warning transition-colors">
+                    Explore 
+                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                </a>
+                <ul class="absolute left-0 mt-2 w-56 bg-white text-gray-800 rounded shadow-lg py-2 hidden group-hover:block">
+                    <li><a href="/tours" class="block px-4 py-2 hover:bg-gray-100 hover:text-warning transition-colors">Morocco Tours</a></li>
+                    <li><a href="/excursions" class="block px-4 py-2 hover:bg-gray-100 hover:text-warning transition-colors">Day Excursions</a></li>
+                    <li><a href="/activities" class="block px-4 py-2 hover:bg-gray-100 hover:text-warning transition-colors">Activities</a></li>
+                    <li><a href="/transfers" class="block px-4 py-2 hover:bg-gray-100 hover:text-warning transition-colors">City Transfers</a></li>
+                    <li><a href="/car-rental" class="block px-4 py-2 hover:bg-gray-100 hover:text-warning transition-colors">Rent A Car</a></li>
+                </ul>
+            </li>
+            
+            <!-- Plan Dropdown -->
+            <li class="relative group">
+                <a href="#" class="py-2 flex items-center hover:text-warning transition-colors">
+                    Plan Your Trip 
+                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                </a>
+                <ul class="absolute left-0 mt-2 w-56 bg-white text-gray-800 rounded shadow-lg py-2 hidden group-hover:block">
+                    <li><a href="/customize" class="block px-4 py-2 hover:bg-gray-100 hover:text-warning transition-colors">Customize My Tour</a></li>
+                    <li><a href="/faqs" class="block px-4 py-2 hover:bg-gray-100 hover:text-warning transition-colors">Traveler's Guide: FAQs</a></li>
+                </ul>
+            </li>
+            
+            <li><a href="/blog" class="py-2 hover:text-warning transition-colors">Blog</a></li>
+            <li><a href="/contact" class="py-2 hover:text-warning transition-colors">Contact</a></li>
+            
+            <li class="ml-2">
+                <a href="/customize" class="bg-warning hover:bg-warning/90 text-white px-4 py-2 rounded text-sm font-bold">
+                    Book Now
+                </a>
+            </li>
         </ul>
     </div>
-</nav> 
+</nav>
+
+<!-- Mobile Menu (Hidden by default) -->
+<div id="mobile-menu" class="fixed inset-0 bg-secondary/95 z-40 hidden pt-20 pb-6 px-6 overflow-y-auto">
+    <ul class="text-white text-lg space-y-4">
+        <li><a href="/" class="block py-2 hover:text-warning transition-colors">Home</a></li>
+        
+        <li class="border-t border-gray-700 pt-4 mt-4">
+            <div class="flex justify-between items-center cursor-pointer mobile-dropdown-toggle py-2">
+                <span>Explore</span>
+                <i class="fas fa-chevron-down text-xs transition-transform"></i>
+            </div>
+            <ul class="mobile-dropdown-menu hidden pl-4 mt-2 space-y-2">
+                <li><a href="/tours" class="block py-2 text-gray-300 hover:text-warning transition-colors">Morocco Tours</a></li>
+                <li><a href="/excursions" class="block py-2 text-gray-300 hover:text-warning transition-colors">Day Excursions</a></li>
+                <li><a href="/activities" class="block py-2 text-gray-300 hover:text-warning transition-colors">Activities</a></li>
+                <li><a href="/transfers" class="block py-2 text-gray-300 hover:text-warning transition-colors">City Transfers</a></li>
+                <li><a href="/car-rental" class="block py-2 text-gray-300 hover:text-warning transition-colors">Rent A Car</a></li>
+            </ul>
+        </li>
+        
+        <li class="border-t border-gray-700 pt-4 mt-4">
+            <div class="flex justify-between items-center cursor-pointer mobile-dropdown-toggle py-2">
+                <span>Plan Your Trip</span>
+                <i class="fas fa-chevron-down text-xs transition-transform"></i>
+            </div>
+            <ul class="mobile-dropdown-menu hidden pl-4 mt-2 space-y-2">
+                <li><a href="/customize" class="block py-2 text-gray-300 hover:text-warning transition-colors">Customize My Tour</a></li>
+                <li><a href="/faqs" class="block py-2 text-gray-300 hover:text-warning transition-colors">Traveler's Guide: FAQs</a></li>
+            </ul>
+        </li>
+        
+        <li class="border-t border-gray-700 pt-4 mt-4"><a href="/blog" class="block py-2 hover:text-warning transition-colors">Blog</a></li>
+        <li class="border-t border-gray-700 pt-4 mt-4"><a href="/contact" class="block py-2 hover:text-warning transition-colors">Contact</a></li>
+        
+        <li class="border-t border-gray-700 pt-6 mt-6">
+            <a href="/customize" class="block w-full bg-warning hover:bg-warning/90 text-white py-3 px-6 rounded text-center font-bold">
+                Book Your Trip Now
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- Back to Top Button -->
+<button id="back-to-top" class="fixed bg-yellow-500 bottom-4 right-4 bg-warning hover:bg-warning/80 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md transition-all duration-300 opacity-0 translate-y-10 z-50">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.querySelector('nav');
+        const backToTopBtn = document.getElementById('back-to-top');
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+        let lastScrollTop = 0;
+        
+        // Handle navbar show/hide on scroll
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Determine scroll direction
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down & not at the top
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up or at the top
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            // Show/hide back to top button
+            if (scrollTop > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'translate-y-10');
+                backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'translate-y-10');
+                backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        // Back to top button click event
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Toggle mobile menu
+        mobileToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+                
+                // Animate the toggle icon to an X
+                const bars = this.querySelectorAll('div');
+                bars[0].classList.add('rotate-45', 'translate-y-2');
+                bars[1].classList.add('opacity-0');
+                bars[2].classList.add('-rotate-45', '-translate-y-2');
+            } else {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+                
+                // Revert animation
+                const bars = this.querySelectorAll('div');
+                bars[0].classList.remove('rotate-45', 'translate-y-2');
+                bars[1].classList.remove('opacity-0');
+                bars[2].classList.remove('-rotate-45', '-translate-y-2');
+            }
+        });
+        
+        // Handle mobile dropdown menus
+        mobileDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const dropdownMenu = this.nextElementSibling;
+                const icon = this.querySelector('i.fa-chevron-down');
+                
+                if (dropdownMenu.classList.contains('hidden')) {
+                    dropdownMenu.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                } else {
+                    dropdownMenu.classList.add('hidden');
+                    icon.classList.remove('rotate-180');
+                }
+            });
+        });
+        
+        // Close mobile menu on window resize if screen gets larger
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+                
+                // Revert animation on toggle icon
+                const bars = mobileToggle.querySelectorAll('div');
+                bars[0].classList.remove('rotate-45', 'translate-y-2');
+                bars[1].classList.remove('opacity-0');
+                bars[2].classList.remove('-rotate-45', '-translate-y-2');
+            }
+        });
+    });
+</script> 

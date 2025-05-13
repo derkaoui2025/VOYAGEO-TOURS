@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %> | Voyageo Tours Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="drawer lg:drawer-open">
+        <input id="admin-drawer" type="checkbox" class="drawer-toggle" />
+        
+        <div class="drawer-content flex flex-col">
+            <!-- Top Navigation Bar -->
+            <div class="navbar bg-base-100 border-b lg:hidden">
+                <div class="flex-none">
+                    <label for="admin-drawer" class="btn btn-square btn-ghost drawer-button">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                </div>
+                <div class="flex-1">
+                    <a class="text-xl font-bold">Voyageo Admin</a>
+                </div>
+                <div class="flex-none">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                            <div class="avatar placeholder">
+                                <div class="bg-primary text-primary-content rounded-full w-10">
+                                    <span><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                                </div>
+                            </div>
+                        </label>
+                        <ul tabindex="0" class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                            <li><a href="/admin/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="p-4 md:p-6 bg-base-200 min-h-screen">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold">Activities</h1>
+                    <a href="/admin/activities/create" class="btn btn-primary">
+                        <i class="fas fa-plus mr-2"></i> Add New Activity
+                    </a>
+                </div>
+                
+                <% if (success) { %>
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-check-circle"></i>
+                        <span><%= success %></span>
+                    </div>
+                <% } %>
+
+                <% if (error) { %>
+                    <div class="alert alert-error mb-4">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+                
+                <div class="bg-base-100 rounded-box shadow-lg">
+                    <div class="overflow-x-auto">
+                        <table class="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Location</th>
+                                    <th>Duration</th>
+                                    <th>Price</th>
+                                    <th>Created</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (activities && activities.length > 0) { %>
+                                    <% activities.forEach(activity => { %>
+                                        <tr>
+                                            <td>
+                                                <div class="flex items-center space-x-3">
+                                                    <div class="avatar">
+                                                        <div class="mask mask-squircle w-12 h-12">
+                                                            <img src="<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : 'https://placehold.co/200x200?text=No+Image' %>" alt="<%= activity.title %>" />
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-bold"><%= activity.title %></div>
+                                                        <div class="text-sm opacity-50">ID: <%= activity._id %></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><%= activity.location || 'N/A' %></td>
+                                            <td><%= activity.duration %> <%= activity.durationType %></td>
+                                            <td>$<%= activity.price.toFixed(2) %></td>
+                                            <td><%= new Date(activity.createdAt).toLocaleDateString() %></td>
+                                            <td class="text-right">
+                                                <div class="flex justify-end">
+                                                    <a href="/admin/activities/<%= activity._id %>/edit" class="btn btn-sm btn-outline btn-info mr-2">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button class="btn btn-sm btn-outline btn-error delete-activity" data-id="<%= activity._id %>" data-title="<%= activity.title %>">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">No activities found. <a href="/admin/activities/create" class="text-primary">Create your first activity</a></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="drawer-side">
+            <label for="admin-drawer" class="drawer-overlay"></label>
+            <div class="bg-base-100 w-80 min-h-full flex flex-col shadow-xl">
+                <!-- Logo -->
+                <div class="p-4 border-b flex items-center justify-center">
+                    <div class="text-2xl font-bold text-primary">Voyageo Admin</div>
+                </div>
+                
+                <!-- Admin Info -->
+                <div class="flex items-center gap-3 p-4 border-b">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-12">
+                            <span class="text-lg"><%= session.adminUsername ? session.adminUsername.charAt(0).toUpperCase() : 'A' %></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-bold"><%= session.adminUsername || 'Admin' %></div>
+                        <div class="text-sm opacity-60">Administrator</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <ul class="menu menu-lg p-2 flex-grow">
+                    <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a></li>
+                    <li><a href="/admin/tours"><i class="fas fa-map-marked-alt mr-2"></i> Tours</a></li>
+                    <li><a href="/admin/bookings"><i class="fas fa-calendar-check mr-2"></i> Bookings</a></li>
+                    <li><a href="/admin/custom-tours"><i class="fas fa-route mr-2"></i> Custom Requests</a></li>
+                    <li><a href="/admin/excursions"><i class="fas fa-hiking mr-2"></i> Excursions</a></li>
+                    <li><a href="/admin/excursion-bookings"><i class="fas fa-clipboard-list mr-2"></i> Excursion Bookings</a></li>
+                    <li><a href="/admin/transfers"><i class="fas fa-car mr-2"></i> Transfers</a></li>
+                    <li><a href="/admin/transfer-bookings"><i class="fas fa-clipboard-list mr-2"></i> Transfer Bookings</a></li>
+                    <li><a href="/admin/activities" class="active"><i class="fas fa-walking mr-2"></i> Activities</a></li>
+                    <li><a href="/admin/activity-bookings"><i class="fas fa-clipboard-list mr-2"></i> Activity Bookings</a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users mr-2"></i> Users</a></li>
+                    <li><a href="/admin/settings"><i class="fas fa-cog mr-2"></i> Settings</a></li>
+                </ul>
+                
+                <!-- Logout -->
+                <div class="p-4 border-t">
+                    <a href="/admin/logout" class="btn btn-outline btn-error w-full">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-activity');
+            
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const activityId = this.getAttribute('data-id');
+                    const activityTitle = this.getAttribute('data-title');
+                    
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: `You are about to delete the activity "${activityTitle}". This action cannot be undone.`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch(`/admin/activities/${activityId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'The activity has been deleted.',
+                                        'success'
+                                    ).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire(
+                                        'Error!',
+                                        data.message || 'Failed to delete activity',
+                                        'error'
+                                    );
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire(
+                                    'Error!',
+                                    'An error occurred while deleting the activity.',
+                                    'error'
+                                );
+                            });
+                        }
+                    });
+                });
+            });
+        });
+ 

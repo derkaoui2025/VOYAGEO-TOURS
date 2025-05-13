@@ -4,6 +4,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const path = require('path');
 const dotenv = require('dotenv');
+const methodOverride = require('method-override');
 
 // Load environment variables
 dotenv.config();
@@ -13,7 +14,6 @@ const app = express();
 
 // Set up EJS as the view engine
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 
 // Import middlewares
 const { ipBlockerMiddleware } = require('./middleware/ipBlocker');
@@ -22,8 +22,9 @@ const { generalRateLimiter } = require('./middleware/rateLimiter');
 // Apply global middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(ipBlockerMiddleware); // Check for blocked IPs
-app.use(generalRateLimiter); // Apply general rate limit to all routes
+app.use(methodOverride('_method'));
+app.use(ipBlockerMiddleware);
+app.use(generalRateLimiter);
 
 // Session configuration
 app.use(session({
@@ -52,15 +53,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 const adminRoutes = require('./routes/admin');
 const adminTourRoutes = require('./routes/tours');
 const publicRoutes = require('./routes/public');
-const frontendRoutes = require('./routes/frontendRoutes');
-// const apiRoutes = require('./routes/api');
 
 // Apply routes
 app.use('/admin', adminRoutes);
 app.use('/admin/tours', adminTourRoutes);
-// app.use('/api', apiRoutes);
 app.use('/', publicRoutes);
-app.use('/', frontendRoutes); // Mount frontend blog routes
 
 // Redirect root /admin to /admin/dashboard or /admin/login if not authenticated
 app.get('/admin', (req, res) => {
@@ -71,33 +68,13 @@ app.get('/admin', (req, res) => {
   }
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  
-  if (req.xhr || req.headers.accept && req.headers.accept.indexOf('json') > -1) {
-    return res.status(500).json({ 
-      success: false, 
-      message: 'Something went wrong!', 
-      error: process.env.NODE_ENV === 'development' ? err.message : undefined 
-    });
-  }
-  
-  res.status(500).render('pages/error', { 
-    pageTitle: 'Error',
-    heroTitle: 'Something Went Wrong',
-    heroSubtitle: 'We apologize for the inconvenience',
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
-
-// 404 handler - must be after all routes
+// Handle 404 errors
 app.use((req, res) => {
   res.status(404).render('pages/404', {
-    pageTitle: 'Page Not Found',
+    pageTitle: '404 - Page Not Found',
     heroTitle: 'Page Not Found',
-    heroSubtitle: 'The page you were looking for doesn\'t exist'
+    heroSubtitle: 'The page you were looking for doesn\'t exist',
+    headerImagePath: '/images/headers/error-banner.jpg'
   });
 });
 
