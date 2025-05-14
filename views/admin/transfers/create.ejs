@@ -179,7 +179,7 @@
                     </a>
                 </div>
             </div>
-            
+
             <!-- Alerts -->
             <div id="alert-container"></div>
             
@@ -260,7 +260,7 @@
                                 <span class="label-text">Description</span>
                             </label>
                             <textarea name="description" class="textarea textarea-bordered h-24" placeholder="Provide details about this transfer service..."></textarea>
-                        </div>
+                                </div>
                         
                         <div class="form-control">
                             <label class="label">
@@ -331,9 +331,9 @@
                 
                 if (files && files.length > 0) {
                     Array.from(files).forEach((file, index) => {
-                        const reader = new FileReader();
-                        
-                        reader.onload = function(e) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
                             const div = document.createElement('div');
                             div.className = 'relative';
                             
@@ -350,9 +350,9 @@
                             $(div).find('.remove-preview').on('click', function() {
                                 $(div).remove();
                             });
-                        };
-                        
-                        reader.readAsDataURL(file);
+                    };
+                    
+                    reader.readAsDataURL(file);
                     });
                 }
             });
@@ -375,7 +375,7 @@
                     // Add each item as array element
                     includedArray.forEach(item => {
                         formData.append('included[]', item.trim());
-                    });
+                });
                 }
                 
                 // Process excluded services from textarea to array

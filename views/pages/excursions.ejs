@@ -1,473 +1,600 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+    <meta name="keywords" content="Morocco tours, Morocco travel, Sahara Desert, Marrakech, Morocco vacation, Morocco experiences">
+    <meta name="author" content="Voyageo Tours">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/">
+    <meta property="og:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
+    <meta property="og:description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+    <meta property="og:image" content="/images/morocco-share.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/">
+    <meta property="twitter:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
+    <meta property="twitter:description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+    <meta property="twitter:image" content="/images/morocco-share.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Title -->
+    <title><%= pageTitle %> | Voyageo Tours Morocco</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    },
+                    lineHeight: {
+                        'extra-tight': '1.05',
+                        'tighter': '1.1'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Additional CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
     <style>
-        /* GetYourGuide inspired styles */
-        :root {
-            --primary-color: #3498db;
-            --primary-dark: #2980b9;
-            --secondary-color: #2c3e50;
-            --gray-light: #f5f5f5;
-            --gray-medium: #e0e0e0;
-            --gray-text: #666;
-            --border-radius: 8px;
+        html {
+            scroll-behavior: smooth;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #333;
-            background-color: #f7f7f7;
-            line-height: 1.6;
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
         }
         
-        .section {
-            margin-bottom: 2rem;
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
         }
         
-        .card {
-            border-radius: var(--border-radius);
-            border: 1px solid var(--gray-medium);
-            background-color: white;
-            overflow: hidden;
-            transition: border-color 0.2s ease;
-        }
-        
-        .card:hover {
-            border-color: var(--primary-color);
-        }
-        
-        .excursion-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .excursion-card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .excursion-image {
-            height: 200px;
+        /* Decorative elements */
+        .decorative-line {
             position: relative;
         }
         
-        .excursion-image img {
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            display: inline-block;
+            background-color: #B8860B;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary:hover {
+            color: #B8860B;
+        }
+        
+        .btn-primary:hover::after {
+            width: 100%;
+        }
+        
+        .btn-outline {
+            display: inline-block;
+            background-color: transparent;
+            color: #B8860B;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-outline::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #B8860B;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-outline:hover {
+            color: white;
+        }
+        
+        .btn-outline:hover::after {
+            width: 100%;
+        }
+        
+        /* Standardized card styles */
+        .standard-card {
+            position: relative;
+            overflow: hidden;
+            height: 400px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .standard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%);
+            z-index: 1;
+            opacity: 0.8;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .standard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .standard-card:hover::before {
+            opacity: 0.9;
+        }
+        
+        .standard-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
+        .standard-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .standard-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            z-index: 2;
+            color: white;
+            transform: translateY(20px);
+            opacity: 0.9;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .standard-card:hover .standard-card-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .category-tag {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: #B8860B;
+            color: white;
+            padding: 0.25rem 1rem;
             font-size: 0.75rem;
-            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
         }
         
-        .badge-primary {
-            background-color: var(--primary-color);
+        /* Hero styles */
+        .hero-section {
+            position: relative;
+            height: 60vh;
+            min-height: 500px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 0;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0.7) 50%, rgba(18, 18, 18, 0.5) 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
             color: white;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 20px;
         }
         
-        .badge-secondary {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-        
-        .filter-container {
-            background-color: white;
-            border: 1px solid var(--gray-medium);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+        /* Filter styles */
+        .filter-section {
+            position: relative;
+            background-color: #F5F1E9;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            z-index: 10;
         }
         
         .filter-tag {
             display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            background-color: var(--gray-light);
-            color: var(--gray-text);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid var(--gray-medium);
-        }
-        
-        .filter-tag:hover,
-        .filter-tag.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        
-        .filter-tag i {
-            margin-right: 0.5rem;
-        }
-        
-        .icon-text {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-        
-        .info-icon {
-            color: var(--primary-color);
-            margin-right: 0.5rem;
-            width: 1rem;
-            text-align: center;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-            text-align: center;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .btn-outline {
+            padding: 8px 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(184, 134, 11, 0.3);
+            border-radius: 0;
             background-color: transparent;
-            border: 1px solid var(--gray-medium);
-            color: var(--gray-text);
-        }
-        
-        .btn-outline:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--gray-medium);
-            border-radius: var(--border-radius);
-            margin-bottom: 1rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
+            color: #252525;
+            font-size: 14px;
             font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
         
-        .excursion-list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .filter-tag:hover, .filter-tag.active {
+            background-color: #B8860B;
+            color: white;
+            border-color: #B8860B;
         }
         
-        .excursion-list-item {
-            display: flex;
-            flex-direction: column;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-        }
-        
-        @media (min-width: 768px) {
-            .excursion-list-item {
-                flex-direction: row;
-                height: 220px;
-            }
-            
-            .excursion-image-container {
-                width: 30%;
-            }
-            
-            .excursion-content {
-                width: 70%;
-                display: flex;
-                flex-direction: column;
-            }
-        }
-        
-        .excursion-image-container {
-            position: relative;
-            height: 200px;
-        }
-        
-        .excursion-content {
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .excursion-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--secondary-color);
-        }
-        
-        .excursion-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .excursion-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-            padding-top: 1rem;
-        }
-        
-        .excursion-price {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
-        
-        .excursion-price small {
-            font-size: 0.8rem;
-            color: var(--gray-text);
-            font-weight: 400;
-        }
-        
-        .filter-section {
+        /* No results styles */
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.1);
             background-color: white;
-            border-bottom: 1px solid var(--gray-medium);
-            padding: 1.5rem 0;
-            position: sticky;
-            top: 60px;
-            z-index: 10;
         }
         
-        .advanced-filters {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--gray-medium);
+        /* Brand pattern */
+        .brand-pattern {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background-size: 20px 20px;
+            background-image: radial-gradient(#B8860B 1px, transparent 1px);
+            opacity: 0.1;
+            z-index: 0;
         }
         
-        @media (max-width: 768px) {
-            .excursion-footer {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .filter-tags {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            .filter-tag {
-                flex-shrink: 0;
-            }
+        .section-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 12px;
+            color: #B8860B;
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .pattern-diagonal {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 250px;
+            height: 300px;
+            background-image: linear-gradient(45deg, #B8860B 25%, transparent 25%), 
+                            linear-gradient(-45deg, #B8860B 25%, transparent 25%);
+            background-size: 12px 12px;
+            opacity: 0.05;
+            z-index: 0;
         }
     </style>
 </head>
-<body class="bg-gray-50 font-opensans text-gray-800">
+
+<body class="bg-cream font-sans text-secondary antialiased">
     <%- include('../partials/navbar') %>
     
-    <%- include('../partials/hero', { 
-        heroTitle: 'Day Excursions in Morocco', 
-        heroSubtitle: 'Discover the best day trips from Marrakech, Fes, and other Moroccan cities',
-        headerImagePath: '/images/headers/excursions-header.jpg'
-    }) %>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg" style="background-image: url('/images/headers/excursions-header.jpg');"></div>
+        <div class="hero-overlay"></div>
+        
+        <!-- Background pattern -->
+        <div class="brand-pattern top-10 right-10"></div>
+        <div class="brand-pattern bottom-10 left-20"></div>
+        
+        <div class="hero-content">
+            <span class="inline-block mb-4 font-sans text-primary uppercase tracking-widest text-sm font-medium">Discover Morocco</span>
+            <h1 class="text-4xl md:text-5.5xl font-serif font-medium mb-6 text-white leading-extra-tight">
+                Day Excursions in Morocco
+            </h1>
+            <p class="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                Explore the best of Morocco in a single day. From mountains to deserts, our day trips showcase the country's remarkable diversity.
+            </p>
+        </div>
+    </section>
     
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-12">
-        <!-- Filter Section -->
-        <section class="filter-section">
-            <div class="container mx-auto px-4">
-                <div class="filter-tags">
-                    <a href="#all" class="filter-tag active">
-                        <i class="fas fa-globe"></i>All Excursions
-                    </a>
-                    <% 
-                    // Get unique start locations from excursions
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex items-center py-2 overflow-x-auto scrollbar-hide">
+                <a href="#all" class="filter-tag active">
+                    <i class="fas fa-globe mr-2 text-xs"></i>All Excursions
+                </a>
+                <% 
+                // Get unique start locations from excursions
+                if (excursions && excursions.length > 0) {
                     const startLocations = [...new Set(excursions.map(excursion => excursion.startLocation))];
                     
                     // Output start location tags
                     startLocations.forEach(location => { %>
                         <a href="#<%= location.toLowerCase().replace(/\s+/g, '-') %>" class="filter-tag">
-                            <i class="fas fa-map-marker-alt"></i><%= location %>
+                            <i class="fas fa-map-marker-alt mr-2 text-xs"></i><%= location %>
                         </a>
-                    <% }); %>
-                    
-                    <a href="#private" class="filter-tag">
-                        <i class="fas fa-user"></i>Private
-                    </a>
-                    <a href="#public" class="filter-tag">
-                        <i class="fas fa-users"></i>Public
-                    </a>
-                </div>
+                    <% }); 
+                } %>
+                
+                <a href="#private" class="filter-tag">
+                    <i class="fas fa-user mr-2 text-xs"></i>Private
+                </a>
+                <a href="#public" class="filter-tag">
+                    <i class="fas fa-users mr-2 text-xs"></i>Group
+                </a>
             </div>
-        </section>
+        </div>
+    </section>
+    
+    <!-- Excursions Section -->
+    <section class="py-24 bg-beige relative">
+        <div class="section-label">Day Trips</div>
+        <div class="pattern-diagonal"></div>
         
-        <!-- Excursions List -->
-        <section class="py-8">
-            <div class="container mx-auto px-4">
-                <div class="excursion-list-container">
-                    <% if (excursions && excursions.length > 0) { %>
-                        <% excursions.forEach(excursion => { %>
-                            <div class="card excursion-list-item" 
-                                data-duration="<%= excursion.duration <= 3 ? 'short' : (excursion.duration <= 6 ? 'medium' : 'long') %>" 
-                                data-location="<%= excursion.startLocation.toLowerCase().replace(/\s+/g, '-') %>" 
-                                data-type="<%= excursion.excursionType %>">
-                                
-                                <!-- Excursion Image -->
-                                <div class="excursion-image-container">
-                                    <a href="/excursions/<%= excursion.slug %>">
-                                        <% if (excursion.gallery && excursion.gallery.length > 0) { %>
-                                            <img class="lazy-image w-full h-full object-cover" data-src="<%= excursion.gallery[0] %>" alt="<%= excursion.title %>">
-                                        <% } else { %>
-                                            <img class="lazy-image w-full h-full object-cover" data-src="/images/placeholder-excursion.jpg" alt="<%= excursion.title %>">
-                                        <% } %>
-                                    </a>
-                                    <div class="absolute top-2 right-2">
-                                        <span class="badge badge-<%= excursion.excursionType === 'private' ? 'primary' : 'secondary' %>">
-                                            <%= excursion.excursionType %>
-                                        </span>
-                                    </div>
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="mb-16">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Explore Morocco</span>
+                <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">
+                    Unforgettable Day Excursions
+                </h2>
+                <p class="text-secondary/80 max-w-2xl">
+                    Our expertly crafted day trips offer the perfect way to experience Morocco's most iconic destinations, even when you're short on time. Led by knowledgeable local guides, each excursion combines natural beauty, cultural insights, and authentic experiences.
+                </p>
+            </div>
+            
+            <% if (excursions && excursions.length > 0) { %>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="excursion-grid">
+                    <% excursions.forEach((excursion, index) => { %>
+                        <div class="standard-card" 
+                            data-aos="fade-up" 
+                            data-aos-delay="<%= 100 + (index % 3) * 100 %>"
+                            data-duration="<%= excursion.duration <= 3 ? 'short' : (excursion.duration <= 6 ? 'medium' : 'long') %>" 
+                            data-location="<%= excursion.startLocation.toLowerCase().replace(/\s+/g, '-') %>" 
+                            data-type="<%= excursion.excursionType %>">
+                            
+                            <div class="category-tag">Excursion</div>
+                            <% if (excursion.excursionType === 'private') { %>
+                                <div class="absolute top-0 right-0 bg-primary text-white text-xs py-1 px-3 z-10">PRIVATE</div>
+                            <% } %>
+                            
+                            <% if (excursion.gallery && excursion.gallery.length > 0) { %>
+                                <img src="<%= excursion.gallery[0] %>" alt="<%= excursion.title %>" class="w-full h-full object-cover">
+                            <% } else { %>
+                                <img src="/images/headers/excursion-details-banner.jpg" alt="<%= excursion.title %>" class="w-full h-full object-cover">
+                            <% } %>
+                            
+                            <div class="standard-card-content">
+                                <div class="absolute top-6 right-6 bg-primary/90 backdrop-blur-sm text-white px-4 py-2">
+                                    <%= excursion.duration %> <%= excursion.durationType %>
                                 </div>
-                                
-                                <!-- Excursion Content -->
-                                <div class="excursion-content">
-                                    <a href="/excursions/<%= excursion.slug %>" class="block">
-                                        <h3 class="excursion-title"><%= excursion.title %></h3>
-                                    </a>
-                                    
-                                    <div class="excursion-meta">
-                                        <div class="icon-text">
-                                            <i class="far fa-clock info-icon"></i>
-                                            <span><%= excursion.duration %> <%= excursion.durationType %></span>
-                                        </div>
-                                        
-                                        <div class="icon-text">
-                                            <i class="fas fa-map-marker-alt info-icon"></i>
-                                            <span>From: <%= excursion.startLocation %></span>
-                                        </div>
-                                        
-                                        <div class="icon-text">
-                                            <i class="fas fa-users info-icon"></i>
-                                            <span><%= excursion.excursionType === 'private' ? 'Private tour' : 'Group tour' %></span>
-                                        </div>
-                                    </div>
-                                    
-                                    <p class="text-gray-600 mb-4 line-clamp-2">
-                                        <%- excursion.description.substring(0, 150).replace(/<[^>]*>/g, '') %>...
-                                    </p>
-                                    
-                                    <div class="excursion-footer">
-                                        <div class="excursion-price">
-                                            <% if (excursion.price) { %>
-                                                <%= excursion.price %> EUR
-                                                <small><%= excursion.excursionType === 'private' ? 'per group' : 'per person' %></small>
-                                            <% } else { %>
-                                                Contact for Price
-                                            <% } %>
-                                        </div>
-                                        
-                                        <a href="/excursions/<%= excursion.slug %>" class="btn btn-primary">
-                                            View Details
-                                        </a>
-                                    </div>
+                                <h3 class="text-xl font-serif font-medium mb-3"><%= excursion.title %></h3>
+                                <div class="flex items-center text-white/70 text-sm mb-2">
+                                    <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                                    <span>From: <%= excursion.startLocation %></span>
                                 </div>
+                                <div class="mb-4 flex justify-between">
+                                    <div class="flex text-primary text-xs">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <span class="text-white/70 ml-1">(<%= Math.floor(Math.random() * 20) + 10 %>)</span>
+                                    </div>
+                                    
+                                    <% if (excursion.price) { %>
+                                        <span class="text-white font-medium"><%= excursion.price %> EUR</span>
+                                    <% } else { %>
+                                        <span class="text-white font-medium">Contact for Price</span>
+                                    <% } %>
+                                </div>
+                                <a href="/excursions/<%= excursion.slug %>" class="btn-primary text-sm">
+                                    View Details
+                                </a>
                             </div>
-                        <% }); %>
-                    <% } else { %>
-                        <!-- No Excursions Message -->
-                        <div class="card p-8 text-center">
-                            <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
-                            <h3 class="text-2xl font-semibold mb-2">No excursions available</h3>
-                            <p class="text-gray-600 mb-6">Please check back later or contact us for custom excursions.</p>
-                            <a href="/contact" class="btn btn-primary">
-                                <i class="fas fa-envelope mr-2"></i> Contact Us
-                            </a>
                         </div>
-                    <% } %>
-                    
-                    <!-- No Results Message (initially hidden) -->
-                    <div id="no-results-message" class="card p-8 text-center hidden">
-                        <i class="fas fa-filter text-6xl text-gray-300 mb-4"></i>
-                        <h3 class="text-2xl font-semibold mb-2">No excursions match your filters</h3>
-                        <p class="text-gray-600 mb-6">Please try different filter options.</p>
-                        <button id="reset-filters" class="btn btn-primary">
-                            <i class="fas fa-redo-alt mr-2"></i> Reset Filters
-                        </button>
-                    </div>
+                    <% }); %>
                 </div>
-            </div>
-        </section>
-        
-        <!-- Call to Action Section -->
-        <section class="py-12 bg-white">
-            <div class="container mx-auto px-4">
-                <div class="card border-0 bg-primary/10 p-8 text-center">
-                    <h2 class="text-2xl font-bold mb-4">Looking for a Custom Excursion?</h2>
-                    <p class="text-gray-700 mb-6">Contact us to arrange a private excursion tailored to your preferences.</p>
-                    <a href="/contact" class="btn btn-primary inline-block">
+                
+                <!-- No Results Message (initially hidden) -->
+                <div id="no-results-message" class="empty-state mt-12 hidden" data-aos="fade-up">
+                    <div class="w-20 h-20 mx-auto rounded-full border-2 border-primary/20 flex items-center justify-center mb-6">
+                        <i class="fas fa-filter text-primary/40 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif text-secondary/70 mb-2">No excursions match your filters</h3>
+                    <p class="text-secondary/60 mb-6">Please try different filter options</p>
+                    <button id="reset-filters" class="btn-outline">
+                        <i class="fas fa-redo-alt mr-2"></i> Reset Filters
+                    </button>
+                </div>
+            <% } else { %>
+                <!-- No Excursions Message -->
+                <div class="empty-state" data-aos="fade-up">
+                    <div class="w-20 h-20 mx-auto rounded-full border-2 border-primary/20 flex items-center justify-center mb-6">
+                        <i class="fas fa-hiking text-primary/40 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif text-secondary/80 mb-2">Excursions Coming Soon</h3>
+                    <p class="text-secondary/60 mb-6">Check back soon for our exciting day trips around Morocco</p>
+                    <a href="/contact" class="btn-primary">
                         <i class="fas fa-envelope mr-2"></i> Contact Us
                     </a>
                 </div>
+            <% } %>
+        </div>
+    </section>
+    
+    <!-- Custom Excursion CTA -->
+    <section class="py-32 bg-cover bg-center relative" style="background-image: url('/images/headers/custom-transfer-banner.jpg');">
+        <div class="absolute inset-0 bg-gradient-to-r from-secondary/95 to-secondary/85"></div>
+        
+        <div class="container mx-auto px-6 md:px-12 relative z-10 text-center max-w-5xl">
+            <div data-aos="fade-up">
+                <span class="inline-block mb-4 px-4 py-1 bg-primary/20 text-primary uppercase tracking-widest text-xs font-medium border border-primary/30">Custom Experience</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-medium mb-6 text-white leading-tight">
+                    Create Your <span class="text-primary">Personalized</span> Day Trip
+                </h2>
+                <p class="text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-relaxed">
+                    Have a specific destination in mind? Want a private tour with a custom itinerary? We can design the perfect day excursion tailored to your interests, timeframe, and budget.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="/contact" class="btn-primary min-w-[200px] py-4">
+                        <i class="fas fa-pencil-alt mr-2"></i> Request Custom Trip
+                    </a>
+                </div>
+                
+                <!-- Decorative elements -->
+                <div class="hidden md:block absolute -bottom-10 -right-20 w-40 h-40 border border-primary/20 opacity-30"></div>
+                <div class="hidden md:block absolute -top-10 -left-20 w-40 h-40 border border-primary/20 opacity-30"></div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
     
     <%- include('../partials/footer') %>
     
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Remove toggle filters function
-            const toggleFiltersBtn = document.getElementById('toggle-filters');
-            const filtersContainer = document.getElementById('filters-container');
-            const filterButton = document.getElementById('filter-button');
-            const resetFiltersBtn = document.getElementById('reset-filters-btn');
-            const resetFilters = document.getElementById('reset-filters');
-            const excursionItems = document.querySelectorAll('.excursion-list-item');
-            const noResultsMessage = document.getElementById('no-results-message');
-            
-            // Remove toggle filters event listener
-            toggleFiltersBtn.addEventListener('click', function() {
-                filtersContainer.classList.toggle('hidden');
-                const icon = toggleFiltersBtn.querySelector('.fa-chevron-down, .fa-chevron-up');
-                if (icon.classList.contains('fa-chevron-down')) {
-                    icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                } else {
-                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                }
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
             });
             
-            // Filter tags functionality
+            // Filter functionality
             const filterTags = document.querySelectorAll('.filter-tag');
+            const excursionItems = document.querySelectorAll('.standard-card');
+            const noResultsMessage = document.getElementById('no-results-message');
+            const excursionGrid = document.getElementById('excursion-grid');
+            const resetFiltersBtn = document.getElementById('reset-filters');
+            
+            // Filter tags functionality
             filterTags.forEach(tag => {
                 tag.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
-                    // Remove reset input filters code
-                    // document.getElementById('duration').value = '';
-                    // document.getElementById('location').value = '';
-                    // document.getElementById('type').value = '';
                     
                     // Update active tag
                     filterTags.forEach(t => t.classList.remove('active'));
@@ -478,45 +605,46 @@
                 });
             });
             
-            // Remove Apply filters button event listener
-            // filterButton.addEventListener('click', function() {
-            //     applyAdvancedFilters();
-            // });
+            // Reset filters
+            if (resetFiltersBtn) {
+                resetFiltersBtn.addEventListener('click', resetAllFilters);
+            }
             
-            // Reset filters - simplify to only deal with tag filters
             function resetAllFilters() {
-                // Remove reset form inputs
-                // document.getElementById('duration').value = '';
-                // document.getElementById('location').value = '';
-                // document.getElementById('type').value = '';
-                
                 // Reset filter tags
                 filterTags.forEach(t => t.classList.remove('active'));
                 document.querySelector('[href="#all"]').classList.add('active');
                 
                 // Show all excursions
                 excursionItems.forEach(item => {
-                    item.style.display = 'flex';
+                    item.style.display = 'block';
                 });
                 
                 // Hide no results message
-                noResultsMessage.classList.add('hidden');
+                if (noResultsMessage) {
+                    noResultsMessage.classList.add('hidden');
+                }
+                
+                // Show grid
+                if (excursionGrid) {
+                    excursionGrid.classList.remove('hidden');
+                }
             }
             
-            // Remove resetFiltersBtn event listener
-            // resetFiltersBtn.addEventListener('click', resetAllFilters);
-            resetFilters.addEventListener('click', resetAllFilters);
-            
-            // Filter excursions by tag - keep this function
+            // Filter excursions by tag
             function filterExcursions(filterValue) {
                 let visibleCount = 0;
                 
                 excursionItems.forEach(item => {
                     if (filterValue === 'all') {
-                        item.style.display = 'flex';
+                        item.style.display = 'block';
                         visibleCount++;
-                    } else if (item.dataset.location === filterValue || item.dataset.type === filterValue) {
-                        item.style.display = 'flex';
+                    } else if (
+                        (filterValue === 'private' && item.dataset.type === 'private') || 
+                        (filterValue === 'public' && item.dataset.type === 'public') ||
+                        item.dataset.location === filterValue
+                    ) {
+                        item.style.display = 'block';
                         visibleCount++;
                     } else {
                         item.style.display = 'none';
@@ -524,35 +652,19 @@
                 });
                 
                 // Toggle no results message
-                if (visibleCount === 0) {
-                    noResultsMessage.classList.remove('hidden');
-                } else {
-                    noResultsMessage.classList.add('hidden');
-                }
-            }
-            
-            // Lazy loading for images - keep this part
-            const lazyImages = document.querySelectorAll('.lazy-image');
-            
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src;
-                            imageObserver.unobserve(img);
+                if (noResultsMessage) {
+                    if (visibleCount === 0) {
+                        noResultsMessage.classList.remove('hidden');
+                        if (excursionGrid) {
+                            excursionGrid.classList.add('hidden');
                         }
-                    });
-                });
-                
-                lazyImages.forEach(img => {
-                    imageObserver.observe(img);
-                });
-            } else {
-                // Fallback for browsers without IntersectionObserver support
-                lazyImages.forEach(img => {
-                    img.src = img.dataset.src;
-                });
+                    } else {
+                        noResultsMessage.classList.add('hidden');
+                        if (excursionGrid) {
+                            excursionGrid.classList.remove('hidden');
+                        }
+                    }
+                }
             }
         });
     </script>

@@ -67,7 +67,7 @@
                     </a>
                 </div>
             </div>
-            
+
             <!-- Alerts -->
             <div id="alert-container"></div>
             
@@ -148,7 +148,7 @@
                                 <span class="label-text">Description</span>
                             </label>
                             <textarea name="description" class="textarea textarea-bordered h-24" placeholder="Provide details about this transfer service..."><%= transfer.description %></textarea>
-                        </div>
+                                        </div>
                         
                         <div class="form-control">
                             <label class="label">
@@ -158,7 +158,7 @@
                             <label class="label">
                                 <span class="label-text-alt">Separate each service with a new line</span>
                             </label>
-                        </div>
+                                    </div>
                         
                         <div class="form-control">
                             <label class="label">
@@ -178,7 +178,7 @@
                                 <input type="text" name="slug" class="input input-bordered w-full" value="<%= transfer.slug %>">
                                 <button type="button" id="regenerate-slug" class="btn btn-square btn-outline ml-2" title="Regenerate Slug">
                                     <i class="fas fa-sync-alt"></i>
-                                </button>
+                                                </button>
                             </div>
                             <label class="label">
                                 <span class="label-text-alt">Warning: Changing this may break existing links</span>
@@ -260,7 +260,7 @@
                 if (startCity && endCity) {
                     const newSlug = `${startCity.toLowerCase().replace(/\s+/g, '-')}-to-${endCity.toLowerCase().replace(/\s+/g, '-')}`;
                     $('input[name="slug"]').val(newSlug);
-                }
+            }
             });
             
             // Preview new gallery images when selected
@@ -270,9 +270,9 @@
                 
                 if (files && files.length > 0) {
                     Array.from(files).forEach((file, index) => {
-                        const reader = new FileReader();
-                        
-                        reader.onload = function(e) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
                             const div = document.createElement('div');
                             div.className = 'relative';
                             
@@ -281,7 +281,7 @@
                                 <button type="button" class="btn btn-circle btn-xs btn-error absolute top-1 right-1 remove-preview" data-index="${index}">
                                     <i class="fas fa-times"></i>
                                 </button>
-                            `;
+                        `;
                             
                             $('#new-gallery-preview').append(div);
                             
@@ -289,9 +289,9 @@
                             $(div).find('.remove-preview').on('click', function() {
                                 $(div).remove();
                             });
-                        };
-                        
-                        reader.readAsDataURL(file);
+                    };
+                    
+                    reader.readAsDataURL(file);
                     });
                 }
             });
@@ -321,8 +321,8 @@
                 
                 $('.existing-publicid-input').each(function() {
                     existingPublicIds.push($(this).val());
-                });
-                
+            });
+            
                 // Add existing gallery data
                 formData.append('existingGallery', JSON.stringify(existingImages));
                 formData.append('existingGalleryPublicIds', JSON.stringify(existingPublicIds));
@@ -336,7 +336,7 @@
                     // Add each item as array element
                     includedArray.forEach(item => {
                         formData.append('included[]', item.trim());
-                    });
+                });
                 }
                 
                 // Process excluded services from textarea to array
@@ -377,7 +377,7 @@
                                 confirmButtonColor: '#3085d6'
                             }).then(() => {
                                 window.location.href = '/admin/transfers';
-                            });
+                });
                         } else {
                             Swal.fire({
                                 icon: 'error',

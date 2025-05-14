@@ -143,21 +143,21 @@
                             <div class="flex items-center">
                                 <i class="fas fa-car mr-2 text-warning"></i>
                                 <span><%= transfer.vehicleType %></span>
-                            </div>
+        </div>
                             <div class="flex items-center">
                                 <i class="fas fa-clock mr-2 text-warning"></i>
-                                <span><%= transfer.duration %></span>
-                            </div>
+                            <span><%= transfer.duration %></span>
+                        </div>
                             <div class="flex items-center">
                                 <i class="fas fa-tag mr-2 text-warning"></i>
                                 <span>From <%= transfer.price.toLocaleString() %> MAD</span>
-                            </div>
+                        </div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        
+
         <!-- Thumbnail Gallery -->
         <div class="container mx-auto px-4 -mt-6 relative z-10">
             <% if (transfer.gallery && transfer.gallery.length > 1) { %>
@@ -185,8 +185,8 @@
                             <a href="#included" class="py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700">What's Included</a>
                             <a href="#info" class="py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700">Info</a>
                         </nav>
-                    </div>
-
+                        </div>
+                        
                     <!-- Description Section -->
                     <div id="about" class="bg-white border border-gray-200 p-6 mb-8">
                         <h2 class="text-2xl font-semibold text-secondary mb-4">About This Transfer</h2>
@@ -198,78 +198,78 @@
                     <!-- What's Included Section -->
                     <div id="included" class="bg-white border border-gray-200 p-6 mb-8">
                         <h2 class="text-2xl font-semibold text-secondary mb-4">What's Included</h2>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
                                 <h3 class="text-xl font-semibold text-secondary mb-3">
                                     <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                    Included
-                                </h3>
-                                <ul class="space-y-2">
-                                    <% if (transfer.included && transfer.included.length > 0) { %>
-                                        <% transfer.included.forEach(item => { %>
+                                Included
+                            </h3>
+                            <ul class="space-y-2">
+                                <% if (transfer.included && transfer.included.length > 0) { %>
+                                    <% transfer.included.forEach(item => { %>
                                             <li class="flex items-start">
                                                 <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
-                                                <span><%= item %></span>
-                                            </li>
-                                        <% }); %>
-                                    <% } else { %>
+                                            <span><%= item %></span>
+                                        </li>
+                                    <% }); %>
+                                <% } else { %>
                                         <li class="flex items-start">
                                             <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
-                                            <span>Professional driver</span>
-                                        </li>
+                                        <span>Professional driver</span>
+                                    </li>
                                         <li class="flex items-start">
                                             <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
-                                            <span>Fuel and tolls</span>
-                                        </li>
+                                        <span>Fuel and tolls</span>
+                                    </li>
                                         <li class="flex items-start">
                                             <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
-                                            <span>Bottled water</span>
-                                        </li>
+                                        <span>Bottled water</span>
+                                    </li>
                                         <li class="flex items-start">
                                             <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
-                                            <span>Luggage handling</span>
-                                        </li>
-                                    <% } %>
-                                </ul>
-                            </div>
-                            
-                            <div>
+                                        <span>Luggage handling</span>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        </div>
+                        
+                        <div>
                                 <h3 class="text-xl font-semibold text-secondary mb-3">
                                     <i class="fas fa-times-circle text-red-500 mr-2"></i>
-                                    Not Included
-                                </h3>
-                                <ul class="space-y-2">
-                                    <% if (transfer.excluded && transfer.excluded.length > 0) { %>
-                                        <% transfer.excluded.forEach(item => { %>
+                                Not Included
+                            </h3>
+                            <ul class="space-y-2">
+                                <% if (transfer.excluded && transfer.excluded.length > 0) { %>
+                                    <% transfer.excluded.forEach(item => { %>
                                             <li class="flex items-start">
                                                 <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
-                                                <span><%= item %></span>
-                                            </li>
-                                        <% }); %>
-                                    <% } else { %>
+                                            <span><%= item %></span>
+                                        </li>
+                                    <% }); %>
+                                <% } else { %>
                                         <li class="flex items-start">
                                             <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
-                                            <span>Food and beverages (except water)</span>
-                                        </li>
+                                        <span>Food and beverages (except water)</span>
+                                    </li>
                                         <li class="flex items-start">
                                             <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
-                                            <span>Entrance fees to attractions</span>
-                                        </li>
+                                        <span>Entrance fees to attractions</span>
+                                    </li>
                                         <li class="flex items-start">
                                             <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
-                                            <span>Gratuities (optional)</span>
-                                        </li>
+                                        <span>Gratuities (optional)</span>
+                                    </li>
                                         <li class="flex items-start">
                                             <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
-                                            <span>Additional stops not in itinerary</span>
-                                        </li>
-                                    <% } %>
-                                </ul>
-                            </div>
+                                        <span>Additional stops not in itinerary</span>
+                                    </li>
+                                <% } %>
+                            </ul>
                         </div>
                     </div>
-                    
+                </div>
+
                     <!-- Additional Information -->
                     <div id="info" class="bg-white border border-gray-200 p-6 mb-8">
                         <h2 class="text-2xl font-semibold text-secondary mb-4">Additional Information</h2>
@@ -288,7 +288,7 @@
                                 <div class="flex items-center text-gray-700">
                                     <i class="fas fa-car text-warning mr-3 text-xl"></i>
                                     <span><%= transfer.vehicleType %></span>
-                                </div>
+                        </div>
                             </div>
                         </div>
                         
@@ -344,48 +344,48 @@
         </a>
     </div>
     <p class="text-gray-600"><i class="fas fa-route text-primary mr-2"></i> Route from <%= transfer.startCity %> to <%= transfer.endCity %></p>
-</div>
-
                 </div>
-                
-                <!-- Booking Sidebar -->
-                <div class="w-full lg:w-1/3">
+
+            </div>
+
+            <!-- Booking Sidebar -->
+            <div class="w-full lg:w-1/3">
                     <div class="booking-sidebar bg-white border border-gray-200 p-6">
-                        <h2 class="text-xl font-semibold mb-6 pb-4 border-b">Book This Transfer</h2>
-                        
-                        <div class="space-y-5">
-                            <!-- Price info -->
-                            <div class="mb-6">
-                                <div class="flex items-center">
-                                    <span class="text-2xl font-bold mr-2">
-                                        <%= transfer.price %> MAD
-                                    </span>
-                                    <span class="text-sm text-gray-600">
+                    <h2 class="text-xl font-semibold mb-6 pb-4 border-b">Book This Transfer</h2>
+                    
+                    <div class="space-y-5">
+                        <!-- Price info -->
+                        <div class="mb-6">
+                            <div class="flex items-center">
+                                <span class="text-2xl font-bold mr-2">
+                                    <%= transfer.price %> MAD
+                                </span>
+                                <span class="text-sm text-gray-600">
                                         per Person.
-                                    </span>
-                                </div>
+                                </span>
                             </div>
-                            
-                            <!-- Email button -->
+                        </div>
+                        
+                        <!-- Email button -->
                             <a href="mailto:info@voyageo-tours.com?subject=Booking inquiry for transfer from <%= transfer.startCity %> to <%= transfer.endCity %>" class="contact-btn email-btn">
-                                <i class="fas fa-envelope"></i>
-                                <span>Email Us</span>
-                            </a>
-                            
-                            <!-- WhatsApp button -->
-                            <a href="https://wa.me/212661123456?text=Hello, I'd like to book a transfer from <%= transfer.startCity %> to <%= transfer.endCity %>" target="_blank" class="contact-btn whatsapp-btn">
-                                <i class="fab fa-whatsapp"></i>
-                                <span>WhatsApp</span>
-                            </a>
-                            
-                            <!-- Phone button -->
-                            <a href="tel:+212661123456" class="contact-btn phone-btn">
-                                <i class="fas fa-phone-alt"></i>
-                                <span>Call Us</span>
-                            </a>
-                            
-                            <div class="text-center text-sm text-gray-500 mt-6">
-                                <p>Our team is available 24/7 to assist you</p>
+                            <i class="fas fa-envelope"></i>
+                            <span>Email Us</span>
+                        </a>
+                        
+                        <!-- WhatsApp button -->
+                        <a href="https://wa.me/212661123456?text=Hello, I'd like to book a transfer from <%= transfer.startCity %> to <%= transfer.endCity %>" target="_blank" class="contact-btn whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>WhatsApp</span>
+                        </a>
+                        
+                        <!-- Phone button -->
+                        <a href="tel:+212661123456" class="contact-btn phone-btn">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>Call Us</span>
+                        </a>
+                        
+                        <div class="text-center text-sm text-gray-500 mt-6">
+                            <p>Our team is available 24/7 to assist you</p>
                             </div>
                         </div>
                     </div>
@@ -402,8 +402,8 @@
                 <button id="close-sheet" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
-            </div>
-            
+        </div>
+        
             <div class="space-y-4">
                 <a href="mailto:info@voyageo-tours.com?subject=Booking inquiry for transfer from <%= transfer.startCity %> to <%= transfer.endCity %>" class="contact-btn email-btn">
                     <i class="fas fa-envelope"></i>
@@ -419,17 +419,17 @@
                     <i class="fas fa-phone-alt"></i>
                     <span>Call Us</span>
                 </a>
-            </div>
-        </div>
-    </div>
-
+                                    </div>
+                                    </div>
+                                </div>
+                                
     <!-- Mobile Sticky Contact Button -->
     <div class="lg:hidden fixed bottom-4 left-4 z-30">
         <button id="open-sheet" class="w-14 h-14 rounded-full bg-primary text-white shadow-lg flex items-center justify-center">
             <i class="fas fa-envelope text-xl"></i>
         </button>
-    </div>
-
+                                    </div>
+                                    
     <!-- Custom Footer with structured data for SEO -->
     <footer class="bg-white border-t border-gray-200 py-10 mt-12">
         <div class="container mx-auto max-w-screen-xl px-4">
@@ -443,7 +443,7 @@
                         <li><a href="/transfers" class="text-gray-600 hover:text-primary">Transfers</a></li>
                         <li><a href="/customize" class="text-gray-600 hover:text-primary">Custom Tours</a></li>
                     </ul>
-                </div>
+                                </div>
                 
                 <!-- Popular Transfers -->
                 <div>
@@ -454,7 +454,7 @@
                         <li><a href="/transfers/fes-to-chefchaouen" class="text-gray-600 hover:text-primary">Fes to Chefchaouen</a></li>
                         <li><a href="/transfers/marrakech-to-agadir" class="text-gray-600 hover:text-primary">Marrakech to Agadir</a></li>
                     </ul>
-                </div>
+                            </div>
                 
                 <!-- Popular Destinations -->
                 <div>
@@ -471,12 +471,12 @@
             <div class="border-t border-gray-200 mt-8 pt-8 text-center text-sm text-gray-500">
                 <p>© <%= new Date().getFullYear() %> Voyageo Tours Morocco. Safe and comfortable transfers throughout Morocco.</p>
                 <p class="mt-2">Private transfers, airport transfers, intercity transportation, day trips, custom transfers, luxury vehicles, and group transportation.</p>
-            </div>
-        </div>
+    </div>
+    </div>
     </footer>
-
+    
     <script>
-        // Gallery functionality
+            // Gallery functionality
         function changeMainImage(imageSrc, thumbnail) {
             document.getElementById('main-image').src = imageSrc;
             document.querySelectorAll('.thumbnail').forEach(thumb => {

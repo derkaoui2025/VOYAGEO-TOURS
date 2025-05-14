@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3498db',
-                        secondary: '#2c3e50',
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#3498db',
+              secondary: '#2c3e50',
                         accent: '#e67e22',
                     },
                     maxWidth: {
@@ -23,9 +23,9 @@
                     spacing: {
                         '18': '4.5rem',
                     }
-                }
-            }
+          }
         }
+      }
     </script>
     
     <!-- JSON-LD Structured Data for Activity -->
@@ -46,7 +46,7 @@
             "touristType": ["Adventure tourists", "Cultural tourists", "Experience seekers"]
         }
     </script>
-    
+
     <style>
         /* Minimal design system */
         .thumbnail {
@@ -356,17 +356,17 @@
             
             <div class="space-y-4">
                 <a href="mailto:info@voyageo-tours.com?subject=Booking inquiry for <%= activity.title %>" class="contact-btn email-btn">
-                    <i class="fas fa-envelope"></i>
+            <i class="fas fa-envelope"></i>
                     <span>Email Us</span>
-                </a>
+        </a>
                 
                 <a href="https://wa.me/212661123456?text=Hello, I'd like to book the <%= activity.title %> activity" target="_blank" class="contact-btn whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i>
+            <i class="fab fa-whatsapp"></i>
                     <span>WhatsApp</span>
-                </a>
+        </a>
                 
                 <a href="tel:+212661123456" class="contact-btn phone-btn">
-                    <i class="fas fa-phone-alt"></i>
+            <i class="fas fa-phone-alt"></i>
                     <span>Call Us</span>
                 </a>
             </div>

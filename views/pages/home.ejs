@@ -1,18 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+    <meta name="keywords" content="Morocco tours, Morocco travel, Sahara Desert, Marrakech, Morocco vacation, Morocco experiences">
+    <meta name="author" content="Voyageo Tours">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/">
+    <meta property="og:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
+    <meta property="og:description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+    <meta property="og:image" content="/images/morocco-share.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/">
+    <meta property="twitter:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
+    <meta property="twitter:description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+    <meta property="twitter:image" content="/images/morocco-share.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Title -->
+    <title><%= pageTitle %> | Voyageo Tours Morocco</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    },
+                    lineHeight: {
+                        'extra-tight': '1.05',
+                        'tighter': '1.1'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Additional CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
     <style>
-        /* Custom styles for homepage */
-        .hero-video-container {
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+        
+        /* Global animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Decorative elements */
+        .decorative-line {
             position: relative;
-            height: 85vh;
+        }
+        
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .decorative-dot {
+            position: relative;
+        }
+        
+        .decorative-dot::before {
+            content: '•';
+            position: absolute;
+            left: -15px;
+            color: #B8860B;
+        }
+        
+        /* Link hover animations */
+        .hover-link {
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .hover-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #B8860B;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-out;
+        }
+        
+        .hover-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            display: inline-block;
+            background-color: #B8860B;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary:hover {
+            color: #B8860B;
+        }
+        
+        .btn-primary:hover::after {
+            width: 100%;
+        }
+        
+        .btn-outline {
+            display: inline-block;
+            background-color: transparent;
+            color: #B8860B;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-outline::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #B8860B;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-outline:hover {
+            color: white;
+        }
+        
+        .btn-outline:hover::after {
+            width: 100%;
+        }
+        
+        .btn-white {
+            display: inline-block;
+            background-color: white;
+            color: #252525;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-white::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #B8860B;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-white:hover {
+            color: white;
+            border-color: #B8860B;
+        }
+        
+        .btn-white:hover::after {
+            width: 100%;
+        }
+        
+        /* Custom cards */
+        .morocco-card {
+            position: relative;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .morocco-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 60%);
+            z-index: 1;
+            opacity: 0.8;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .morocco-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .morocco-card:hover::before {
+            opacity: 0.9;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 70%);
+        }
+        
+        .morocco-card img {
+            transition: all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .morocco-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .morocco-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            z-index: 2;
+            color: white;
+            transform: translateY(20px);
+            opacity: 0.9;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .morocco-card:hover .morocco-card-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Hero section */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
             width: 100%;
             overflow: hidden;
         }
         
-        .hero-video {
+        .hero-bg-video {
             position: absolute;
             top: 0;
             left: 0;
@@ -27,229 +379,292 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+            background: linear-gradient(to right, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0.7) 50%, rgba(18, 18, 18, 0.5) 100%);
         }
         
         .hero-content {
             position: relative;
-            z-index: 10;
+            z-index: 2;
             height: 100%;
+            display: flex;
+            align-items: center;
         }
         
-        .service-card {
-            transition: all 0.3s ease;
+        .hero-text-container h1 {
+            line-height: 1.05;
+            animation: fadeIn 1.2s ease-out forwards;
         }
         
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        .hero-text-container p {
+            animation: fadeIn 1.2s ease-out 0.3s forwards;
+            opacity: 0;
         }
         
-        .experience-card {
-            height: 350px;
-            background-size: cover;
-            background-position: center;
+        .hero-buttons {
+            animation: fadeIn 1.2s ease-out 0.6s forwards;
+            opacity: 0;
+        }
+        
+        /* Brand graphics */
+        .brand-pattern {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background-size: 20px 20px;
+            background-image: radial-gradient(#B8860B 1px, transparent 1px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .section-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 12px;
+            color: #B8860B;
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .pattern-diagonal {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 250px;
+            height: 300px;
+            background-image: linear-gradient(45deg, #B8860B 25%, transparent 25%), 
+                              linear-gradient(-45deg, #B8860B 25%, transparent 25%);
+            background-size: 12px 12px;
+            opacity: 0.05;
+            z-index: 0;
+        }
+        
+        /* Divider styles */
+        .diagonal-divider {
             position: relative;
+            height: 150px;
             overflow: hidden;
-            transition: all 0.5s ease;
         }
         
-        .experience-card:hover {
-            transform: scale(1.03);
-        }
-        
-        .experience-card::before {
+        .diagonal-divider::after {
             content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #F5F1E9 50%, transparent 50%);
+        }
+        
+        .wave-divider {
+            position: relative;
+            height: 50px;
+        }
+        
+        .wave-divider svg {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 70%;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            height: 100%;
+            fill: #F5F1E9;
         }
         
-        .swiper-pagination-bullet {
-            background: white;
-            opacity: 0.7;
-        }
-        
-        .swiper-pagination-bullet-active {
-            opacity: 1;
-            background: #e67e22;
-        }
-        
-        .testimonial-card {
-            transition: all 0.3s ease;
-        }
-        
-        .testimonial-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .section-heading {
+        /* Accent elements */
+        .accent-box {
             position: relative;
-            display: inline-block;
         }
         
-        .section-heading::after {
+        .accent-box::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 80%;
+            height: 80%;
+            border: 1px solid #B8860B;
+            z-index: -1;
+        }
+        
+        /* Standardized card styles */
+        .standard-card {
+            position: relative;
+            overflow: hidden;
+            height: 400px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .standard-card::before {
             content: '';
             position: absolute;
-            bottom: -10px;
+            top: 0;
             left: 0;
-            width: 60px;
-            height: 3px;
-            background-color: #e67e22;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 70%);
+            z-index: 1;
+            opacity: 0.8;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         
-        @media (max-width: 768px) {
-            .hero-video-container {
-                height: 70vh;
-            }
+        .standard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .standard-card:hover::before {
+            opacity: 0.9;
+        }
+        
+        .standard-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .standard-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .standard-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            z-index: 2;
+            color: white;
+            transform: translateY(20px);
+            opacity: 0.9;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .standard-card:hover .standard-card-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .category-tag {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: #B8860B;
+            color: white;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
         }
     </style>
 </head>
 
-<body class="bg-gray-50 font-opensans text-gray-800">
+<body class="bg-cream font-sans text-secondary antialiased">
     <%- include('../partials/navbar') %>
     
-    <!-- Hero Section with Video Background -->
-    <div class="hero-video-container">
-        <video class="hero-video" autoplay muted loop playsinline>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <video class="hero-bg-video" autoplay muted loop playsinline>
             <source src="/videos/morocco-hero.mp4" type="video/mp4">
-            <!-- Fallback image if video doesn't load -->
+            <!-- Fallback image from headers folder -->
             <img src="/images/headers/morocco-banner.jpg" alt="Morocco Landscapes">
         </video>
         <div class="hero-overlay"></div>
-        <div class="hero-content flex items-center justify-center">
-            <div class="container mx-auto px-4 text-center text-white">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 font-montserrat">Discover The Magic of Morocco</h1>
-                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Unforgettable adventures through ancient cities, breathtaking landscapes, and the vibrant culture of Morocco</p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="/tours" class="btn bg-warning hover:bg-warning/90 text-white border-0 px-8 py-3 rounded-md">Explore Tours</a>
-                    <a href="/contact" class="btn bg-transparent hover:bg-white/10 text-white border border-white px-8 py-3 rounded-md">Contact Us</a>
+        
+        <!-- Background pattern -->
+        <div class="brand-pattern top-10 right-10"></div>
+        <div class="brand-pattern bottom-10 left-20"></div>
+        
+        <div class="hero-content">
+            <div class="container mx-auto px-6 md:px-12">
+                <div class="hero-text-container md:max-w-3xl lg:max-w-4xl">
+                    <span class="inline-block mb-4 font-sans text-primary uppercase tracking-widest text-sm font-medium">Real Moroccan Travel</span>
+                    <h1 class="text-4xl md:text-5.5xl lg:text-6.5xl font-serif font-medium mb-6 text-white leading-extra-tight">
+                        See the Real <br class="hidden md:block">Beauty of <span class="text-primary">Morocco</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-white/90 mb-6 max-w-2xl">
+                        We show you Morocco as it really is - from busy markets to quiet desert camps. Our local guides know the best places to eat, shop, and see.
+                    </p>
+                    <div class="mb-8 flex items-center">
+                        <div class="bg-black/30 backdrop-blur-sm border border-primary/20 py-2 px-4 flex items-center text-white">
+                            <i class="fas fa-users text-primary mr-2"></i>
+                            <span>5000+ happy travelers</span>
+                            <span class="mx-3">•</span>
+                            <i class="fas fa-award text-primary mr-2"></i>
+                            <span>Award-winning tours</span>
+                        </div>
+                    </div>
+                    <div class="hero-buttons flex flex-wrap gap-6">
+                        <a href="/tours" class="btn-primary group relative">
+                            <span>Explore Our Tours</span>
+                            <div class="absolute -right-2 -top-2 bg-white text-primary text-xs px-2 py-0.5 rotate-3 font-medium shadow-sm group-hover:rotate-0 transition-transform duration-300">
+                                Limited 2023 spots
+                            </div>
+                        </a>
+                        <a href="/customize" class="btn-outline">
+                            Design Your Journey
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Services Overview Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading inline-block mb-4">Our Services</h2>
-                <p class="text-xl text-gray-600 mt-8 max-w-3xl mx-auto">Experience the best of Morocco with our professional services tailored to create unforgettable memories</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Service 1: Tours -->
-                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md">
-                    <div class="h-48 bg-cover bg-center" style="background-image: url('/images/services/tours.jpg')"></div>
-                    <div class="p-6">
-                        <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mb-4">
-                            <i class="fas fa-route text-warning text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2 text-secondary">Tours</h3>
-                        <p class="text-gray-600 mb-4">Multi-day adventures exploring Morocco's most stunning destinations with experienced guides.</p>
-                        <a href="/tours" class="text-warning font-medium hover:underline flex items-center">
-                            Discover Tours <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Service 2: Excursions -->
-                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md">
-                    <div class="h-48 bg-cover bg-center" style="background-image: url('/images/services/excursions.jpg')"></div>
-                    <div class="p-6">
-                        <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mb-4">
-                            <i class="fas fa-hiking text-warning text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2 text-secondary">Excursions</h3>
-                        <p class="text-gray-600 mb-4">Day trips to remarkable locations including desert excursions and mountain experiences.</p>
-                        <a href="/excursions" class="text-warning font-medium hover:underline flex items-center">
-                            Browse Excursions <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Service 3: Activities -->
-                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md">
-                    <div class="h-48 bg-cover bg-center" style="background-image: url('/images/services/activities.jpg')"></div>
-                    <div class="p-6">
-                        <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mb-4">
-                            <i class="fas fa-star text-warning text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2 text-secondary">Activities</h3>
-                        <p class="text-gray-600 mb-4">Cultural experiences, workshops, and authentic Moroccan activities led by local experts.</p>
-                        <a href="/activities" class="text-warning font-medium hover:underline flex items-center">
-                            Explore Activities <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Service 4: Transfers -->
-                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md">
-                    <div class="h-48 bg-cover bg-center" style="background-image: url('/images/services/transfers.jpg')"></div>
-                    <div class="p-6">
-                        <div class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mb-4">
-                            <i class="fas fa-car text-warning text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2 text-secondary">Transfers</h3>
-                        <p class="text-gray-600 mb-4">Comfortable and reliable transportation between cities and airports across Morocco.</p>
-                        <a href="/transfers" class="text-warning font-medium hover:underline flex items-center">
-                            View Transfers <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-pulse">
+            <span class="text-white text-xs uppercase tracking-widest mb-2">Scroll</span>
+            <div class="w-5 h-10 border-2 border-white/30 rounded-full flex justify-center">
+                <div class="w-1 h-2 bg-primary rounded-full mt-2 animate-ping"></div>
             </div>
         </div>
     </section>
     
-    <!-- Featured Tours Section -->
-    <section class="py-16 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading">Popular Tours</h2>
-                    <p class="text-xl text-gray-600 mt-8">Discover our most beloved Morocco adventures</p>
+    <!-- Activities Section with standardized cards -->
+    <section class="py-24 bg-beige relative">
+        <div class="section-label">Activities</div>
+        <div class="pattern-diagonal"></div>
+        
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col sm:flex-row justify-between items-start mb-12">
+                <div class="max-w-md" data-aos="fade-right">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Local Experiences</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Moroccan Cultural Activities
+                    </h2>
+                    <p class="text-secondary/80">
+                        Try local cooking, crafts, and music with our Moroccan guides. You'll learn about daily life and traditions from locals.
+                    </p>
                 </div>
-                <a href="/tours" class="mt-4 md:mt-0 bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-md font-medium">View All Tours</a>
+                <a href="/activities" class="mt-6 sm:mt-0 group flex items-center hover-link text-primary" data-aos="fade-left">
+                    <span class="mr-2 font-medium">View All</span>
+                    <i class="fas fa-long-arrow-alt-right transition-transform group-hover:translate-x-1"></i>
+                </a>
             </div>
             
-            <% if (featuredTours && featuredTours.length > 0) { %>
+            <% if (typeof featuredActivities !== 'undefined' && featuredActivities && featuredActivities.length > 0) { %>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <% featuredTours.slice(0, 3).forEach(tour => { %>
-                        <div class="bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl">
-                            <a href="/tours/<%= tour.slug %>" class="block">
-                                <div class="relative h-64 overflow-hidden">
-                                    <img 
-                                        src="<%= tour.mainImage %>" 
-                                        alt="<%= tour.title %>" 
-                                        class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
-                                    >
-                                    <div class="absolute top-4 left-4 bg-warning text-white px-4 py-1 rounded-full text-sm font-medium">
-                                        <%= tour.duration %> Days
+                    <% featuredActivities.slice(0, 3).forEach((activity, index) => { %>
+                        <div class="standard-card" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
+                            <div class="category-tag">Activity</div>
+                            <img src="/images/headers/activities-banner.jpg" alt="<%= activity.title %>" class="w-full h-full object-cover">
+                            <div class="standard-card-content">
+                                <h3 class="text-xl font-serif font-medium mb-2"><%= activity.title %></h3>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center text-white/70 text-sm">
+                                        <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                                        <span><%= activity.location || 'Morocco' %></span>
                                     </div>
+                                    <span class="text-white font-medium"><%= activity.price.toLocaleString() %> MAD</span>
                                 </div>
-                            </a>
-                            <div class="p-6">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-gray-600 text-sm flex items-center">
-                                        <i class="fas fa-map-marker-alt text-warning mr-2"></i>
-                                        <%= tour.startLocation %>
-                                    </span>
-                                    <span class="text-warning font-bold">
-                                        <%= tour.price.toLocaleString() %> MAD
-                                    </span>
+                                <div class="flex items-center text-white/70 text-sm mb-4">
+                                    <i class="fas fa-clock mr-2 text-primary"></i>
+                                    <span><%= activity.duration %> <%= activity.durationType %></span>
                                 </div>
-                                <h3 class="text-xl font-semibold mb-3 text-secondary">
-                                    <a href="/tours/<%= tour.slug %>" class="hover:text-warning transition-colors">
-                                        <%= tour.title %>
-                                    </a>
-                                </h3>
-                                <p class="text-gray-600 mb-4 line-clamp-2">
-                                    <%= tour.shortDescription || tour.description.substring(0, 120) + '...' %>
-                                </p>
-                                <a href="/tours/<%= tour.slug %>" class="inline-block w-full text-center bg-warning hover:bg-warning/90 text-white font-semibold py-2 px-4 rounded transition-all duration-300">
+                                <a href="/activities/<%= activity.slug %>" class="btn-white text-sm">
                                     View Details
                                 </a>
                             </div>
@@ -257,380 +672,612 @@
                     <% }) %>
                 </div>
             <% } else { %>
-                <div class="text-center my-16 bg-white rounded-lg p-8 shadow-sm">
-                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-route text-gray-400 text-xl"></i>
+                <div class="py-16 border border-gray-200 text-center" data-aos="fade-up">
+                    <div class="w-16 h-16 mx-auto rounded-full border-2 border-primary/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-star text-primary/40 text-xl"></i>
                     </div>
-                    <h2 class="text-2xl text-gray-600 mb-2">No tours available yet</h2>
-                    <p class="text-gray-500">Check back soon for exciting Morocco tours!</p>
+                    <h3 class="text-xl font-serif text-secondary/70 mb-2">Activities Coming Soon</h3>
+                    <p class="text-secondary/60 text-sm">Check back soon for authentic Moroccan activities</p>
                 </div>
             <% } %>
         </div>
     </section>
     
-    <!-- Featured Excursions Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading">Day Excursions</h2>
-                    <p class="text-xl text-gray-600 mt-8">Explore Morocco's best day trips from major cities</p>
+    <!-- Diagonal Divider -->
+    <div class="diagonal-divider"></div>
+    
+    <!-- Excursions Section with standardized cards -->
+    <section class="py-24 bg-white relative">
+        <div class="section-label">Day Trips</div>
+        <div class="pattern-diagonal"></div>
+        
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row items-start justify-between mb-16">
+                <div class="max-w-lg md:max-w-xl" data-aos="fade-right">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Day Trips</span>
+                    <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Great One-Day <br>Adventures
+                    </h2>
+                    <p class="text-secondary/80 max-w-md">
+                        Visit mountains, waterfalls, and historic sites in a single day. Perfect when you're short on time but want to see Morocco's highlights.
+                    </p>
                 </div>
-                <a href="/excursions" class="mt-4 md:mt-0 bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-md font-medium">View All Excursions</a>
+                
+                <a href="/excursions" class="mt-6 md:mt-0 group relative overflow-hidden" data-aos="fade-left">
+                    <div class="relative z-10 px-6 py-3 border border-primary flex items-center">
+                        <span class="mr-3 text-primary font-medium transition-all group-hover:mr-5">View All Excursions</span>
+                        <i class="fas fa-arrow-right text-primary text-sm transition-all group-hover:transform group-hover:translate-x-1"></i>
+                    </div>
+                    <div class="absolute inset-0 w-0 bg-primary transition-all duration-300 group-hover:w-full"></div>
+                </a>
             </div>
             
             <% if (typeof featuredExcursions !== 'undefined' && featuredExcursions && featuredExcursions.length > 0) { %>
-                <!-- Desktop & Tablet Layout -->
-                <div class="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <% featuredExcursions.slice(0, 4).forEach((excursion, index) => { %>
-                        <div class="<%= index === 0 ? 'md:col-span-2 md:row-span-2' : '' %>">
-                            <div class="bg-white rounded-xl overflow-hidden shadow-md h-full transition-all duration-300 hover:shadow-lg border border-gray-100">
-                                <div class="relative <%= index === 0 ? 'h-72' : 'h-56' %> overflow-hidden">
-                                    <img 
-                                        src="<%= excursion.gallery && excursion.gallery.length > 0 ? excursion.gallery[0] : '/images/placeholder.jpg' %>" 
-                                        alt="<%= excursion.title %>"
-                                        class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                                    >
-                                    <div class="absolute top-4 left-4 bg-warning text-white px-3 py-1 rounded-full text-xs font-medium">
-                                        <%= excursion.duration %> <%= excursion.durationType %>
-                                    </div>
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-<%= index === 0 ? '0' : '80' %>"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <% featuredExcursions.slice(0, 6).forEach((excursion, index) => { %>
+                        <div class="standard-card" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
+                            <div class="category-tag">Excursion</div>
+                            <img src="/images/headers/excursion-details-banner.jpg" alt="<%= excursion.title %>" class="w-full h-full object-cover">
+                            <div class="standard-card-content">
+                                <h3 class="text-xl font-serif font-medium mb-2"><%= excursion.title %></h3>
+                                <div class="flex items-center text-white/70 text-sm mb-3">
+                                    <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                                    <span><%= excursion.startLocation %></span>
                                 </div>
-                                
-                                <div class="p-5">
-                                    <div class="flex items-start justify-between">
-                                        <h3 class="text-lg <%= index === 0 ? 'text-xl' : '' %> font-bold text-secondary mb-3">
-                                            <%= excursion.title %>
-                                        </h3>
-                                       
-                                    </div>
-                                    
-                                    <div class="flex items-center text-gray-600 mb-4">
-                                        <i class="fas fa-map-marker-alt text-warning mr-2"></i>
-                                        <span><%= excursion.startLocation %></span>
-                                    </div>
-                                    
-                                    <% if (index === 0 && excursion.shortDescription) { %>
-                                        <p class="text-gray-600 mb-4 line-clamp-2"><%= excursion.shortDescription %></p>
-                                    <% } %>
-                                    
-                                    <a href="/excursions/<%= excursion.slug %>" class="inline-block w-full text-center bg-warning hover:bg-warning/90 text-white font-semibold py-2 px-4 rounded transition-all duration-300">
-                                        View Details
-                                    </a>
+                                <div class="flex items-center text-white/70 text-sm mb-4">
+                                    <i class="fas fa-clock mr-2 text-primary"></i>
+                                    <span><%= excursion.duration %> <%= excursion.durationType %></span>
                                 </div>
+                                <a href="/excursions/<%= excursion.slug %>" class="btn-white text-sm">
+                                    View Details
+                                </a>
                             </div>
                         </div>
-                    <% }); %>
-                </div>
-                
-                <!-- Mobile Carousel -->
-                <div class="md:hidden">
-                    <div class="swiper excursions-swiper">
-                        <div class="swiper-wrapper pb-12">
-                            <% featuredExcursions.forEach(excursion => { %>
-                                <div class="swiper-slide p-2">
-                                    <div class="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
-                                        <div class="relative h-48 overflow-hidden">
-                                            <img 
-                                                src="<%= excursion.gallery && excursion.gallery.length > 0 ? excursion.gallery[0] : '/images/placeholder.jpg' %>" 
-                                                alt="<%= excursion.title %>" 
-                                                class="w-full h-full object-cover"
-                                            >
-                                            <div class="absolute top-3 left-3 bg-warning text-white px-3 py-1 rounded-full text-xs font-medium">
-                                                <%= excursion.duration %> <%= excursion.durationType %>
-                                            </div>
-                                        </div>
-                                        <div class="p-4">
-                                            <div class="flex justify-between items-start mb-2">
-                                                <h3 class="text-lg font-bold text-secondary"><%= excursion.title %></h3>
-                                            </div>
-                                            <div class="flex items-center text-sm text-gray-600 mb-3">
-                                                <i class="fas fa-map-marker-alt text-warning mr-2"></i>
-                                                <span><%= excursion.startLocation %></span>
-                                            </div>
-                                            <a href="/excursions/<%= excursion.slug %>" class="inline-block w-full text-center bg-warning hover:bg-warning/90 text-white font-semibold py-2 px-4 rounded transition-all duration-300">
-                                                View Details
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% }); %>
-                        </div>
-                        <div class="swiper-pagination"></div>
-                    </div>
+                    <% }) %>
                 </div>
             <% } else { %>
-                <div class="text-center my-16 bg-white rounded-lg p-8 shadow-sm border border-gray-100">
-                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-hiking text-gray-400 text-xl"></i>
+                <div class="py-20 border border-gray-200 flex flex-col items-center justify-center" data-aos="fade-up">
+                    <div class="w-20 h-20 rounded-full border-2 border-primary/20 flex items-center justify-center mb-6">
+                        <i class="fas fa-hiking text-primary/40 text-2xl"></i>
                     </div>
-                    <h2 class="text-2xl text-gray-600 mb-2">No excursions available yet</h2>
-                    <p class="text-gray-500">Check back soon for exciting day trips around Morocco!</p>
+                    <h3 class="text-2xl font-serif text-secondary/80 mb-2">Excursions Coming Soon</h3>
+                    <p class="text-secondary/60">Check back soon for our exciting day trips around Morocco</p>
                 </div>
             <% } %>
         </div>
     </section>
     
-    <!-- Activities & Transfers Combined Section -->
-    <section class="py-16 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <!-- Activities Side -->
-                <div>
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-                        <div>
-                            <h2 class="text-2xl md:text-3xl font-bold text-secondary section-heading">Local Activities</h2>
-                            <p class="text-lg text-gray-600 mt-8">Experience authentic Moroccan culture</p>
-                        </div>
-                        <a href="/activities" class="mt-4 sm:mt-0 text-warning font-medium hover:underline flex items-center">
-                            All Activities <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                    
-                    <% if (typeof featuredActivities !== 'undefined' && featuredActivities && featuredActivities.length > 0) { %>
-                        <!-- Desktop View -->
-                        <div class="hidden sm:block">
-                            <div class="space-y-6">
-                                <% featuredActivities.slice(0, 3).forEach(activity => { %>
-                                    <div class="flex bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
-                                        <div class="w-1/3 min-w-[100px] relative">
-                                            <a href="/activities/<%= activity.slug %>">
-                                                <img 
-                                                    src="<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : '/images/placeholder.jpg' %>" 
-                                                    alt="<%= activity.title %>" 
-                                                    class="w-full h-full object-cover"
-                                                >
-                                            </a>
-                                        </div>
-                                        <div class="w-2/3 p-4">
-                                            <h3 class="text-lg font-semibold mb-1 text-secondary">
-                                                <a href="/activities/<%= activity.slug %>" class="hover:text-warning transition-colors">
-                                                    <%= activity.title %>
-                                                </a>
-                                            </h3>
-                                            <div class="flex items-center text-sm text-gray-600 mb-2">
-                                                <i class="fas fa-map-marker-alt text-warning mr-1"></i>
-                                                <span><%= activity.location || 'Morocco' %></span>
-                                                <span class="mx-2">•</span>
-                                                <i class="fas fa-clock text-warning mr-1"></i>
-                                                <span><%= activity.duration %> <%= activity.durationType %></span>
-                                            </div>
-                                            <div class="flex justify-between items-center mt-2">
-                                                <span class="text-warning font-bold"><%= activity.price.toLocaleString() %> MAD</span>
-                                                <a href="/activities/<%= activity.slug %>" class="text-sm text-secondary hover:text-warning">More Info →</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        </div>
-                        
-                        <!-- Mobile View Carousel -->
-                        <div class="sm:hidden">
-                            <div class="swiper activities-swiper">
-                                <div class="swiper-wrapper pb-10">
-                                    <% featuredActivities.forEach(activity => { %>
-                                        <div class="swiper-slide p-2">
-                                            <div class="bg-white rounded-lg overflow-hidden shadow-sm">
-                                                <div class="relative h-48">
-                                                    <img 
-                                                        src="<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : '/images/placeholder.jpg' %>" 
-                                                        alt="<%= activity.title %>" 
-                                                        class="w-full h-full object-cover"
-                                                    >
-                                                    <div class="absolute top-2 left-2 bg-warning text-white text-xs px-2 py-1 rounded-full">
-                                                        <%= activity.duration %> <%= activity.durationType %>
-                                                    </div>
-                                                </div>
-                                                <div class="p-4">
-                                                    <h3 class="text-lg font-semibold mb-1 text-secondary">
-                                                        <%= activity.title %>
-                                                    </h3>
-                                                    <div class="flex justify-between mt-2">
-                                                        <span class="text-gray-600 text-sm flex items-center">
-                                                            <i class="fas fa-map-marker-alt text-warning mr-1"></i>
-                                                            <%= activity.location || 'Morocco' %>
-                                                        </span>
-                                                        <span class="text-warning font-bold"><%= activity.price.toLocaleString() %> MAD</span>
-                                                    </div>
-                                                    <a href="/activities/<%= activity.slug %>" class="mt-3 inline-block w-full text-center bg-warning/90 hover:bg-warning text-white text-sm py-2 px-3 rounded">
-                                                        View Details
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <% }) %>
+    <!-- Wave Divider -->
+    <div class="wave-divider">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+        </svg>
+    </div>
+    
+    <!-- Transfers Section with standardized cards -->
+    <section class="py-24 bg-beige relative">
+        <div class="section-label">Transportation</div>
+        <div class="pattern-diagonal"></div>
+        
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col sm:flex-row justify-between items-start mb-12">
+                <div class="max-w-md" data-aos="fade-right">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Comfortable Travel</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Private Transfer Services
+                    </h2>
+                    <p class="text-secondary/80">
+                        Get around Morocco safely in our comfortable vehicles. Our professional drivers know the roads and help make travel easy.
+                    </p>
+                </div>
+                <a href="/transfers" class="mt-6 sm:mt-0 group flex items-center hover-link text-primary" data-aos="fade-left">
+                    <span class="mr-2 font-medium">View All</span>
+                    <i class="fas fa-long-arrow-alt-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+            
+            <% if (typeof popularTransfers !== 'undefined' && popularTransfers && popularTransfers.length > 0) { %>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <% popularTransfers.slice(0, 3).forEach((transfer, index) => { %>
+                        <div class="standard-card" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
+                            <div class="category-tag">Transfer</div>
+                            <img src="/images/headers/transfers-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %>" class="w-full h-full object-cover">
+                            <div class="standard-card-content">
+                                <h3 class="text-xl font-serif font-medium mb-4">
+                                    <%= transfer.startCity %> <i class="fas fa-long-arrow-alt-right mx-2 text-sm text-primary"></i> <%= transfer.endCity %>
+                                </h3>
+                                <div class="flex items-center text-white/70 text-sm mb-3">
+                                    <i class="fas fa-clock mr-2 text-primary"></i>
+                                    <span><%= transfer.duration %></span>
                                 </div>
-                                <div class="swiper-pagination"></div>
+                                <div class="flex items-center text-white/70 text-sm mb-5">
+                                    <i class="fas fa-car-side mr-2 text-primary"></i>
+                                    <span><%= transfer.vehicleType || 'Private Vehicle' %></span>
+                                </div>
+                                <a href="/transfers/<%= transfer.slug %>" class="btn-white text-sm">
+                                    View Details
+                                </a>
                             </div>
                         </div>
-                    <% } else { %>
-                        <div class="text-center my-8 bg-white p-8 rounded-lg shadow-sm">
-                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-star text-gray-400 text-xl"></i>
-                            </div>
-                            <h2 class="text-xl text-gray-600 mb-2">No activities available yet</h2>
-                            <p class="text-gray-500">Check back soon for authentic Moroccan activities!</p>
-                        </div>
-                    <% } %>
+                    <% }) %>
                 </div>
                 
-                <!-- Transfers Side -->
-                <div>
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-                        <div>
-                            <h2 class="text-2xl md:text-3xl font-bold text-secondary section-heading">City Transfers</h2>
-                            <p class="text-lg text-gray-600 mt-8">Comfortable transportation between Moroccan cities</p>
-                        </div>
-                        <a href="/transfers" class="mt-4 sm:mt-0 text-warning font-medium hover:underline flex items-center">
-                            All Transfers <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
+                <div class="mt-10 text-center">
+                    <a href="/transfers/custom" class="btn-primary">
+                        <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
+                    </a>
+                </div>
+            <% } else { %>
+                <div class="py-12 text-center border border-gray-200">
+                    <div class="w-16 h-16 mx-auto rounded-full border-2 border-primary/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-car text-primary/40 text-xl"></i>
                     </div>
+                    <h3 class="text-xl font-serif text-secondary/70 mb-2">Transfers Coming Soon</h3>
+                    <p class="text-secondary/60 text-sm mb-6">Check back soon for Morocco city transfers</p>
                     
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <div class="grid grid-cols-1 gap-4">
-                            <% if (typeof popularTransfers !== 'undefined' && popularTransfers && popularTransfers.length > 0) { %>
-                                <% popularTransfers.forEach((transfer, index) => { 
-                                    const isLast = index === popularTransfers.length - 1;
-                                %>
-                                    <div class="flex items-center justify-between p-4 <%= !isLast ? 'border-b' : '' %>">
-                                        <div>
-                                            <div class="font-semibold text-secondary"><%= transfer.startCity %> → <%= transfer.endCity %></div>
-                                            <div class="text-sm text-gray-600"><%= transfer.duration %> • <%= transfer.vehicleType || 'Private Vehicle' %></div>
-                                        </div>
-                                        <a href="/transfers/<%= transfer.slug %>" class="bg-warning text-white px-4 py-2 rounded text-sm hover:bg-warning/90 transition-colors">View</a>
-                                    </div>
-                                <% }); %>
-                            <% } else { %>
-                                <!-- Display message when no transfers are available -->
-                                <div class="text-center p-6">
-                                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <i class="fas fa-car text-gray-400 text-xl"></i>
-                                    </div>
-                                    <h3 class="text-xl text-gray-600 mb-2">No transfers available yet</h3>
-                                    <p class="text-gray-500 mb-6">Check back soon for Morocco city transfers</p>
+                    <a href="/transfers/custom" class="btn-primary">
+                        <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </section>
+    
+    <!-- Diagonal Divider -->
+    <div class="diagonal-divider"></div>
+    
+    <!-- Tours Section with standardized cards -->
+    <section class="py-24 bg-white relative">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row items-start justify-between mb-16">
+                <div class="max-w-lg md:max-w-xl" data-aos="fade-right">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Multi-Day Tours</span>
+                    <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Best Morocco <br>Travel Packages
+                    </h2>
+                    <p class="text-secondary/80 max-w-md">
+                        Our most popular tours sell out quickly. Book early to get the dates you want and see the best of Morocco.
+                    </p>
+                </div>
+                
+                <a href="/tours" class="mt-6 md:mt-0 group relative overflow-hidden" data-aos="fade-left">
+                    <div class="relative z-10 px-6 py-3 border border-primary flex items-center">
+                        <span class="mr-3 text-primary font-medium transition-all group-hover:mr-5">View All Tours</span>
+                        <i class="fas fa-arrow-right text-primary text-sm transition-all group-hover:transform group-hover:translate-x-1"></i>
+                    </div>
+                    <div class="absolute inset-0 w-0 bg-primary transition-all duration-300 group-hover:w-full"></div>
+                </a>
+            </div>
+            
+            <% if (featuredTours && featuredTours.length > 0) { %>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <% featuredTours.slice(0, 3).forEach((tour, index) => { %>
+                        <div class="standard-card" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
+                            <div class="category-tag">Tour</div>
+                            <% if (index === 0) { %>
+                                <div class="absolute top-0 right-0 bg-primary text-white text-xs py-1 px-3 z-10">BEST SELLER</div>
+                            <% } %>
+                            <% if (index < 2) { %>
+                                <div class="absolute top-4 right-4 bg-primary text-white text-xs py-1 px-3 z-10 flex items-center shadow-lg">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>
+                                    Only <%= Math.floor(Math.random() * 6) + 2 %> spots left
                                 </div>
                             <% } %>
+                            <img src="/images/headers/tour-details-banner.jpg" alt="<%= tour.title %>" class="w-full h-full object-cover">
+                            <div class="standard-card-content">
+                                <div class="absolute top-6 right-6 bg-primary/90 backdrop-blur-sm text-white px-4 py-2">
+                                    <%= tour.duration %> Days
+                                </div>
+                                <h3 class="text-xl font-serif font-medium mb-3"><%= tour.title %></h3>
+                                <div class="flex items-center text-white/70 text-sm mb-2">
+                                    <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                                    <span><%= tour.startLocation %></span>
+                                </div>
+                                <div class="mb-4 flex justify-between">
+                                    <div class="flex text-primary text-xs">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <span class="text-white/70 ml-1">(<%= Math.floor(Math.random() * 50) + 20 %>)</span>
+                                    </div>
+                                    <span class="text-white font-medium"><%= tour.price.toLocaleString() %> MAD</span>
+                                </div>
+                                <a href="/tours/<%= tour.slug %>" class="btn-white text-sm">
+                                    View Details
+                                </a>
+                            </div>
                         </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div class="py-20 border border-gray-200 flex flex-col items-center justify-center" data-aos="fade-up">
+                    <div class="w-20 h-20 rounded-full border-2 border-primary/20 flex items-center justify-center mb-6">
+                        <i class="fas fa-route text-primary/40 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif text-secondary/80 mb-2">Tours Coming Soon</h3>
+                    <p class="text-secondary/60">Check back soon for our exclusive Morocco tours</p>
+                </div>
+            <% } %>
+        </div>
+    </section>
+    
+    <!-- Morocco Experience Section -->
+    <section class="pt-24 pb-36 relative bg-cover bg-center" style="background-image: url('/images/headers/morocco-tour-bg.jpg');">
+        <div class="absolute inset-0 bg-secondary/90"></div>
+        
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-20" data-aos="fade-up">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Why Visit Morocco</span>
+                <h2 class="text-3xl md:text-4.5xl font-serif text-white font-medium mb-5 leading-tight decorative-line centered">
+                    What Makes Morocco Special
+                </h2>
+                <p class="text-white/80 italic font-serif text-lg">
+                    "Morocco is where spice scents fill the air, colorful markets buzz with energy, and you can drink mint tea under starry desert skies."
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-12">
+                <!-- History Card -->
+                <div class="group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative border border-white/10 p-10 backdrop-blur-sm transition-all duration-500 group-hover:border-primary/30">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-primary flex items-center justify-center">
+                            <i class="fas fa-archway text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-center text-xl font-serif text-white mb-4 mt-6">Rich History</h3>
+                        <p class="text-center text-white/70 leading-relaxed">
+                            <span class="text-primary italic">See and hear</span> ancient medinas with centuries of stories. You'll experience busy markets, skilled craftsmen, and the colors and smells of Morocco's trading past.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Landscapes Card -->
+                <div class="group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative border border-white/10 p-10 backdrop-blur-sm transition-all duration-500 group-hover:border-primary/30">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-primary flex items-center justify-center">
+                            <i class="fas fa-mountain text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-center text-xl font-serif text-white mb-4 mt-6">Amazing Landscapes</h3>
+                        <p class="text-center text-white/70 leading-relaxed">
+                            <span class="text-primary italic">Stand</span> on Sahara sand dunes at sunrise, then visit snowy Atlas mountains by afternoon. Morocco's varied scenery lets you experience desert, mountains, and coast in one trip.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Food Card -->
+                <div class="group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="relative border border-white/10 p-10 backdrop-blur-sm transition-all duration-500 group-hover:border-primary/30">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-primary flex items-center justify-center">
+                            <i class="fas fa-utensils text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-center text-xl font-serif text-white mb-4 mt-6">Delicious Food</h3>
+                        <p class="text-center text-white/70 leading-relaxed">
+                            <span class="text-primary italic">Taste</span> authentic Moroccan food shared with local families. Tagines with preserved lemons, slow-cooked meats, and dried fruits create flavors you'll remember long after you return home.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial quote for narrative impact -->
+            <div class="mt-20 max-w-2xl mx-auto text-center" data-aos="fade-up">
+                <p class="italic text-white/90 text-xl font-serif mb-4">
+                    "I arrived as a tourist but left feeling transformed. Morocco isn't just a destination—it's a feeling that stays with you."
+                </p>
+                <div class="text-white/60 text-sm">— Sarah M., returned traveler</div>
+            </div>
+            
+            <!-- Stats Counter -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-24" data-aos="fade-up">
+                <!-- Stat 1 -->
+                <div class="text-center">
+                    <span class="block text-4xl md:text-5xl text-primary font-serif mb-2">12+</span>
+                    <span class="text-white/80 text-sm uppercase tracking-widest">Years Creating Memories</span>
+                </div>
+                
+                <!-- Stat 2 -->
+                <div class="text-center">
+                    <span class="block text-4xl md:text-5xl text-primary font-serif mb-2">50+</span>
+                    <span class="text-white/80 text-sm uppercase tracking-widest">Local Experts</span>
+                </div>
+                
+                <!-- Stat 3 -->
+                <div class="text-center">
+                    <span class="block text-4xl md:text-5xl text-primary font-serif mb-2">100+</span>
+                    <span class="text-white/80 text-sm uppercase tracking-widest">Unique Experiences</span>
+                </div>
+                
+                <!-- Stat 4 -->
+                <div class="text-center">
+                    <span class="block text-4xl md:text-5xl text-primary font-serif mb-2">5K+</span>
+                    <span class="text-white/80 text-sm uppercase tracking-widest">Transformed Travelers</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Morocco Experience CTA -->
+    <section class="py-32 bg-cover bg-center relative" style="background-image: url('/images/headers/custom-transfer-banner.jpg');">
+        <div class="absolute inset-0 bg-gradient-to-r from-secondary/95 to-secondary/85"></div>
+        
+        <div class="container mx-auto px-6 md:px-12 relative z-10 text-center max-w-5xl">
+            <div data-aos="fade-up">
+                <span class="inline-block mb-4 px-4 py-1 bg-primary/20 text-primary uppercase tracking-widest text-xs font-medium border border-primary/30">Plan Your Trip</span>
+                <h2 class="text-4xl md:text-5xl font-serif font-medium mb-6 text-white leading-tight">
+                    Create Your Own <span class="text-primary">Morocco</span> Trip
+                </h2>
+                <p class="text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-relaxed">
+                    Want something specific? We'll build a custom trip based on what you want to see and do, giving you a Morocco experience that matches exactly what you're looking for.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="/customize" class="btn-primary min-w-[200px] py-4">
+                        <i class="fas fa-pencil-alt mr-2"></i> Customize Your Tour
+                    </a>
+                    <a href="/transfers/custom" class="btn-white min-w-[200px] py-4">
+                        <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
+                    </a>
+                </div>
+                
+                <!-- Decorative elements -->
+                <div class="hidden md:block absolute -bottom-10 -right-20 w-40 h-40 border border-primary/20 opacity-30"></div>
+                <div class="hidden md:block absolute -top-10 -left-20 w-40 h-40 border border-primary/20 opacity-30"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Specialties Section -->
+    <section class="py-24 bg-beige relative">
+        <div class="section-label">Our Specialties</div>
+        <div class="pattern-diagonal"></div>
+        
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="max-w-lg mb-16">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Our Expertise</span>
+                <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">Crafted Experiences <br>in the Heart of Morocco</h2>
+                <p class="text-secondary/80">
+                    Our premium services connect you with authentic Morocco through expertly designed travel experiences. Each journey is thoughtfully curated to create unforgettable memories and deep cultural connections.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16 relative">
+                <!-- Tours Card -->
+                <div class="group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative mb-6 overflow-hidden">
+                        <!-- Step indicator -->
+                        <div class="absolute top-0 left-0 w-10 h-10 bg-primary text-white font-serif text-xl flex items-center justify-center z-10">1</div>
+                        <!-- Popular badge -->
+                        <div class="absolute -right-12 top-5 bg-primary text-white text-xs py-1 px-12 font-medium rotate-45 shadow-sm z-10">Most Popular</div>
                         
-                        <div class="mt-6 text-center">
-                            <a href="/transfers/custom" class="inline-block w-full py-3 bg-secondary hover:bg-secondary/90 text-white rounded transition-colors">
-                                <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
-                            </a>
+                        <img src="/images/headers/tours-banner.jpg" alt="Morocco Tours" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90"></div>
+                        <div class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
+                            <i class="fas fa-route"></i>
                         </div>
                     </div>
+                    <h3 class="text-xl font-serif font-medium mb-2">Multi-Day Tours</h3>
+                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Don't miss out on comprehensive journeys through Morocco's most iconic destinations with our knowledgeable guides. A complete immersion experience.</p>
+                    <a href="/tours" class="inline-flex items-center text-primary text-sm font-medium hover-link">
+                        Discover Tours <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+                
+                <!-- Excursions Card -->
+                <div class="group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative mb-6 overflow-hidden">
+                        <!-- Step indicator -->
+                        <div class="absolute top-0 left-0 w-10 h-10 bg-primary/80 text-white font-serif text-xl flex items-center justify-center z-10">2</div>
+                        
+                        <img src="/images/headers/excursions-header.jpg" alt="Morocco Excursions" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90"></div>
+                        <div class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
+                            <i class="fas fa-hiking"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-serif font-medium mb-2">Day Excursions</h3>
+                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">You'll regret missing our unforgettable day trips to Morocco's natural wonders and historical landmarks. Perfect for time-conscious travelers.</p>
+                    <a href="/excursions" class="inline-flex items-center text-primary text-sm font-medium hover-link">
+                        Browse Excursions <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+                
+                <!-- Activities Card -->
+                <div class="group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="relative mb-6 overflow-hidden">
+                        <!-- Step indicator -->
+                        <div class="absolute top-0 left-0 w-10 h-10 bg-primary/80 text-white font-serif text-xl flex items-center justify-center z-10">3</div>
+                        
+                        <img src="/images/headers/activities-banner.jpg" alt="Morocco Activities" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90"></div>
+                        <div class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-serif font-medium mb-2">Cultural Activities</h3>
+                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Without these authentic experiences, you'll miss the true heart of Morocco. Our cultural activities provide the human connection travelers seek.</p>
+                    <a href="/activities" class="inline-flex items-center text-primary text-sm font-medium hover-link">
+                        Explore Activities <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+                
+                <!-- Transfers Card -->
+                <div class="group" data-aos="fade-up" data-aos-delay="400">
+                    <div class="relative mb-6 overflow-hidden">
+                        <!-- Step indicator -->
+                        <div class="absolute top-0 left-0 w-10 h-10 bg-primary/80 text-white font-serif text-xl flex items-center justify-center z-10">4</div>
+                        
+                        <img src="/images/headers/transfers-banner.jpg" alt="Morocco Transfers" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90"></div>
+                        <div class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
+                            <i class="fas fa-car"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-serif font-medium mb-2">Private Transfers</h3>
+                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Don't compromise your comfort between destinations. Our reliable transportation ensures stress-free travel across Morocco's diverse regions.</p>
+                    <a href="/transfers" class="inline-flex items-center text-primary text-sm font-medium hover-link">
+                        View Transfers <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+                
+                <!-- Connecting lines between steps (desktop only) -->
+                <div class="hidden lg:block absolute top-40 left-1/4 w-1/2 border-t-2 border-dashed border-primary/30 z-0"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Us Section -->
+    <section class="py-24 bg-beige">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                <div class="lg:col-span-5" data-aos="fade-right">
+                    <div class="relative">
+                        <img src="/images/about-us.jpg" alt="About Voyageo Tours" class="w-full object-cover h-[500px] relative z-10">
+                        <!-- Background decorative element -->
+                        <div class="absolute -bottom-8 -right-8 w-48 h-48 border-8 border-primary z-0"></div>
+                        <!-- Experience badge -->
+                        <div class="absolute -bottom-6 -left-6 bg-primary shadow-large text-white text-center py-6 px-8 z-20">
+                            <span class="block font-serif text-4xl font-medium">10+</span>
+                            <span class="uppercase tracking-wider text-xs">Years Experience</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-7" data-aos="fade-left">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Our Story</span>
+                    <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        About Voyageo Tours
+                    </h2>
+                    <h3 class="text-xl font-serif text-primary mb-6">Your Premier Moroccan Travel Partner</h3>
+                    
+                    <p class="text-secondary/80 mb-8 leading-relaxed">
+                        At Voyageo Tours, we're dedicated to showcasing the true essence of Morocco. Our expert team combines deep local knowledge with exceptional service to create unforgettable travel experiences that connect you with the authentic heart of our country.
+                    </p>
+                    
+                    <p class="text-secondary/80 mb-10 leading-relaxed">
+                        Whether you're seeking adventure in the Sahara, tranquility in the Atlas Mountains, or the vibrant energy of Morocco's imperial cities, we craft personalized journeys that exceed expectations and create lasting memories.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                        <div class="relative pl-10">
+                            <div class="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                                <i class="fas fa-users text-primary text-xs"></i>
+                            </div>
+                            <h4 class="font-medium mb-1">Expert Local Guides</h4>
+                            <p class="text-sm text-secondary/60">Knowledgeable professionals</p>
+                        </div>
+                        <div class="relative pl-10">
+                            <div class="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-primary text-xs"></i>
+                            </div>
+                            <h4 class="font-medium mb-1">Safe Travel</h4>
+                            <p class="text-sm text-secondary/60">Your security is our priority</p>
+                        </div>
+                        <div class="relative pl-10">
+                            <div class="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                                <i class="fas fa-heart text-primary text-xs"></i>
+                            </div>
+                            <h4 class="font-medium mb-1">Personalized Service</h4>
+                            <p class="text-sm text-secondary/60">Tailored to your preferences</p>
+                        </div>
+                    </div>
+                    
+                    <a href="/about" class="btn-primary">
+                        Learn More About Us
+                    </a>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Testimonials Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-secondary section-heading inline-block">What Our Clients Say</h2>
-                <p class="text-xl text-gray-600 mt-8 max-w-3xl mx-auto">Read authentic reviews from travelers who experienced our services</p>
+    <section class="py-24 bg-white relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-primary/5"></div>
+        <div class="absolute -bottom-32 -right-32 w-64 h-64 rounded-full bg-primary/5 z-0"></div>
+        
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Traveler Stories</span>
+                <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line centered">
+                    Guest Experiences
+                </h2>
+                <p class="text-secondary/80">
+                    Discover what our clients have to say about their adventures across Morocco with Voyageo Tours
+                </p>
             </div>
             
-            <div class="swiper testimonial-swiper">
-                <div class="swiper-wrapper pb-12">
-                    <!-- Testimonial 1 -->
-                    <div class="swiper-slide p-4">
-                        <div class="testimonial-card bg-gray-50 rounded-lg p-6 h-full">
-                            <div class="flex items-center mb-4">
-                                <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center mr-4">
-                                    <span class="text-warning font-bold">JM</span>
+            <div class="testimonial-slider">
+                <div class="swiper testimonial-swiper overflow-visible">
+                    <div class="swiper-wrapper pb-10">
+                        <!-- Testimonial 1 -->
+                        <div class="swiper-slide h-auto" data-aos="fade-up" data-aos-delay="100">
+                            <div class="bg-beige/30 p-10 h-full relative group">
+                                <!-- Quote icon -->
+                                <div class="absolute -top-5 right-10 w-10 h-10 bg-primary flex items-center justify-center text-white rounded-full shadow-medium">
+                                    <i class="fas fa-quote-right text-sm"></i>
                                 </div>
-                                <div>
-                                    <h4 class="font-semibold">James Miller</h4>
-                                    <div class="flex text-warning">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-gray-600 italic">
-                                "Our 7-day desert tour was absolutely incredible! Mohammed, our guide, was knowledgeable and personable. The accommodations were comfortable and the food was delicious. Highly recommend!"
-                            </p>
-                            <div class="mt-4 text-sm text-gray-500">Marrakech to Merzouga Desert Tour</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Testimonial 2 -->
-                    <div class="swiper-slide p-4">
-                        <div class="testimonial-card bg-gray-50 rounded-lg p-6 h-full">
-                            <div class="flex items-center mb-4">
-                                <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center mr-4">
-                                    <span class="text-warning font-bold">SC</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold">Sarah Chen</h4>
-                                    <div class="flex text-warning">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-gray-600 italic">
-                                "The cooking class in Fes was a highlight of our trip! We learned to make authentic tagine and couscous, and the host family was so welcoming. A must-do for any foodie visiting Morocco."
-                            </p>
-                            <div class="mt-4 text-sm text-gray-500">Traditional Moroccan Cooking Class</div>
-                        </div>
-                    </div>
-                    
+                                
+                                <div class="flex items-center mb-8">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden mr-5 border-2 border-primary">
+                                        <img src="/images/testimonials/person1.jpg" alt="James Miller" class="w-full h-full object-cover">
                     <!-- Testimonial 3 -->
-                    <div class="swiper-slide p-4">
-                        <div class="testimonial-card bg-gray-50 rounded-lg p-6 h-full">
-                            <div class="flex items-center mb-4">
-                                <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center mr-4">
-                                    <span class="text-warning font-bold">DP</span>
+                    <div class="swiper-slide p-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="bg-white rounded-lg p-8 shadow-lg h-full relative">
+                            <div class="absolute top-0 right-0 transform translate-x-4 -translate-y-4 w-12 h-12 flex items-center justify-center text-white rounded-full" style="background-color: var(--primary-color)">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <div class="flex items-center mb-6">
+                                <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2" style="border-color: var(--primary-color)">
+                                    <img src="/images/testimonials/person3.jpg" alt="David Patterson" class="w-full h-full object-cover">
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold">David Patterson</h4>
+                                    <h4 class="font-semibold text-lg">David Patterson</h4>
                                     <div class="flex text-warning">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
+                                        <i class="fas fa-star text-sm"></i>
+                                        <i class="fas fa-star text-sm"></i>
+                                        <i class="fas fa-star text-sm"></i>
+                                        <i class="fas fa-star text-sm"></i>
+                                        <i class="fas fa-star-half-alt text-sm"></i>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-gray-600 italic">
+                            <p class="text-gray-600 mb-4">
                                 "We used Voyageo for all our transfers in Morocco. The drivers were always on time, professional, and the vehicles were comfortable. Made traveling between cities so much easier!"
                             </p>
-                            <div class="mt-4 text-sm text-gray-500">Multiple City Transfers</div>
+                            <div class="text-sm flex items-center pt-4 border-t" style="color: var(--primary-color)">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Multiple City Transfers</span>
+                            </div>
                         </div>
                     </div>
                     
                     <!-- Testimonial 4 -->
-                    <div class="swiper-slide p-4">
-                        <div class="testimonial-card bg-gray-50 rounded-lg p-6 h-full">
-                            <div class="flex items-center mb-4">
-                                <div class="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center mr-4">
-                                    <span class="text-warning font-bold">EJ</span>
+                    <div class="swiper-slide p-4" data-aos="fade-up" data-aos-delay="250">
+                        <div class="bg-white rounded-lg p-8 shadow-lg h-full relative">
+                            <div class="absolute top-0 right-0 transform translate-x-4 -translate-y-4 w-12 h-12 flex items-center justify-center text-white rounded-full" style="background-color: var(--primary-color)">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <div class="flex items-center mb-6">
+                                <div class="w-14 h-14 rounded-full overflow-hidden mr-4 border-2" style="border-color: var(--primary-color)">
+                                    <img src="/images/testimonials/person4.jpg" alt="Emma Johnson" class="w-full h-full object-cover">
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold">Emma Johnson</h4>
+                                    <h4 class="font-semibold text-lg">Emma Johnson</h4>
                                     <div class="flex text-warning">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star text-sm"></i>
+                                        <i class="fas fa-star text-sm"></i>
+                                        <i class="fas fa-star text-sm"></i>
+                                        <i class="fas fa-star text-sm"></i>
+                                        <i class="fas fa-star text-sm"></i>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-gray-600 italic">
+                            <p class="text-gray-600 mb-4">
                                 "The day trip to Ouzoud Falls was breathtaking! Our guide was informative and took us to the best spots for photos. Saw lots of monkeys too! Perfectly organized excursion."
                             </p>
-                            <div class="mt-4 text-sm text-gray-500">Ouzoud Waterfalls Day Trip</div>
+                            <div class="text-sm flex items-center pt-4 border-t" style="color: var(--primary-color)">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Ouzoud Waterfalls Day Trip</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -639,30 +1286,236 @@
         </div>
     </section>
     
-    <!-- Custom Morocco Experience CTA -->
-    <section class="py-20 bg-cover bg-center relative" style="background-image: url('/images/custom-tour-bg.jpg');">
-        <div class="absolute inset-0 bg-black/70"></div>
-        <div class="container mx-auto px-4 relative z-10 text-center text-white">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Create Your Custom Morocco Experience</h2>
-            <p class="text-xl mb-8 max-w-3xl mx-auto">
-                Looking for something unique? Let us design a personalized itinerary tailored to your preferences and interests.
-            </p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="/customize" class="btn bg-warning hover:bg-warning/90 text-white border-0 px-8 py-3 rounded-md">
-                    <i class="fas fa-pencil-alt mr-2"></i> Customize Your Tour
-                </a>
-                <a href="/transfers/custom" class="btn bg-white hover:bg-white/90 text-secondary border-0 px-8 py-3 rounded-md">
-                    <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
-                </a>
+    <!-- Contact Section -->
+    <section class="py-24 bg-beige relative">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div data-aos="fade-right">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Connect With Us</span>
+                    <h2 class="text-3xl md:text-4xl font-serif font-medium mb-8 leading-tight decorative-line">
+                        Get In Touch
+                    </h2>
+                    <p class="text-secondary/80 mb-10 leading-relaxed">
+                        Have questions about your Morocco trip? Our travel experts are ready to assist you in planning your dream vacation and creating memories that will last a lifetime.
+                    </p>
+                    
+                    <div class="space-y-8">
+                        <div class="flex items-start">
+                            <div class="w-14 h-14 border border-primary flex items-center justify-center mr-6 text-primary">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-serif font-medium mb-2">Our Location</h3>
+                                <p class="text-secondary/70">Jamaa El Fna Square, Marrakech, Morocco</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-14 h-14 border border-primary flex items-center justify-center mr-6 text-primary">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-serif font-medium mb-2">Email Us</h3>
+                                <p class="text-secondary/70">info@voyageo-tours.com</p>
+                                <p class="text-secondary/70">bookings@voyageo-tours.com</p>
+                            </div>
+                        </div>
+                
+                        <div class="flex items-start">
+                            <div class="w-14 h-14 border border-primary flex items-center justify-center mr-6 text-primary">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-serif font-medium mb-2">Call Us</h3>
+                                <p class="text-secondary/70">+212 600-123456</p>
+                                <p class="text-secondary/70">+212 700-123456</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-14 h-14 border border-primary flex items-center justify-center mr-6 text-primary">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-serif font-medium mb-2">Working Hours</h3>
+                                <p class="text-secondary/70">Mon - Sat: 9:00 AM - 8:00 PM</p>
+                                <p class="text-secondary/70">Sunday: 10:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12 flex gap-4">
+                        <a href="https://facebook.com" class="w-10 h-10 flex items-center justify-center border border-primary text-primary hover:bg-primary hover:text-white transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" class="w-10 h-10 flex items-center justify-center border border-primary text-primary hover:bg-primary hover:text-white transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://twitter.com" class="w-10 h-10 flex items-center justify-center border border-primary text-primary hover:bg-primary hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://whatsapp.com" class="w-10 h-10 flex items-center justify-center border border-primary text-primary hover:bg-primary hover:text-white transition-colors">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div data-aos="fade-left">
+                    <div class="bg-white p-10 shadow-medium relative">
+                        <!-- Decorative pattern -->
+                    <div class="bg-light rounded-lg shadow-lg p-8">
+                        <h3 class="text-2xl font-semibold mb-6 text-center">Send Us a Message</h3>
+                        
+                        <form action="/contact" method="POST" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Your Name</label>
+                                    <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:outline-none" style="--tw-ring-color: var(--primary-color);" required>
+                                </div>
+                                <div>
+                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Your Email</label>
+                                    <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:outline-none" style="--tw-ring-color: var(--primary-color);" required>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="subject" class="block mb-2 text-sm font-medium text-gray-700">Subject</label>
+                                <input type="text" id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:outline-none" style="--tw-ring-color: var(--primary-color);" required>
+                            </div>
+                            
+                            <div>
+                                <label for="message" class="block mb-2 text-sm font-medium text-gray-700">Your Message</label>
+                                <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:outline-none" style="--tw-ring-color: var(--primary-color);" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full py-3 px-6 bg-secondary-color text-white font-medium rounded-md hover:opacity-90 transition-all" style="background-color: var(--primary-color);">
+                                Send Message <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
     
-    <%- include('../partials/footer') %>
+    <!-- Footer -->
+    <footer class="bg-charcoal text-gray-300">
+        <div class="container mx-auto px-6 md:px-12 lg:max-w-6xl pt-16 pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Company Info -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-primary">Voyageo Tours</h3>
+                    <p class="text-gray-300 mb-6">
+                        Your trusted Morocco travel partner since 2010, offering tours, day trips, activities, and transportation services throughout the country.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://facebook.com" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://twitter.com" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://youtube.com" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-primary">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/tours" class="text-gray-300 hover:text-primary transition-colors">Tours</a></li>
+                        <li><a href="/excursions" class="text-gray-300 hover:text-primary transition-colors">Excursions</a></li>
+                        <li><a href="/activities" class="text-gray-300 hover:text-primary transition-colors">Activities</a></li>
+                        <li><a href="/transfers" class="text-gray-300 hover:text-primary transition-colors">Transfers</a></li>
+                        <li><a href="/customize" class="text-gray-300 hover:text-primary transition-colors">Customize Tour</a></li>
+                        <li><a href="/contact" class="text-gray-300 hover:text-primary transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Popular Destinations -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-primary">Top Destinations</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/destinations/marrakech" class="text-gray-300 hover:text-primary transition-colors">Marrakech</a></li>
+                        <li><a href="/destinations/fes" class="text-gray-300 hover:text-primary transition-colors">Fes</a></li>
+                        <li><a href="/destinations/chefchaouen" class="text-gray-300 hover:text-primary transition-colors">Chefchaouen</a></li>
+                        <li><a href="/destinations/merzouga-desert" class="text-gray-300 hover:text-primary transition-colors">Sahara Desert</a></li>
+                        <li><a href="/destinations/casablanca" class="text-gray-300 hover:text-primary transition-colors">Casablanca</a></li>
+                        <li><a href="/destinations/atlas-mountains" class="text-gray-300 hover:text-primary transition-colors">Atlas Mountains</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-6 text-primary">Contact Info</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">Jamaa El Fna Square, Marrakech, Morocco</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">info@voyageo-tours.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">+212 600-123456</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">Mon - Sat: 9:00 AM - 8:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- SEO Footer -->
+            <div class="py-8 border-t border-gray-700 text-sm">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <h4 class="font-semibold mb-2 text-primary/80">Top Tours in Morocco</h4>
+                        <p class="text-gray-400">Desert Tours, Imperial Cities, Atlas Mountains, Coastal Tours, Sahara Adventures, 4x4 Expeditions, Camel Trekking, Photography Tours</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2 text-primary/80">Popular Excursions</h4>
+                        <p class="text-gray-400">Ouzoud Waterfalls, Essaouira Day Trip, Atlas Mountains Day Tour, Agafay Desert, Palm Grove Quad Biking, Ourika Valley, Ait Ben Haddou</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2 text-primary/80">Morocco Travel Experiences</h4>
+                        <p class="text-gray-400">Authentic Riads, Hammam Spa, Cooking Classes, Handicraft Workshops, Desert Camping, Food Tours, Photography Tours, Historical Sites</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="pt-8 border-t border-gray-700 text-center">
+                <p class="text-gray-400">
+                    © <%= new Date().getFullYear() %> Voyageo Tours. All Rights Reserved. | <a href="/privacy-policy" class="hover:text-primary transition-colors">Privacy Policy</a> | <a href="/terms-conditions" class="hover:text-primary transition-colors">Terms & Conditions</a>
+                </p>
+                <p class="text-gray-500 text-sm mt-3">
+                    Designed with <i class="fas fa-heart text-primary"></i> for Morocco travelers
+                </p>
+            </div>
+        </div>
+    </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
+            });
+            
             // Initialize testimonials slider
             const testimonialSwiper = new Swiper('.testimonial-swiper', {
                 slidesPerView: 1,
@@ -684,7 +1537,7 @@
             // Initialize excursions slider for mobile
             const excursionsSwiper = new Swiper('.excursions-swiper', {
                 slidesPerView: 1.2,
-                spaceBetween: 10,
+                spaceBetween: 15,
                 centeredSlides: false,
                 pagination: {
                     el: '.swiper-pagination',
@@ -700,7 +1553,7 @@
             // Initialize activities slider for mobile
             const activitiesSwiper = new Swiper('.activities-swiper', {
                 slidesPerView: 1.2,
-                spaceBetween: 10,
+                spaceBetween: 15,
                 centeredSlides: false,
                 pagination: {
                     el: '.swiper-pagination',
@@ -711,6 +1564,21 @@
                         slidesPerView: 1.5,
                     },
                 }
+            });
+            
+            // Add smooth scrolling to links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
             
             // Lazy load images
