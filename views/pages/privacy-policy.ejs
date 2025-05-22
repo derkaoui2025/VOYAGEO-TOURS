@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title><%= pageTitle %></title>
+    <meta name="title" content="Privacy Policy | Voyageo Tours">
+    <meta name="description" content="Our privacy policy outlines how we collect, use, and protect your personal information when using our website and services.">
+    <meta name="keywords" content="privacy policy, data protection, Voyageo Tours privacy, Morocco tours privacy">
+    <meta name="author" content="Voyageo Tours">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/privacy-policy">
+    <meta property="og:title" content="Privacy Policy | Voyageo Tours">
+    <meta property="og:description" content="Our privacy policy outlines how we collect, use, and protect your personal information when using our website and services.">
+    <meta property="og:image" content="/images/headers/morocco-tour-bg.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/privacy-policy">
+    <meta property="twitter:title" content="Privacy Policy | Voyageo Tours">
+    <meta property="twitter:description" content="Our privacy policy outlines how we collect, use, and protect your personal information when using our website and services.">
+    <meta property="twitter:image" content="/images/headers/morocco-tour-bg.jpg">
+    
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://voyageo-tours.com/privacy-policy">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    },
+                    lineHeight: {
+                        'extra-tight': '1.05',
+                        'tighter': '1.1'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Additional CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
+            background-color: #F9F6F0;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+        
+        /* Decorative elements */
+        .decorative-line {
+            position: relative;
+        }
+        
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body class="bg-cream">
+    <%- include('../partials/navbar') %>
+    
+    <!-- Hero Section -->
+    <section class="relative py-20 md:py-28 bg-charcoal overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="<%= headerImagePath %>" alt="Privacy Policy" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/80 to-charcoal/70"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="max-w-3xl" data-aos="fade-up">
+                <span class="inline-block mb-4 text-primary uppercase tracking-widest text-sm font-medium">Voyageo Tours</span>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium mb-6 text-white leading-tighter">
+                    <%= heroTitle %>
+                </h1>
+                <p class="text-lg md:text-xl text-white/80 mb-8 max-w-2xl">
+                    <%= heroSubtitle %>
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Content Section -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-12 lg:max-w-5xl">
+            <div class="prose prose-lg max-w-none">
+                <h2 class="text-3xl font-serif mb-6">Introduction</h2>
+                <p>
+                    At Voyageo Tours, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services. Please read this privacy policy carefully. By continuing to use our website, you consent to the practices described in this policy.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Information We Collect</h2>
+                <p>
+                    We may collect personal information that you voluntarily provide to us when you:
+                </p>
+                <ul>
+                    <li>Register for an account</li>
+                    <li>Book a tour, excursion, or activity</li>
+                    <li>Sign up for our newsletter</li>
+                    <li>Contact us through our contact form</li>
+                    <li>Participate in promotions or surveys</li>
+                </ul>
+                <p>
+                    The personal information we collect may include:
+                </p>
+                <ul>
+                    <li>Name, email address, and contact information</li>
+                    <li>Billing information and payment details</li>
+                    <li>Travel preferences and requirements</li>
+                    <li>Passport information (when necessary for bookings)</li>
+                    <li>Communication preferences</li>
+                </ul>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">Automatically Collected Information</h3>
+                <p>
+                    When you visit our website, we may automatically collect certain information about your device, including:
+                </p>
+                <ul>
+                    <li>IP address and browser type</li>
+                    <li>Operating system</li>
+                    <li>Pages visited and time spent on pages</li>
+                    <li>Referring website addresses</li>
+                    <li>Geographic location</li>
+                </ul>
+                <p>
+                    This information helps us analyze trends, administer the site, track user movements, and gather demographic information.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">How We Use Your Information</h2>
+                <p>
+                    We use your personal information for various purposes, including:
+                </p>
+                <ul>
+                    <li>Providing and maintaining our services</li>
+                    <li>Processing and confirming your bookings</li>
+                    <li>Communicating with you about bookings, updates, or promotions</li>
+                    <li>Responding to your inquiries and requests</li>
+                    <li>Improving our website and services</li>
+                    <li>Analyzing usage and trends</li>
+                    <li>Sending newsletters and marketing communications (if opted in)</li>
+                    <li>Complying with legal obligations</li>
+                </ul>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Disclosure of Your Information</h2>
+                <p>
+                    We may share your information with:
+                </p>
+                <ul>
+                    <li>Service providers and partners necessary to provide our services</li>
+                    <li>Local tour operators and accommodation providers to fulfill your bookings</li>
+                    <li>Payment processors to process transactions</li>
+                    <li>Legal authorities when required by law</li>
+                </ul>
+                <p>
+                    We do not sell, trade, or otherwise transfer your personal information to outside parties without your consent, except as outlined in this policy.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Cookies and Tracking Technologies</h2>
+                <p>
+                    We use cookies and similar tracking technologies to track activity on our website and store certain information. Cookies are files with a small amount of data that may include an anonymous unique identifier. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our website.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Security of Your Information</h2>
+                <p>
+                    We implement a variety of security measures to maintain the safety of your personal information, including encryption, secure servers, and regular security assessments. However, no method of transmission over the Internet or electronic storage is 100% secure, and we cannot guarantee absolute security.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Your Privacy Rights</h2>
+                <p>
+                    Depending on your location, you may have certain rights regarding your personal information, including:
+                </p>
+                <ul>
+                    <li>The right to access and receive a copy of your personal information</li>
+                    <li>The right to rectify or update your personal information</li>
+                    <li>The right to delete your personal information</li>
+                    <li>The right to restrict or object to processing of your personal information</li>
+                    <li>The right to data portability</li>
+                    <li>The right to withdraw consent</li>
+                </ul>
+                <p>
+                    To exercise these rights, please contact us using the information provided at the end of this policy.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Third-Party Links</h2>
+                <p>
+                    Our website may contain links to third-party websites. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services. We encourage you to review the privacy policies of any websites you visit.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Children's Privacy</h2>
+                <p>
+                    Our services are not intended for anyone under the age of 18. We do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Changes to This Privacy Policy</h2>
+                <p>
+                    We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date. You are advised to review this Privacy Policy periodically for any changes.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">Contact Us</h2>
+                <p>
+                    If you have any questions about this Privacy Policy, please contact us at:
+                </p>
+                <p>
+                    <strong>Voyageo Tours</strong><br>
+                    Jamaa El Fna Square, Marrakech, Morocco<br>
+                    Email: info@voyageo-tours.com<br>
+                    Phone: +212 600-123456
+                </p>
+                
+                <p class="text-sm mt-8">Last Updated: June 26, 2023</p>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer') %>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out',
+            once: true,
+        });
+    </script>
+</body>
+</html> 

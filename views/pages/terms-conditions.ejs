@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title><%= pageTitle %></title>
+    <meta name="title" content="Terms & Conditions | Voyageo Tours">
+    <meta name="description" content="Legal terms and conditions for using Voyageo Tours services and booking tours in Morocco.">
+    <meta name="keywords" content="terms and conditions, legal terms, Voyageo Tours terms, Morocco tours legal">
+    <meta name="author" content="Voyageo Tours">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/terms-conditions">
+    <meta property="og:title" content="Terms & Conditions | Voyageo Tours">
+    <meta property="og:description" content="Legal terms and conditions for using Voyageo Tours services and booking tours in Morocco.">
+    <meta property="og:image" content="/images/headers/morocco-tour-bg.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/terms-conditions">
+    <meta property="twitter:title" content="Terms & Conditions | Voyageo Tours">
+    <meta property="twitter:description" content="Legal terms and conditions for using Voyageo Tours services and booking tours in Morocco.">
+    <meta property="twitter:image" content="/images/headers/morocco-tour-bg.jpg">
+    
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://voyageo-tours.com/terms-conditions">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    },
+                    lineHeight: {
+                        'extra-tight': '1.05',
+                        'tighter': '1.1'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Additional CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
+            background-color: #F9F6F0;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+        
+        /* Decorative elements */
+        .decorative-line {
+            position: relative;
+        }
+        
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body class="bg-cream">
+    <%- include('../partials/navbar') %>
+    
+    <!-- Hero Section -->
+    <section class="relative py-20 md:py-28 bg-charcoal overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="<%= headerImagePath %>" alt="Terms and Conditions" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/80 to-charcoal/70"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="max-w-3xl" data-aos="fade-up">
+                <span class="inline-block mb-4 text-primary uppercase tracking-widest text-sm font-medium">Voyageo Tours</span>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium mb-6 text-white leading-tighter">
+                    <%= heroTitle %>
+                </h1>
+                <p class="text-lg md:text-xl text-white/80 mb-8 max-w-2xl">
+                    <%= heroSubtitle %>
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Content Section -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-12 lg:max-w-5xl">
+            <div class="prose prose-lg max-w-none">
+                <h2 class="text-3xl font-serif mb-6">1. Introduction</h2>
+                <p>
+                    Welcome to Voyageo Tours. These Terms and Conditions govern your use of our website and services. By accessing our website and/or using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our website or services.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">2. Definitions</h2>
+                <p>
+                    In these Terms and Conditions, the following terms shall have the meanings assigned to them below:
+                </p>
+                <ul>
+                    <li>"Company", "we", "us", or "our" refers to Voyageo Tours, a tour operator based in Morocco.</li>
+                    <li>"Customer", "you", or "your" refers to the person or entity accessing our website or using our services.</li>
+                    <li>"Services" refers to tours, excursions, activities, transfers, and other travel-related services provided by us.</li>
+                    <li>"Website" refers to www.voyageo-tours.com and all its subdomains.</li>
+                    <li>"Booking" refers to the reservation of any Services offered by us.</li>
+                </ul>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">3. Booking and Payment</h2>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">3.1 Booking Process</h3>
+                <p>
+                    Bookings can be made through our website, via email, or by phone. A booking is only confirmed once we have received the required deposit or full payment (as specified at the time of booking) and have sent you a written confirmation.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">3.2 Payment Terms</h3>
+                <p>
+                    For most tours and services, a deposit of 20% of the total tour price is required at the time of booking, with the balance due 30 days before the start date of your tour. For bookings made less than 30 days before the tour start date, full payment is required at the time of booking.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">3.3 Payment Methods</h3>
+                <p>
+                    We accept payment via credit card, PayPal, bank transfer, and other methods as specified on our website. All payments must be made in the currency specified in your booking confirmation.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">4. Cancellations and Refunds</h2>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">4.1 Cancellation by You</h3>
+                <p>
+                    Cancellation of a booking must be made in writing. The following cancellation fees apply:
+                </p>
+                <ul>
+                    <li>More than 45 days before tour start date: Full refund minus administrative fee of €50 per person</li>
+                    <li>30-45 days before tour start date: 75% refund of total tour cost</li>
+                    <li>15-29 days before tour start date: 50% refund of total tour cost</li>
+                    <li>Less than 15 days before tour start date: No refund</li>
+                </ul>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">4.2 Cancellation by Us</h3>
+                <p>
+                    We reserve the right to cancel a tour for any reason, including but not limited to insufficient participants, force majeure, or safety concerns. In such cases, you will be offered a full refund or the option to book an alternative tour. We are not responsible for any incidental expenses you may have incurred as a result of your booking, such as visas, vaccinations, or non-refundable flights.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">4.3 Changes to Bookings</h3>
+                <p>
+                    If you wish to change your booking (e.g., change dates, tour itinerary), we will make reasonable efforts to accommodate your request. However, this may incur additional charges, and changes are subject to availability.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">5. Tour Conditions</h2>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">5.1 Tour Modifications</h3>
+                <p>
+                    We reserve the right to modify tour itineraries, accommodations, transportation, or other services if circumstances make it necessary or advisable. Such modifications will not be considered a breach of contract, and no refunds will be given for such modifications unless they significantly alter the essential character of the tour.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">5.2 Accommodation</h3>
+                <p>
+                    Accommodation is provided as described on our website or in your booking confirmation. While we strive to provide accurate information, accommodations may vary in standard and quality based on local conditions and availability.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">5.3 Transportation</h3>
+                <p>
+                    Transportation will be provided as indicated in the tour description. We reserve the right to change the type or model of vehicle used if necessary, provided that the replacement vehicle is of equivalent or superior quality.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">6. Travel Insurance</h2>
+                <p>
+                    We strongly recommend that all customers purchase comprehensive travel insurance, including coverage for medical emergencies, trip cancellation, and loss of personal belongings. Travel insurance is not included in the price of our tours unless explicitly stated.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">7. Liability and Disclaimers</h2>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">7.1 Limitation of Liability</h3>
+                <p>
+                    To the maximum extent permitted by law, we disclaim any liability for personal injury, death, damage, loss, accident, delay, or inconvenience that may occur during a tour. We are not responsible for any loss or damage to personal belongings or baggage.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">7.2 Force Majeure</h3>
+                <p>
+                    We are not liable for any failure to perform our obligations under these Terms and Conditions due to events beyond our reasonable control, including but not limited to natural disasters, terrorist acts, war, civil unrest, epidemics, government actions, and strikes.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">7.3 Third-Party Services</h3>
+                <p>
+                    We act only as an intermediary for third-party service providers such as hotels, restaurants, transportation companies, and activity operators. We are not responsible for the actions or omissions of these third parties.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">8. Your Responsibilities</h2>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">8.1 Travel Documents</h3>
+                <p>
+                    You are responsible for ensuring that you have valid travel documents, including passports, visas, health certificates, and any other documents required for your journey. We are not liable for any consequences resulting from incomplete or invalid travel documents.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">8.2 Health and Fitness</h3>
+                <p>
+                    You are responsible for ensuring that you are medically fit to participate in the activities included in your tour. You should consult your doctor regarding any pre-existing medical conditions and necessary vaccinations before traveling.
+                </p>
+                
+                <h3 class="text-2xl font-serif mb-4 mt-8">8.3 Behavior</h3>
+                <p>
+                    You agree to behave responsibly and respectfully toward other participants, our staff, and local people. We reserve the right to terminate your participation in a tour if your behavior is disruptive, offensive, or endangers others. In such cases, no refund will be provided.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">9. Intellectual Property</h2>
+                <p>
+                    All content on our website, including text, images, logos, and videos, is the intellectual property of Voyageo Tours or our content suppliers and is protected by copyright laws. You may not use, reproduce, distribute, or modify any content from our website without our written permission.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">10. Privacy</h2>
+                <p>
+                    We collect and process your personal information in accordance with our Privacy Policy, which is available on our website. By using our services, you consent to the collection and processing of your personal information as described in our Privacy Policy.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">11. Governing Law and Jurisdiction</h2>
+                <p>
+                    These Terms and Conditions are governed by and construed in accordance with the laws of Morocco. Any disputes arising from these Terms and Conditions shall be submitted to the exclusive jurisdiction of the courts of Morocco.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">12. Amendments to Terms and Conditions</h2>
+                <p>
+                    We reserve the right to amend these Terms and Conditions at any time. The amended terms will be effective upon posting on our website. You are advised to check our website periodically for any changes.
+                </p>
+                
+                <h2 class="text-3xl font-serif mb-6 mt-12">13. Contact Us</h2>
+                <p>
+                    If you have any questions or concerns about these Terms and Conditions, please contact us at:
+                </p>
+                <p>
+                    <strong>Voyageo Tours</strong><br>
+                    Jamaa El Fna Square, Marrakech, Morocco<br>
+                    Email: info@voyageo-tours.com<br>
+                    Phone: +212 600-123456
+                </p>
+                
+                <p class="text-sm mt-8">Last Updated: June 26, 2023</p>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer') %>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out',
+            once: true,
+        });
+    </script>
+</body>
+</html> 

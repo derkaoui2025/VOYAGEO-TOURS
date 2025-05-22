@@ -6,7 +6,7 @@ const Excursion = require('../models/Excursion');
 const Transfer = require('../models/Transfer');
 const Activity = require('../models/Activity');
 const dotenv = require('dotenv');
-// const blogRoutes = require('./blog/publicRoutes')
+const frontendRoutes = require('./frontendRoutes');
 
 // Import controllers
 const transferController = require('../controllers/transferController');
@@ -285,12 +285,72 @@ router.get('/car-rental', (req, res) => {
 
 // Contact page
 router.get('/contact', (req, res) => {
-  res.render('pages/contact', { 
-    pageTitle: 'Contact Us',
-    heroTitle: 'Get in Touch',
-    heroSubtitle: 'We\'re here to help plan your perfect Morocco adventure',
-    headerImagePath: '/images/headers/contact-banner.jpg'
-  });
+  try {
+    res.render('pages/contact', {
+      pageTitle: 'Contact Us | Voyageo Tours',
+      heroTitle: 'Contact Us',
+      heroSubtitle: 'We\'re here to help plan your perfect Moroccan adventure',
+      headerImagePath: '/images/headers/morocco-tour-bg.jpg',
+      success: req.query.success || false
+    });
+  } catch (error) {
+    console.error('Error loading contact page:', error);
+    res.status(500).render('pages/error', {
+      pageTitle: 'Error',
+      heroTitle: 'Something Went Wrong',
+      heroSubtitle: 'We apologize for the inconvenience',
+      message: 'Failed to load contact page'
+    });
+  }
+});
+
+// Contact form submission
+router.post('/contact', async (req, res) => {
+  try {
+    const { 
+      fullName, 
+      email, 
+      phone, 
+      subject,
+      message,
+      website, // honeypot field
+      mathCaptcha,
+      expectedAnswer
+    } = req.body;
+
+    // Bot detection (honeypot)
+    if (website && website.trim() !== '') {
+      return res.status(403).send('Forbidden');
+    }
+
+    // Verify math captcha
+    if (parseInt(mathCaptcha) !== parseInt(expectedAnswer)) {
+      return res.render('pages/contact', {
+        pageTitle: 'Contact Us | Voyageo Tours',
+        heroTitle: 'Contact Us',
+        heroSubtitle: 'We\'re here to help plan your perfect Moroccan adventure',
+        headerImagePath: '/images/headers/morocco-tour-bg.jpg',
+        error: 'Incorrect security answer. Please try again.',
+        formData: req.body
+      });
+    }
+
+    // Here you would typically save the message to a database
+    // and/or send an email notification
+    
+    // For now, just redirect with success message
+    res.redirect('/contact?success=true');
+  } catch (err) {
+    console.error('Error processing contact form:', err);
+    res.render('pages/contact', {
+      pageTitle: 'Contact Us | Voyageo Tours',
+      heroTitle: 'Contact Us',
+      heroSubtitle: 'We\'re here to help plan your perfect Moroccan adventure',
+      headerImagePath: '/images/headers/morocco-tour-bg.jpg',
+      error: 'There was an error processing your request. Please try again.',
+      formData: req.body
+    });
+  }
 });
 
 // FAQs page
@@ -303,24 +363,49 @@ router.get('/faqs', (req, res) => {
   });
 });
 
-// Privacy policy page
+// Privacy policy page - combining the duplicate routes
 router.get('/privacy-policy', (req, res) => {
-  res.render('pages/privacy-policy', { 
-    pageTitle: 'Privacy Policy',
-    heroTitle: 'Privacy Policy',
-    heroSubtitle: 'How we protect and manage your information',
-    headerImagePath: '/images/headers/legal-banner.jpg'
-  });
+  try {
+    res.render('pages/privacy-policy', {
+      pageTitle: 'Privacy Policy | Voyageo Tours',
+      heroTitle: 'Privacy Policy',
+      heroSubtitle: 'How we collect, use, and protect your personal information',
+      headerImagePath: '/images/headers/morocco-tour-bg.jpg',
+    });
+  } catch (error) {
+    console.error('Error loading privacy policy page:', error);
+    res.status(500).render('pages/error', {
+      pageTitle: 'Error',
+      heroTitle: 'Something Went Wrong',
+      heroSubtitle: 'We apologize for the inconvenience',
+      message: 'Failed to load privacy policy page'
+    });
+  }
 });
 
-// Terms of service page
+// Terms & Conditions page - replacing both terms-of-service and terms-conditions routes
+router.get('/terms-conditions', (req, res) => {
+  try {
+    res.render('pages/terms-conditions', {
+      pageTitle: 'Terms & Conditions | Voyageo Tours',
+      heroTitle: 'Terms & Conditions',
+      heroSubtitle: 'Legal terms for using our services and website',
+      headerImagePath: '/images/headers/morocco-tour-bg.jpg',
+    });
+  } catch (error) {
+    console.error('Error loading terms and conditions page:', error);
+    res.status(500).render('pages/error', {
+      pageTitle: 'Error',
+      heroTitle: 'Something Went Wrong',
+      heroSubtitle: 'We apologize for the inconvenience',
+      message: 'Failed to load terms and conditions page'
+    });
+  }
+});
+
+// Also add a redirect from the old terms-of-service URL to maintain compatibility
 router.get('/terms-of-service', (req, res) => {
-  res.render('pages/terms-of-service', { 
-    pageTitle: 'Terms of Service',
-    heroTitle: 'Terms of Service',
-    heroSubtitle: 'Our commitment to you and what we expect in return',
-    headerImagePath: '/images/headers/legal-banner.jpg'
-  });
+  res.redirect('/terms-conditions');
 });
 
 // Unified Booking API Routes
@@ -417,7 +502,7 @@ router.get('/activities', activityController.getAllActivities);
 router.get('/activities/:slug', activityController.getActivityBySlug);
 router.post('/api/activity-bookings', activityController.bookActivity);
 
-// Mount blog routes at /blog
-// router.use('/blog', blogRoutes);
+// Mount blog routes
+router.use('/', frontendRoutes);
 
 module.exports = router; 

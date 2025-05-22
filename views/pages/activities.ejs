@@ -1,183 +1,473 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title>Authentic Moroccan Activities | Local Experiences | Voyageo Tours</title>
+    <meta name="title" content="Authentic Moroccan Activities | Local Experiences | Voyageo Tours">
+    <meta name="description" content="Experience authentic Morocco through our carefully selected activities. Cooking classes, artisan workshops, and local cultural experiences.">
+    <meta name="keywords" content="Morocco activities, Moroccan cooking class, Moroccan cultural experiences, Marrakech activities, Fes workshops, local experiences Morocco">
+    <meta name="author" content="Voyageo Tours">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/activities">
+    <meta property="og:title" content="Authentic Moroccan Activities | Local Experiences | Voyageo Tours">
+    <meta property="og:description" content="Experience authentic Morocco through our carefully selected activities. Cooking classes, artisan workshops, and local cultural experiences.">
+    <meta property="og:image" content="/images/headers/activities-banner.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/activities">
+    <meta property="twitter:title" content="Authentic Moroccan Activities | Local Experiences | Voyageo Tours">
+    <meta property="twitter:description" content="Experience authentic Morocco through our carefully selected activities. Cooking classes, artisan workshops, and local cultural experiences.">
+    <meta property="twitter:image" content="/images/headers/activities-banner.jpg">
+    
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://voyageo-tours.com/activities">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Additional CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
     <style>
-        .activities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+        html {
+            scroll-behavior: smooth;
         }
         
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
+            background-color: #F9F6F0;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+        
+        /* Decorative elements */
+        .decorative-line {
+            position: relative;
+        }
+        
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Activity card styles */
         .activity-card {
-            border-radius: 8px;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            transition: transform 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            height: 100%;
+            background-color: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
         }
         
         .activity-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
         
-        .activity-image {
-            height: 220px;
+        .activity-card .img-container {
             overflow: hidden;
         }
         
-        .activity-image img {
-            width: 100%;
+        .activity-card img {
+            transition: all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .activity-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            display: inline-block;
+            background-color: #B8860B;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
             height: 100%;
-            object-fit: cover;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         
-        .activity-content {
-            padding: 1.5rem;
+        .btn-primary:hover {
+            color: #B8860B;
         }
         
-        .activity-content h3 {
-            font-size: 1.8rem;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
+        .btn-primary:hover::after {
+            width: 100%;
         }
         
-        .activity-meta {
-            display: flex;
-            justify-content: space-between;
+        .btn-outline {
+            display: inline-block;
+            background-color: transparent;
+            color: #B8860B;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-outline::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #B8860B;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-outline:hover {
+            color: white;
+        }
+        
+        .btn-outline:hover::after {
+            width: 100%;
+        }
+        
+        /* Section label style */
+        .section-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 12px;
+            color: #B8860B;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        /* Accordion styles */
+        .accordion-item {
+            border-bottom: 1px solid rgba(184, 134, 11, 0.2);
+        }
+        
+        .accordion-header {
+            position: relative;
+            cursor: pointer;
+            padding: 1.5rem 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            font-size: 1.25rem;
+            color: #252525;
+            transition: color 0.3s ease;
+        }
+        
+        .accordion-header:hover {
+            color: #B8860B;
+        }
+        
+        .accordion-header::after {
+            content: '\f107';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-right: 2rem;
+        }
+        
+        .accordion-body p {
             margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-            color: var(--secondary-color);
-        }
-        
-        .activity-meta .item {
-            display: flex;
-            align-items: center;
-        }
-        
-        .activity-meta .item svg {
-            margin-right: 0.5rem;
-        }
-        
-        .activity-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 1.5rem;
-        }
-        
-        .activity-price small {
-            font-size: 1.2rem;
-            font-weight: normal;
-            color: #666;
-            display: block;
-        }
-        
-        .activity-description {
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-            color: #444;
-            line-height: 1.6;
-        }
-        
-        @media (max-width: 768px) {
-            .activities-grid {
-                grid-template-columns: 1fr;
-            }
+            color: #3A3A3A;
         }
     </style>
 </head>
-<body>
+<body class="bg-cream">
     <%- include('../partials/navbar') %>
-    <%- include('../partials/hero') %>
     
-    <section class="section">
-        <div class="container">
-            <div class="section-intro text-center">
-                <h2 class="section-title">Local Activities in Morocco</h2>
-                <p class="lead">Experience authentic Moroccan culture through our carefully selected activities. Immerse yourself in local traditions, learn new skills, and create lasting memories.</p>
+    <!-- Hero Section -->
+    <section class="relative py-20 md:py-28 bg-charcoal overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="/images/headers/activity-bg.jpg" alt="Moroccan Activities" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/80 to-charcoal/70"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="max-w-3xl" data-aos="fade-up">
+                <span class="inline-block mb-4 text-primary uppercase tracking-widest text-sm font-medium">Experience Morocco</span>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium mb-6 text-white leading-tight">
+                    Local <span class="text-primary">Activities</span>
+                </h1>
+                <p class="text-lg md:text-xl text-white/80 mb-8 max-w-2xl">
+                    Immerse yourself in authentic Moroccan culture through our carefully selected activities. Learn new skills, experience traditions, and create lasting memories.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Activities Section -->
+    <section class="py-16 relative">
+        <div class="section-label">Experiences</div>
+        
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="mb-12 max-w-3xl" data-aos="fade-up">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Cultural Immersion</span>
+                <h2 class="text-2xl md:text-3xl font-serif font-medium mb-4 leading-tight decorative-line">
+                    Authentic Moroccan Experiences
+                </h2>
+                <p class="text-secondary/70 mt-8">
+                    Our activities are designed to connect you with the heart and soul of Morocco. From cooking classes with local families to artisan workshops with master craftsmen, each experience offers a genuine glimpse into Moroccan life and traditions.
+                </p>
             </div>
             
-            <% if (activities && activities.length > 0) { %>
-                <div class="activities-grid">
-                    <% activities.forEach(activity => { %>
-                        <div class="activity-card animate">
-                            <div class="activity-image">
-                                <img class="lazy-image" data-src="<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : '/images/placeholder.jpg' %>" alt="<%= activity.title %>" width="300" height="220">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+                <% if (activities && activities.length > 0) { %>
+                    <% activities.forEach((activity, index) => { %>
+                        <div class="activity-card" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                            <div class="img-container h-64 relative">
+                                <img 
+                                    src="<%= activity.gallery && activity.gallery.length > 0 ? activity.gallery[0] : '/images/placeholder.jpg' %>" 
+                                    alt="<%= activity.title %>" 
+                                    class="w-full h-full object-cover"
+                                >
+                                <div class="absolute top-4 right-4 bg-primary text-white py-1 px-3 text-xs uppercase tracking-wider">
+                                    <%= activity.location || 'Various Locations' %>
+                                </div>
                             </div>
-                            <div class="activity-content">
-                                <h3><%= activity.title %></h3>
-                                <div class="activity-meta">
-                                    <div class="item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                        </svg>
-                                        <%= activity.duration %> <%= activity.durationType %>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-serif font-medium mb-3"><%= activity.title %></h3>
+                                
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center text-sm text-secondary/70">
+                                        <i class="far fa-clock text-primary mr-2"></i>
+                                        <span><%= activity.duration %> <%= activity.durationType %></span>
                                     </div>
-                                    <div class="item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                            <circle cx="12" cy="10" r="3"></circle>
-                                        </svg>
-                                        <%= activity.location || 'Various Locations' %>
+                                    
+                                    <div class="text-xl font-semibold text-primary">
+                                        <%= activity.price %> EUR
                                     </div>
                                 </div>
-                                <div class="activity-price">
-                                    <%= activity.price %> EUR
-                                    <small>per person</small>
-                                </div>
-                                <a href="/activities/<%= activity.slug %>" class="btn btn-primary btn-block">View Details</a>
+                                
+                                <p class="text-secondary/70 text-sm mb-6 line-clamp-3">
+                                    <%= activity.description ? activity.description.substring(0, 150) + '...' : 'Experience authentic Moroccan culture with this unique activity.' %>
+                                </p>
+                                
+                                <a href="/activities/<%= activity.slug %>" class="btn-primary w-full text-center">
+                                    View Details
+                                </a>
                             </div>
                         </div>
                     <% }); %>
-                </div>
-            <% } else { %>
-                <div class="text-center my-5">
-                    <div class="mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="text-muted mx-auto">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
-                        </svg>
+                <% } else { %>
+                    <div class="col-span-3 text-center py-16" data-aos="fade-up">
+                        <div class="w-16 h-16 mx-auto rounded-full border-2 border-primary/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-calendar-star text-primary/40 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-serif text-secondary/70 mb-2">No Activities Available</h3>
+                        <p class="text-secondary/60 text-sm mb-8">Check back soon for new authentic Moroccan experiences</p>
+                        <a href="/contact" class="btn-primary">Contact Us</a>
                     </div>
-                    <h3>No Activities Found</h3>
-                    <p>Please check back later for upcoming activities.</p>
+                <% } %>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Why Choose Our Activities</span>
+                <h2 class="text-2xl md:text-3xl font-serif font-medium mb-0 leading-tight decorative-line centered">
+                    The Voyageo Difference
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                <div class="text-center" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-beige flex items-center justify-center mb-4">
+                        <i class="fas fa-users text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-medium mb-3">Local Connections</h3>
+                    <p class="text-secondary/70">
+                        Our activities are hosted by local artisans, families, and experts passionate about sharing their culture and traditions.
+                    </p>
                 </div>
-            <% } %>
+                
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-beige flex items-center justify-center mb-4">
+                        <i class="fas fa-star text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-medium mb-3">Quality Experiences</h3>
+                    <p class="text-secondary/70">
+                        Each activity is carefully selected and regularly evaluated to ensure authentic, high-quality experiences for our guests.
+                    </p>
+                </div>
+                
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-beige flex items-center justify-center mb-4">
+                        <i class="fas fa-leaf text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-medium mb-3">Sustainable Tourism</h3>
+                    <p class="text-secondary/70">
+                        We support local communities and promote cultural preservation through responsible, sustainable tourism practices.
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
     
     <!-- FAQ Section -->
-    <section class="section bg-light">
-        <div class="container">
-            <h2 class="section-title text-center">Frequently Asked Questions</h2>
+    <section class="py-16 bg-beige">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="mb-12" data-aos="fade-up">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Common Questions</span>
+                <h2 class="text-2xl md:text-3xl font-serif font-medium mb-0 leading-tight decorative-line">
+                    Frequently Asked Questions
+                </h2>
+            </div>
             
-            <div class="accordion mt-5">
-                <div class="accordion-item">
-                    <h3 class="accordion-header">How do I book an activity?</h3>
-                    <div class="accordion-body">
-                        <p>Booking an activity is simple! Just select the activity you're interested in, click on "View Details," and you'll find a booking form on the activity page. Fill in your details, select your preferred date, and submit your request. Our team will get back to you promptly to confirm your booking.</p>
+            <div class="max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">How do I book an activity?</h3>
+                        <div class="accordion-body">
+                            <p>Booking an activity is simple! Just select the activity you're interested in, click on "View Details," and you'll find a booking form on the activity page. Fill in your details, select your preferred date, and submit your request. Our team will get back to you promptly to confirm your booking.</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="accordion-item">
-                    <h3 class="accordion-header">What is included in the activity price?</h3>
-                    <div class="accordion-body">
-                        <p>Each activity has different inclusions, which are clearly listed on the individual activity page. Generally, the price includes the activity itself, any necessary equipment, and in some cases, transportation and meals. Please check the specific activity details for complete information on what's included.</p>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">What is included in the activity price?</h3>
+                        <div class="accordion-body">
+                            <p>Each activity has different inclusions, which are clearly listed on the individual activity page. Generally, the price includes the activity itself, any necessary equipment, and in some cases, transportation and meals. Please check the specific activity details for complete information on what's included.</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="accordion-item">
-                    <h3 class="accordion-header">Can I customize an activity for my group?</h3>
-                    <div class="accordion-body">
-                        <p>Yes, many of our activities can be customized for private groups or special occasions. If you have specific requirements or would like to arrange a private session, please contact us directly and we'll be happy to help create a tailored experience for you.</p>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">Can I customize an activity for my group?</h3>
+                        <div class="accordion-body">
+                            <p>Yes, many of our activities can be customized for private groups or special occasions. If you have specific requirements or would like to arrange a private session, please contact us directly and we'll be happy to help create a tailored experience for you.</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="accordion-item">
-                    <h3 class="accordion-header">What is the cancellation policy?</h3>
-                    <div class="accordion-body">
-                        <p>We understand that plans can change. For most activities, we offer free cancellation up to 48 hours before the scheduled time. Cancellations made less than 48 hours in advance may incur a fee. Please refer to the specific activity details for any unique cancellation policies.</p>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">What is the cancellation policy?</h3>
+                        <div class="accordion-body">
+                            <p>We understand that plans can change. For most activities, we offer free cancellation up to 48 hours before the scheduled time. Cancellations made less than 48 hours in advance may incur a fee. Please refer to the specific activity details for any unique cancellation policies.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,22 +475,49 @@
     </section>
     
     <!-- CTA Section -->
-    <section class="section cta-section" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/morocco-bg.jpg') center/cover;">
-        <div class="container text-center text-white">
-            <h2>Ready to Experience Authentic Morocco?</h2>
-            <p class="lead mb-4">Choose from our hand-picked activities or contact us to create a custom experience</p>
-            <div class="cta-buttons">
-                <a href="/contact" class="btn btn-primary mr-3">Contact Us</a>
-                <a href="/customize" class="btn btn-outline-light">Customize Your Experience</a>
+    <section class="py-20 bg-charcoal relative overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="/images/morocco-bg.jpg" alt="Morocco Landscape" class="w-full h-full object-cover opacity-20">
+            <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/90 to-charcoal/80"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+                <span class="inline-block mb-4 text-primary uppercase tracking-widest text-sm font-medium">Start Your Journey</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-medium mb-6 text-white">
+                    Ready to Experience Authentic Morocco?
+                </h2>
+                <p class="text-lg text-white/80 mb-8">
+                    Choose from our hand-picked activities or contact us to create a custom experience tailored to your interests.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="/contact" class="btn-primary">
+                        <i class="fas fa-envelope mr-2"></i> Contact Us
+                    </a>
+                    <a href="/customize" class="btn-outline">
+                        <i class="fas fa-magic mr-2"></i> Customize Your Experience
+                    </a>
+                </div>
             </div>
         </div>
     </section>
     
     <%- include('../partials/footer') %>
     
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        // Accordion functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
+            });
+            
+            // Accordion functionality
             const accordionHeaders = document.querySelectorAll('.accordion-header');
             
             accordionHeaders.forEach(header => {

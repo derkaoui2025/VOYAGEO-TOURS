@@ -1,65 +1,535 @@
-<%- include('../partials/header') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title><%= post.title %> | Voyageo Tours Blog</title>
+    <meta name="title" content="<%= post.title %> | Voyageo Tours Blog">
+    <meta name="description" content="<%= post.excerpt %>">
+    <meta name="author" content="<%= post.author %>">
+    <meta name="keywords" content="morocco travel, <%= post.category.toLowerCase() %>, <%= post.tags ? post.tags.join(', ').toLowerCase() : '' %>, morocco blog, travel guide">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="<%= currentUrl %>">
+    <meta property="og:title" content="<%= post.title %> | Voyageo Tours Blog">
+    <meta property="og:description" content="<%= post.excerpt %>">
+    <meta property="og:image" content="<%= post.image %>">
+    <meta property="article:published_time" content="<%= post.createdAt.toISOString() %>">
+    <meta property="article:author" content="<%= post.author %>">
+    <meta property="article:section" content="<%= post.category %>">
+    <% if (post.tags && post.tags.length > 0) { %>
+        <% post.tags.forEach(tag => { %>
+            <meta property="article:tag" content="<%= tag %>">
+        <% }); %>
+    <% } %>
+    
+     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    },
+                    lineHeight: {
+                        'extra-tight': '1.05',
+                        'tighter': '1.1'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Additional CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
+            background-color: #F9F6F0;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+        
+        /* Decorative elements */
+        .decorative-line {
+            position: relative;
+        }
+        
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Link hover animations */
+        .hover-link {
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .hover-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #B8860B;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-out;
+        }
+        
+        .hover-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            display: inline-block;
+            background-color: #B8860B;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary:hover {
+            color: #B8860B;
+        }
+        
+        .btn-primary:hover::after {
+            width: 100%;
+        }
+        
+        /* Blog post content styles */
+        .blog-content {
+            font-family: 'Urbanist', sans-serif;
+            line-height: 1.8;
+        }
+        
+        .blog-content p {
+            margin-bottom: 1.5rem;
+            color: #3A3A3A;
+        }
+        
+        .blog-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+            color: #252525;
+        }
+        
+        .blog-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #252525;
+        }
+        
+        .blog-content img {
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 1.5rem;
+            margin-left: 1.5rem;
+        }
+        
+        .blog-content ul li, .blog-content ol li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .blog-content blockquote {
+            border-left: 3px solid #B8860B;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #555;
+        }
+        
+        /* Content Card Styles */
+        .content-card {
+            background-color: white;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+        }
+        
+        .content-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        /* Section label style */
+        .section-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 12px;
+            color: #B8860B;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "<%= post.title %>",
+        "image": "<%= post.image %>",
+        "datePublished": "<%= post.createdAt.toISOString() %>",
+        "dateModified": "<%= post.updatedAt ? post.updatedAt.toISOString() : post.createdAt.toISOString() %>",
+        "author": {
+            "@type": "Person",
+            "name": "<%= post.author %>"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Voyageo Tours",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://voyageo-tours.com/images/logo.png"
+            }
+        },
+        "description": "<%= post.excerpt %>",
+        "keywords": "<%= post.tags ? post.tags.join(', ').toLowerCase() : '' %>",
+        "articleSection": "<%= post.category %>",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "<%= currentUrl %>"
+        }
+    }
+    </script>
+</head>
+<body class="bg-cream">
+    <%- include('../partials/navbar') %>
 
-<div class="container mt-5 mb-5">
-    <div class="row">
-        <div class="col-lg-8">
-            <!-- Blog Post Content -->
-            <article>
-                <h1 class="mb-3"><%= post.title %></h1>
-                
-                <div class="mb-4 text-muted">
-                    <span>By <%= post.author %></span>
-                    <span class="mx-2">•</span>
-                    <span><%= post.createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+    <!-- Hero Section with Post Image -->
+    <section class="relative py-16 md:py-24 bg-charcoal overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="<%= post.image %>" alt="<%= post.title %>" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/80 to-charcoal/70"></div>
+        </div>
+        <div class="container mx-auto px-4 z-10 relative">
+            <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+                <span class="inline-block mb-4 text-primary uppercase tracking-widest text-sm font-medium"><%= post.category %></span>
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-medium mb-6 text-white leading-tighter"><%= post.title %></h1>
+                <div class="flex items-center justify-center text-white/80 space-x-4 mb-6">
+                    <span class="flex items-center">
+                        <i class="fas fa-user-circle mr-2"></i> <%= post.author %>
+                    </span>
+                    <span class="flex items-center">
+                        <i class="far fa-calendar mr-2"></i> <%= post.createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                    </span>
+                    <span class="flex items-center">
+                        <i class="far fa-clock mr-2"></i> <%= post.readingTime || '5' %> min read
+                    </span>
                 </div>
-                
-                <img src="<%= post.image %>" class="img-fluid rounded mb-4" alt="<%= post.title %>">
-                
+            </div>
+        </div>
+    </section>
+
+    <div class="container mx-auto px-4 py-12" data-aos="fade-up" data-aos-delay="100">
+        <div class="flex flex-wrap -mx-4">
+            <!-- Main Content Column -->
+            <div class="w-full lg:w-2/3 px-4">
+                <!-- Post Content -->
+                <article class="bg-white rounded-none shadow-soft p-6 md:p-10 mb-8">
+                    <!-- Post Body -->
                 <div class="blog-content">
                     <%- post.content %>
                 </div>
-            </article>
-            
-            <div class="mt-5 mb-4">
-                <hr>
-                <a href="/blog" class="btn btn-outline-primary">&larr; Back to Blog</a>
+                    
+                    <!-- Tags -->
+                    <% if (post.tags && post.tags.length > 0) { %>
+                    <div class="mt-10 pt-6 border-t border-gray-200">
+                        <h3 class="text-xl font-serif font-medium mb-4 decorative-line">Tags</h3>
+                        <div class="flex flex-wrap gap-2 mt-8">
+                            <% post.tags.forEach(tag => { %>
+                                <a href="/blog/tag/<%= tag %>" class="bg-beige hover:bg-primary hover:text-white text-secondary px-4 py-2 text-sm transition-colors duration-200">
+                                    #<%= tag %>
+                                </a>
+                            <% }); %>
+                        </div>
+                    </div>
+                    <% } %>
+                    
+                    <!-- Social Sharing -->
+                    <div class="mt-10 pt-6 border-t border-gray-200">
+                        <h3 class="text-xl font-serif font-medium mb-4 decorative-line">Share This Article</h3>
+                        <div class="flex space-x-3 mt-8">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(currentUrl || '') %>" target="_blank" class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(currentUrl || '') %>&text=<%= encodeURIComponent(post.title) %>" target="_blank" class="bg-blue-400 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url=<%= encodeURIComponent(currentUrl || '') %>" target="_blank" class="bg-blue-800 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-900 transition-colors">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="whatsapp://send?text=<%= encodeURIComponent(post.title + ' - ' + (currentUrl || '')) %>" class="bg-green-500 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
             </div>
         </div>
         
-        <div class="col-lg-4">
-            <!-- Sidebar -->
-            <div class="card sidebar-card mb-4">
-                <div class="card-body">
-                    <h3 class="h5 mb-3">About Our Blog</h3>
-                    <p>Welcome to the Voyageo Tours travel blog! Here we share insider tips, cultural insights, and travel inspiration for your Moroccan adventure.</p>
+                    <!-- Author Bio -->
+                    <div class="mt-10 pt-6 border-t border-gray-200">
+                        <div class="flex items-center">
+                            <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="<%= post.author %>" class="w-16 h-16 rounded-full mr-4">
+                            <div>
+                                <h4 class="text-lg font-serif font-medium"><%= post.author %></h4>
+                                <p class="text-secondary/70">Travel expert and content writer at Voyageo Tours</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Related Posts -->
+                <% if (relatedPosts && relatedPosts.length > 0) { %>
+                <div class="relative mb-12" data-aos="fade-up">
+                    <div class="section-label">Related</div>
+                    
+                    <div class="mb-6">
+                        <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Continue Reading</span>
+                        <h3 class="text-2xl font-serif font-medium mb-0 leading-tight decorative-line">You May Also Like</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+                        <% relatedPosts.forEach((relatedPost, index) => { %>
+                        <a href="/blog/<%= relatedPost.slug %>" class="block content-card" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                            <div class="h-48 overflow-hidden">
+                                <img src="<%= relatedPost.image %>" alt="<%= relatedPost.title %>" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                            </div>
+                            <div class="p-6">
+                                <p class="text-sm text-secondary/60 mb-2"><%= relatedPost.createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                <h4 class="font-serif text-lg mb-3 hover:text-primary transition-colors"><%= relatedPost.title %></h4>
+                                <div class="flex items-center text-primary hover-link font-medium text-sm">
+                                    Read Article
+                                    <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </div>
+                            </div>
+                        </a>
+                        <% }); %>
+                    </div>
+                </div>
+                <% } %>
+                
+                <!-- Back to Blog -->
+                <div class="mt-6 mb-12">
+                    <a href="/blog" class="btn-primary">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Blog
+                    </a>
                 </div>
             </div>
             
-            <div class="card sidebar-card mb-4">
-                <div class="card-body">
-                    <h3 class="h5 mb-3">Popular Destinations</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="/tours/marrakech" class="text-decoration-none">Marrakech</a></li>
-                        <li><a href="/tours/fes" class="text-decoration-none">Fes</a></li>
-                        <li><a href="/tours/chefchaouen" class="text-decoration-none">Chefchaouen</a></li>
-                        <li><a href="/tours/sahara-desert" class="text-decoration-none">Sahara Desert</a></li>
-                        <li><a href="/tours/essaouira" class="text-decoration-none">Essaouira</a></li>
-                    </ul>
+            <!-- Sidebar Column -->
+            <div class="w-full lg:w-1/3 px-4">
+                <!-- About Blog Card -->
+                <div class="bg-white shadow-soft p-6 mb-8" data-aos="fade-left">
+                    <h3 class="text-xl font-serif font-medium mb-4 pb-2 border-b border-gray-200">About Our Blog</h3>
+                    <p class="text-secondary/70">Welcome to the Voyageo Tours travel blog! Here we share insider tips, cultural insights, and travel inspiration for your Moroccan adventure.</p>
+                </div>
+                
+                <!-- Recent Posts Card -->
+                <div class="bg-white shadow-soft p-6 mb-8" data-aos="fade-left" data-aos-delay="100">
+                    <h3 class="text-xl font-serif font-medium mb-4 pb-2 border-b border-gray-200">Recent Posts</h3>
+                    <div class="space-y-4 mt-6">
+                        <% if (recentPosts && recentPosts.length > 0) { %>
+                            <% recentPosts.forEach(recentPost => { %>
+                                <div class="flex items-center">
+                                    <div class="w-20 h-20 rounded-none overflow-hidden flex-shrink-0">
+                                        <img src="<%= recentPost.image %>" alt="<%= recentPost.title %>" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <a href="/blog/<%= recentPost.slug %>" class="text-secondary hover:text-primary line-clamp-2 hover-link font-medium text-sm transition-colors"><%= recentPost.title %></a>
+                                        <p class="text-xs text-secondary/60 mt-1"><%= recentPost.createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <p class="text-secondary/60">No recent posts available.</p>
+                        <% } %>
                 </div>
             </div>
             
-            <div class="card sidebar-card">
-                <div class="card-body">
-                    <h3 class="h5 mb-3">Other Blog Posts</h3>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="/blog/top-10-places-to-visit-in-morocco" class="text-decoration-none">Top 10 Places to Visit in Morocco</a></li>
-                        <li class="mb-2"><a href="/blog/moroccan-cuisine-a-culinary-journey" class="text-decoration-none">Moroccan Cuisine: A Culinary Journey</a></li>
-                        <li class="mb-2"><a href="/blog/desert-adventures-exploring-the-sahara" class="text-decoration-none">Desert Adventures: Exploring the Sahara</a></li>
+                <!-- Popular Destinations Card -->
+                <div class="bg-white shadow-soft p-6 mb-8" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="text-xl font-serif font-medium mb-4 pb-2 border-b border-gray-200">Popular Destinations</h3>
+                    <ul class="space-y-2 mt-6">
+                        <li>
+                            <a href="/tours/marrakech" class="flex items-center py-2 text-secondary hover:text-primary transition-colors hover-link">
+                                <i class="fas fa-map-marker-alt mr-3 text-primary"></i> Marrakech
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/tours/fes" class="flex items-center py-2 text-secondary hover:text-primary transition-colors hover-link">
+                                <i class="fas fa-map-marker-alt mr-3 text-primary"></i> Fes
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/tours/chefchaouen" class="flex items-center py-2 text-secondary hover:text-primary transition-colors hover-link">
+                                <i class="fas fa-map-marker-alt mr-3 text-primary"></i> Chefchaouen
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/tours/sahara-desert" class="flex items-center py-2 text-secondary hover:text-primary transition-colors hover-link">
+                                <i class="fas fa-map-marker-alt mr-3 text-primary"></i> Sahara Desert
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/tours/essaouira" class="flex items-center py-2 text-secondary hover:text-primary transition-colors hover-link">
+                                <i class="fas fa-map-marker-alt mr-3 text-primary"></i> Essaouira
+                            </a>
+                        </li>
                     </ul>
                 </div>
+                
+                <!-- Newsletter Signup Card -->
+                <div class="bg-beige p-6" data-aos="fade-left" data-aos-delay="300">
+                    <h3 class="text-xl font-serif font-medium mb-4 decorative-line">Subscribe to Our Newsletter</h3>
+                    <p class="text-secondary/70 mb-4 mt-8">Get the latest Morocco travel tips and exclusive offers delivered to your inbox.</p>
+                    <form class="space-y-3">
+                        <input type="email" placeholder="Your Email Address" class="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                        <button type="submit" class="w-full btn-primary flex items-center justify-center">
+                            <i class="far fa-paper-plane mr-2"></i> Subscribe
+                        </button>
+                    </form>
+                    <p class="mt-3 text-xs text-secondary/60">
+                        By subscribing, you agree to our Privacy Policy. We respect your privacy.
+                    </p>
             </div>
         </div>
     </div>
 </div>
 
 <%- include('../partials/footer') %> 
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
+            });
+        });
+    </script>
+</body>
+</html> 

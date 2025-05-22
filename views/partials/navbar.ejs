@@ -18,12 +18,12 @@
                 <li><a href="/" class="py-2 hover:text-primary transition-colors text-sm uppercase tracking-wider font-medium">Home</a></li>
                 
                 <!-- Explore Dropdown -->
-                <li class="relative group">
-                    <a href="#" class="py-2 flex items-center hover:text-primary transition-colors text-sm uppercase tracking-wider font-medium">
+                <li class="relative dropdown-container">
+                    <a href="#" class="py-2 flex items-center hover:text-primary transition-colors text-sm uppercase tracking-wider font-medium dropdown-toggle">
                         Explore 
-                        <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                        <i class="fas fa-chevron-down ml-1 text-xs transition-transform"></i>
                     </a>
-                    <ul class="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-white text-secondary rounded-none border-t-2 border-primary shadow-large py-2 hidden group-hover:block transition-all">
+                    <ul class="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-white text-secondary rounded-none border-t-2 border-primary shadow-large py-2 hidden dropdown-menu">
                         <li><a href="/tours" class="block px-6 py-2 hover:bg-cream hover:text-primary transition-colors text-sm flex items-center">
                             <i class="fas fa-route mr-3 text-primary"></i>Morocco Tours
                         </a></li>
@@ -43,12 +43,12 @@
                 </li>
                 
                 <!-- Plan Dropdown -->
-                <li class="relative group">
-                    <a href="#" class="py-2 flex items-center hover:text-primary transition-colors text-sm uppercase tracking-wider font-medium">
+                <li class="relative dropdown-container">
+                    <a href="#" class="py-2 flex items-center hover:text-primary transition-colors text-sm uppercase tracking-wider font-medium dropdown-toggle">
                         Plan Your Trip 
-                        <i class="fas fa-chevron-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
+                        <i class="fas fa-chevron-down ml-1 text-xs transition-transform"></i>
                     </a>
-                    <ul class="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-white text-secondary rounded-none border-t-2 border-primary shadow-large py-2 hidden group-hover:block">
+                    <ul class="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-white text-secondary rounded-none border-t-2 border-primary shadow-large py-2 hidden dropdown-menu">
                         <li><a href="/customize" class="block px-6 py-2 hover:bg-cream hover:text-primary transition-colors text-sm flex items-center">
                             <i class="fas fa-pencil-alt mr-3 text-primary"></i>Customize My Tour
                         </a></li>
@@ -156,6 +156,7 @@
         const mobileToggle = document.getElementById('mobile-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+        const desktopDropdownToggles = document.querySelectorAll('.dropdown-toggle');
         let lastScrollTop = 0;
         
         // Add a class to nav if not at top on load
@@ -241,6 +242,50 @@
                     icon.classList.remove('rotate-180');
                 }
             });
+        });
+        
+        // Handle desktop dropdown menus - click instead of hover
+        desktopDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const parent = this.parentElement;
+                const dropdownMenu = parent.querySelector('.dropdown-menu');
+                const icon = this.querySelector('i.fa-chevron-down');
+                
+                // Close all other dropdowns
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== dropdownMenu && !menu.classList.contains('hidden')) {
+                        menu.classList.add('hidden');
+                        const parentToggle = menu.parentElement.querySelector('.dropdown-toggle i');
+                        if (parentToggle) {
+                            parentToggle.classList.remove('rotate-180');
+                        }
+                    }
+                });
+                
+                // Toggle current dropdown
+                if (dropdownMenu.classList.contains('hidden')) {
+                    dropdownMenu.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                } else {
+                    dropdownMenu.classList.add('hidden');
+                    icon.classList.remove('rotate-180');
+                }
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown-container')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.add('hidden');
+                    const parentToggle = menu.parentElement.querySelector('.dropdown-toggle i');
+                    if (parentToggle) {
+                        parentToggle.classList.remove('rotate-180');
+                    }
+                });
+            }
         });
         
         // Close mobile menu on window resize if screen gets larger

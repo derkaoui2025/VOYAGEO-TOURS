@@ -12,11 +12,10 @@ const moment = require('moment');
  */
 exports.renderBlogHome = async (req, res) => {
   try {
-    // Get featured posts
-    const featuredPosts = await Blog.findFeatured(3);
-    
-    // Get recent posts
-    const recentPosts = await Blog.findRecent(6);
+    // Get all published blog posts
+    const blogPosts = await Blog.find({ status: 'published' })
+      .sort('-createdAt')
+      .limit(10);
     
     // Get popular categories
     const categories = await Blog.aggregate([
@@ -35,13 +34,12 @@ exports.renderBlogHome = async (req, res) => {
       { $limit: 15 }
     ]);
     
-    res.render('pages/blog/home', {
+    res.render('pages/blog', {
       pageTitle: 'Voyageo Blog',
       heroTitle: 'Voyageo Tours Blog',
       heroSubtitle: 'Stories, tips, and insights for your Moroccan adventure',
       headerImagePath: '/images/headers/blog-banner.jpg',
-      featuredPosts,
-      recentPosts,
+      blogPosts,
       categories,
       tags
     });
@@ -190,7 +188,7 @@ exports.renderBlogPost = async (req, res) => {
       ? post.featuredImage 
       : '/images/headers/blog-post-banner.jpg';
     
-    res.render('pages/blog/post', {
+    res.render('pages/blog-post', {
       pageTitle: post.title,
       heroTitle: post.title,
       heroSubtitle: post.excerpt,

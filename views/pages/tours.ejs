@@ -1,23 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title>Morocco Tours | Authentic Travel Experiences | Voyageo Tours</title>
+    <meta name="title" content="Morocco Tours | Authentic Travel Experiences | Voyageo Tours">
+    <meta name="description" content="Discover our carefully crafted Morocco tours - from imperial cities to Sahara desert adventures. Authentic experiences designed by local experts.">
+    <meta name="keywords" content="Morocco tours, Sahara desert tour, Marrakech tour, Fes tour, Morocco travel, Chefchaouen, Morocco vacation, Morocco excursions">
+    <meta name="author" content="Voyageo Tours">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/tours">
+    <meta property="og:title" content="Morocco Tours | Authentic Travel Experiences | Voyageo Tours">
+    <meta property="og:description" content="Discover our carefully crafted Morocco tours - from imperial cities to Sahara desert adventures. Authentic experiences designed by local experts.">
+    <meta property="og:image" content="/images/headers/morocco-tour-bg.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/tours">
+    <meta property="twitter:title" content="Morocco Tours | Authentic Travel Experiences | Voyageo Tours">
+    <meta property="twitter:description" content="Discover our carefully crafted Morocco tours - from imperial cities to Sahara desert adventures. Authentic experiences designed by local experts.">
+    <meta property="twitter:image" content="/images/headers/morocco-tour-bg.jpg">
+    
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://voyageo-tours.com/tours">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    },
+                    lineHeight: {
+                        'extra-tight': '1.05',
+                        'tighter': '1.1'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Additional CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
+            background-color: #F9F6F0;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+        
+        /* Decorative elements */
+        .decorative-line {
+            position: relative;
+        }
+        
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Link hover animations */
+        .hover-link {
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .hover-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #B8860B;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-out;
+        }
+        
+        .hover-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            display: inline-block;
+            background-color: #B8860B;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary:hover {
+            color: #B8860B;
+        }
+        
+        .btn-primary:hover::after {
+            width: 100%;
+        }
+        
+        /* Tour card styles */
+        .tour-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            height: 100%;
+            background-color: white;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tour-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tour-card img {
+            transition: all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .tour-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .tour-tag {
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            background-color: #B8860B;
+            color: white;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+        
+        /* Filter styles */
+        .filter-pill {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background-color: #F5F1E9;
+            color: #252525;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .filter-pill:hover, .filter-pill.active {
+            background-color: #B8860B;
+            color: white;
+        }
+        
+        /* Section label style */
+        .section-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 12px;
+            color: #B8860B;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .pattern-diagonal {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 200px;
+            height: 200px;
+            background-image: linear-gradient(45deg, #B8860B 25%, transparent 25%), 
+                              linear-gradient(-45deg, #B8860B 25%, transparent 25%);
+            background-size: 12px 12px;
+            opacity: 0.05;
+            z-index: 0;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 font-opensans text-gray-800">
+<body class="bg-cream">
     <%- include('../partials/navbar') %>
     
-    <%- include('../partials/hero', { 
-        heroTitle: 'Morocco Tours', 
-        heroSubtitle: 'Discover the magic of Morocco with our carefully crafted tours',
-        headerImagePath: '/images/headers/morocco-tour-bg.jpg'
-    }) %>
+    <!-- Hero Section -->
+    <section class="relative py-20 md:py-28 bg-charcoal overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="/images/headers/morocco-tour-bg.jpg" alt="Morocco Landscapes" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/80 to-charcoal/70"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="max-w-3xl" data-aos="fade-up">
+                <span class="inline-block mb-4 text-primary uppercase tracking-widest text-sm font-medium">Explore Morocco</span>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium mb-6 text-white leading-tighter">
+                    Discover Our <span class="text-primary">Tours</span>
+                </h1>
+                <p class="text-lg md:text-xl text-white/80 mb-8 max-w-2xl">
+                    Carefully crafted journeys through Morocco's most enchanting destinations. From imperial cities to vast desert landscapes, experience the magic with our expert local guides.
+                </p>
+            </div>
+        </div>
+    </section>
     
-    <!-- Quick Filter Tags -->
-    <section class="py-8 bg-white border-b">
-        <div class="container mx-auto px-6">
-            <h2 class="text-2xl font-montserrat font-bold text-center text-secondary mb-6">Explore Our Tours</h2>
-            <div class="flex flex-wrap items-center justify-center gap-3 animate__animated animate__fadeIn">
-                <a href="#all" class="bg-primary text-white text-sm px-6 py-2 rounded-full hover:bg-primary/80 transition-all">All Tours</a>
+    <!-- Filter Section -->
+    <section class="py-10 bg-white sticky top-0 z-30 shadow-inner-bottom">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div data-aos="fade-right">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Find Your Journey</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-0 leading-tight decorative-line">
+                        Explore Our Tours
+                    </h2>
+                </div>
+                
+                <div class="mt-6 md:mt-0" data-aos="fade-left">
+                    <button id="toggle-filters" class="flex items-center text-secondary hover:text-primary transition-colors">
+                        <i class="fas fa-sliders-h mr-2"></i> 
+                        <span>Advanced Filters</span>
+                        <i class="fas fa-chevron-down ml-2 transition-transform duration-300"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Quick Filters -->
+            <div class="flex flex-wrap gap-3 mt-8" data-aos="fade-up">
+                <div class="filter-pill active" data-filter="all">All Tours</div>
+                
                 <% 
                 // Get unique destinations from tours
                 const destinations = [...new Set(tours.map(tour => tour.startLocation))];
@@ -25,38 +337,27 @@
                 
                 // Output destination tags
                 destinations.forEach(destination => { %>
-                    <a href="#<%= destination.toLowerCase().replace(/\s+/g, '-') %>" 
-                       class="bg-gray-100 text-secondary text-sm px-6 py-2 rounded-full hover:bg-gray-200 transition-all">
+                    <div class="filter-pill" data-filter="<%= destination.toLowerCase().replace(/\s+/g, '-') %>">
                        <%= destination %>
-                    </a>
+                    </div>
                 <% });
                 
                 // Output category tags
                 categories.forEach(category => { %>
-                    <a href="#<%= category.toLowerCase() %>" 
-                       class="bg-gray-100 text-secondary text-sm px-6 py-2 rounded-full hover:bg-gray-200 transition-all">
+                    <div class="filter-pill" data-filter="<%= category.toLowerCase() %>">
                        <%= category %>
-                    </a>
+                    </div>
                 <% }); %>
             </div>
-        </div>
-    </section>
     
-    <!-- Advanced Filter Section (collapsible) -->
-    <section class="py-5 bg-white border-b">
-        <div class="container mx-auto px-6">
-            <button id="toggle-filters" class="flex items-center justify-center mx-auto mb-3 text-sm text-secondary font-medium">
-                <i class="fas fa-sliders-h mr-2"></i> Advanced Filters <i class="fas fa-chevron-down ml-2"></i>
-            </button>
-            
-            <div id="filters-container" class="hidden">
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4 animate__animated animate__fadeIn">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-3">
-                        <div class="flex flex-col">
-                            <label for="duration" class="text-secondary font-medium mb-1 flex items-center text-sm">
-                                <i class="fas fa-clock text-primary mr-2"></i> Duration:
+            <!-- Advanced Filters (Hidden by Default) -->
+            <div id="advanced-filters" class="mt-8 bg-beige p-6 hidden" data-aos="fade-up">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-secondary font-medium text-sm flex items-center">
+                            <i class="fas fa-clock text-primary mr-2"></i> Duration
                             </label>
-                            <select id="duration" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300">
+                        <select id="duration-filter" class="w-full px-4 py-3 border border-stone/30 focus:border-primary transition-colors bg-white">
                                 <option value="">All Durations</option>
                                 <option value="1-3">1-3 Days</option>
                                 <option value="4-7">4-7 Days</option>
@@ -65,23 +366,23 @@
                             </select>
                         </div>
                         
-                        <div class="flex flex-col">
-                            <label for="destination" class="text-secondary font-medium mb-1 flex items-center text-sm">
-                                <i class="fas fa-map-marker-alt text-primary mr-2"></i> Destination:
+                    <div class="space-y-2">
+                        <label class="text-secondary font-medium text-sm flex items-center">
+                            <i class="fas fa-map-marker-alt text-primary mr-2"></i> Destination
                             </label>
-                            <select id="destination" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300">
+                        <select id="destination-filter" class="w-full px-4 py-3 border border-stone/30 focus:border-primary transition-colors bg-white">
                                 <option value="">All Destinations</option>
                                 <% destinations.forEach(destination => { %>
-                                    <option value="<%= destination.toLowerCase().replace(/\s+/g, '-') %>"><%= destination %></option>
+                                <option value="<%= destination %>"><%= destination %></option>
                                 <% }); %>
                             </select>
                         </div>
                         
-                        <div class="flex flex-col">
-                            <label for="price" class="text-secondary font-medium mb-1 flex items-center text-sm">
-                                <i class="fas fa-tag text-primary mr-2"></i> Price Range:
+                    <div class="space-y-2">
+                        <label class="text-secondary font-medium text-sm flex items-center">
+                            <i class="fas fa-tag text-primary mr-2"></i> Price Range
                             </label>
-                            <select id="price" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300">
+                        <select id="price-filter" class="w-full px-4 py-3 border border-stone/30 focus:border-primary transition-colors bg-white">
                                 <option value="">All Prices</option>
                                 <option value="0-500">€0 - €500</option>
                                 <option value="500-1000">€500 - €1000</option>
@@ -90,11 +391,11 @@
                             </select>
                         </div>
 
-                        <div class="flex flex-col">
-                            <label for="category" class="text-secondary font-medium mb-1 flex items-center text-sm">
-                                <i class="fas fa-th-large text-primary mr-2"></i> Category:
+                    <div class="space-y-2">
+                        <label class="text-secondary font-medium text-sm flex items-center">
+                            <i class="fas fa-th-large text-primary mr-2"></i> Category
                             </label>
-                            <select id="category" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300">
+                        <select id="category-filter" class="w-full px-4 py-3 border border-stone/30 focus:border-primary transition-colors bg-white">
                                 <option value="">All Categories</option>
                                 <% categories.forEach(category => { %>
                                     <option value="<%= category %>"><%= category %></option>
@@ -103,80 +404,87 @@
                         </div>
                     </div>
                     
-                    <div class="flex justify-center mt-3">
-                        <button id="filter-button" class="bg-secondary hover:bg-secondary/80 text-white font-medium px-6 py-2 text-sm rounded-full transition-all duration-300 flex items-center">
-                            <i class="fas fa-filter mr-2"></i> Filter Tours
+                <div class="flex justify-center mt-6">
+                    <button id="apply-filters" class="btn-primary">
+                        <i class="fas fa-filter mr-2"></i> Apply Filters
                         </button>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Tours List Section -->
-    <section class="py-12">
-        <div class="container mx-auto px-6 lg:px-12">
-            <div class="space-y-6">
+    <!-- Tours Section -->
+    <section class="py-16 bg-cream relative">
+        <div class="section-label">Tours</div>
+        <div class="pattern-diagonal"></div>
+        
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="space-y-8" id="tours-container">
                 <% if (tours && tours.length > 0) { %>
-                    <% tours.forEach(tour => { %>
-                        <div class="tour-card bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-primary transition-all duration-300 animate__animated animate__fadeIn" 
+                    <% tours.forEach((tour, index) => { %>
+                        <div class="tour-card overflow-hidden"
+                             data-aos="fade-up"
+                             data-aos-delay="<%= index * 100 %>"
                             data-duration="<%= tour.duration %>" 
                             data-destination="<%= tour.startLocation.toLowerCase().replace(/\s+/g, '-') %>" 
                             data-price="<%= tour.price %>"
-                            data-category="<%= tour.category %>">
+                             data-category="<%= tour.category.toLowerCase() %>">
                             <div class="flex flex-col md:flex-row">
-                                <!-- Tour Image (Clickable) -->
-                                <div class="md:w-1/3 lg:w-1/4 relative">
-                                    <a href="/tours/<%= tour.slug %>" class="block w-full h-full">
-                                        <img class="lazy-image w-full h-60 md:h-full object-cover" data-src="<%= tour.mainImage %>" alt="<%= tour.title %>">
+                                <!-- Tour Image -->
+                                <div class="md:w-2/5 lg:w-1/3 h-64 md:h-auto relative overflow-hidden">
+                                    <a href="/tours/<%= tour.slug %>" class="block h-full">
+                                        <img src="<%= tour.mainImage %>" alt="<%= tour.title %>" class="w-full h-full object-cover">
                                     </a>
+                                    <div class="tour-tag"><%= tour.category %></div>
                                 </div>
                                 
-                                <!-- Tour Content -->
-                                <div class="md:w-2/3 lg:w-3/4 p-4 md:p-6">
-                                    <div class="flex flex-col md:flex-row justify-between">
-                                        <div class="md:w-2/3">
-                                            <!-- Title (Clickable) -->
+                                <!-- Tour Details -->
+                                <div class="md:w-3/5 lg:w-2/3 p-6 md:p-8">
+                                    <div class="flex flex-col h-full">
+                                        <div class="flex justify-between items-start mb-4">
                                             <a href="/tours/<%= tour.slug %>" class="block">
-                                                <h3 class="text-xl font-montserrat font-bold mb-3 text-secondary uppercase hover:text-primary transition-colors"><%= tour.title %></h3>
+                                                <h3 class="text-2xl font-serif font-medium hover:text-primary transition-colors"><%= tour.title %></h3>
                                             </a>
-                                            
-                                            <div class="space-y-2 mb-4">
-                                                <div class="flex items-center text-gray-600 text-sm">
-                                                    <i class="far fa-clock text-primary w-5 mr-2"></i>
-                                                    <span><%= tour.duration %> <%= tour.duration === 1 ? 'Day' : 'Days' %></span>
+                                            <div class="text-right">
+                                                <div class="text-sm text-secondary/60">From</div>
+                                                <div class="text-2xl font-semibold text-primary"><%= tour.price %> EUR</div>
+                                            </div>
                                                 </div>
                                                 
-                                                <div class="flex items-center text-gray-600 text-sm">
-                                                    <i class="far fa-calendar-alt text-primary w-5 mr-2"></i>
-                                                    <span>Availability: Daily</span>
+                                        <div class="mb-4 text-secondary/70">
+                                            <%= tour.description.substring(0, 180) %>...
                                                 </div>
                                                 
-                                                <div class="flex items-center text-gray-600 text-sm">
-                                                    <i class="fas fa-exchange-alt text-primary w-5 mr-2"></i>
-                                                    <span>From <%= tour.startLocation %> & Back</span>
+                                        <div class="grid grid-cols-2 gap-4 mb-6">
+                                            <div class="flex items-center text-sm text-secondary/80">
+                                                <i class="far fa-clock text-primary mr-2"></i>
+                                                <span><%= tour.duration %> <%= tour.duration === 1 ? 'Day' : 'Days' %></span>
                                                 </div>
                                                 
-                                                <div class="flex items-center text-gray-600 text-sm">
-                                                    <i class="fas fa-map-marker-alt text-primary w-5 mr-2"></i>
+                                            <div class="flex items-center text-sm text-secondary/80">
+                                                <i class="fas fa-map-marker-alt text-primary mr-2"></i>
                                                     <span><%= tour.startLocation %></span>
                                                 </div>
+                                            
+                                            <div class="flex items-center text-sm text-secondary/80">
+                                                <i class="far fa-calendar-alt text-primary mr-2"></i>
+                                                <span>Availability: Daily</span>
                                             </div>
                                             
-                                            <!-- Description (Clickable) -->
-                                            <a href="/tours/<%= tour.slug %>" class="block text-gray-600 mb-3 pr-4 md:pr-6 hover:text-gray-900 transition-colors text-sm">
-                                                <%= tour.description.substring(0, 150) %>...
-                                            </a>
+                                            <div class="flex items-center text-sm text-secondary/80">
+                                                <i class="fas fa-exchange-alt text-primary mr-2"></i>
+                                                <span>Round Trip</span>
+                                            </div>
                                         </div>
                                         
-                                        <div class="md:w-1/3 flex flex-col items-end justify-between mt-4 md:mt-0">
-                                            <div class="text-right mb-auto">
-                                                <p class="text-gray-500 mb-1 text-sm">From</p>
-                                                <p class="text-2xl font-bold text-secondary mb-6"><%= tour.price %> EUR</p>
-                                            </div>
+                                        <div class="mt-auto flex justify-between items-center">
+                                            <a href="/tours/<%= tour.slug %>" class="hover-link text-primary font-medium inline-flex items-center">
+                                                View Details
+                                                <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                            </a>
                                             
-                                            <a href="/tours/<%= tour.slug %>" class="w-full md:w-auto inline-block bg-[#3498db] hover:bg-[#2980b9] text-white font-medium py-2 px-6 rounded text-center uppercase text-sm">
-                                                VIEW DETAILS
+                                            <a href="/customize?tour=<%= tour.slug %>" class="btn-primary">
+                                                Book Now
                                             </a>
                                         </div>
                                     </div>
@@ -185,14 +493,13 @@
                         </div>
                     <% }); %>
                 <% } else { %>
-                    <!-- No Tours Message -->
-                    <div class="flex flex-col items-center justify-center p-10 text-center bg-white border border-gray-200 rounded-lg">
-                        <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
-                        <h3 class="text-2xl font-montserrat font-semibold mb-3 text-secondary">No tours available at the moment</h3>
-                        <p class="text-gray-600 text-base mb-4">Please check back later or contact us to inquire about custom tours.</p>
-                        <a href="/contact" class="inline-block bg-primary hover:bg-primary/80 text-white font-medium py-2 px-6 text-base rounded-full">
-                            <i class="fas fa-envelope mr-2"></i> Contact Us
-                        </a>
+                    <div class="text-center py-16" data-aos="fade-up">
+                        <div class="w-16 h-16 mx-auto rounded-full border-2 border-primary/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-suitcase text-primary/40 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-serif text-secondary/70 mb-2">No Tours Available</h3>
+                        <p class="text-secondary/60 text-sm mb-8">We're working on new tour experiences for you</p>
+                        <a href="/contact" class="btn-primary">Contact Us</a>
                     </div>
                 <% } %>
             </div>
@@ -200,12 +507,17 @@
     </section>
     
     <!-- Call to Action Section -->
-    <section class="py-12 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="max-w-5xl mx-auto bg-primary/10 rounded-lg p-8 text-center">
-                <h2 class="text-2xl font-montserrat font-bold mb-4 text-secondary">Can't Find What You're Looking For?</h2>
-                <p class="text-base text-gray-700 mb-6">Let us create a personalized tour experience just for you.</p>
-                <a href="/customize" class="inline-block bg-primary hover:bg-primary/80 text-white font-medium py-2 px-6 text-base rounded-full transition-all duration-300">
+    <section class="py-20 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="max-w-4xl mx-auto bg-primary/10 p-12 text-center" data-aos="fade-up">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Personalized Experience</span>
+                <h2 class="text-2xl md:text-3xl font-serif font-medium mb-4 leading-tight decorative-line centered">
+                    Can't Find What You're Looking For?
+                </h2>
+                <p class="text-secondary/80 mb-8 max-w-2xl mx-auto">
+                    Let us create a custom tour tailored specifically to your preferences and interests. Our local experts will craft the perfect Moroccan experience just for you.
+                </p>
+                <a href="/customize" class="btn-primary">
                     <i class="fas fa-magic mr-2"></i> Customize Your Tour
                 </a>
             </div>
@@ -213,109 +525,163 @@
     </section>
     
     <!-- Newsletter Section -->
-    <section class="py-16 bg-secondary text-white">
-        <div class="container mx-auto px-6">
-            <div class="max-w-3xl mx-auto text-center animate__animated animate__fadeIn">
-                <h2 class="text-2xl font-montserrat font-bold mb-3">Get Exclusive Travel Offers</h2>
-                <p class="text-white/90 text-base mb-8">Subscribe to our newsletter and be the first to receive special promotions and travel tips.</p>
-                <form class="flex flex-col md:flex-row gap-3 justify-center">
-                    <input type="email" placeholder="Your Email Address" class="w-full md:w-96 px-4 py-2 text-base rounded-full focus:ring-2 focus:ring-primary focus:border-primary" required>
-                    <button type="submit" class="bg-primary hover:bg-primary/80 text-white font-medium px-6 py-2 text-base rounded-full transition-all duration-300 flex items-center justify-center">
-                        <i class="fas fa-paper-plane mr-2"></i> Subscribe
+    <section class="py-20 bg-beige relative overflow-hidden">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="max-w-3xl mx-auto text-center" data-aos="fade-up">
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Stay Updated</span>
+                <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line centered">
+                    Get Exclusive Travel Offers
+                </h2>
+                <p class="text-secondary/80 mb-8">
+                    Subscribe to our newsletter and be the first to receive special promotions, travel tips, and new tour announcements.
+                </p>
+                
+                <form class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                    <input type="email" placeholder="Your Email Address" required class="flex-1 px-4 py-3 border border-stone/30 focus:border-primary bg-white">
+                    <button type="submit" class="btn-primary whitespace-nowrap">
+                        <i class="far fa-paper-plane mr-2"></i> Subscribe
                     </button>
                 </form>
+                
+                <p class="mt-4 text-sm text-secondary/60">
+                    By subscribing, you agree to our Privacy Policy. We respect your privacy and will never share your information.
+                </p>
             </div>
         </div>
     </section>
     
     <%- include('../partials/footer') %>
     
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        // Toggle advanced filters
         document.addEventListener('DOMContentLoaded', function() {
-            const toggleFiltersBtn = document.getElementById('toggle-filters');
-            const filtersContainer = document.getElementById('filters-container');
-            const filterButton = document.getElementById('filter-button');
-            const tourCards = document.querySelectorAll('.tour-card');
-            
-            toggleFiltersBtn.addEventListener('click', function() {
-                filtersContainer.classList.toggle('hidden');
-                const icon = this.querySelector('.fa-chevron-down');
-                if(icon) {
-                    icon.classList.toggle('fa-chevron-up');
-                }
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
             });
             
-            // Filter functionality
-            filterButton.addEventListener('click', function() {
-                const durationFilter = document.getElementById('duration').value;
-                const destinationFilter = document.getElementById('destination').value;
-                const priceFilter = document.getElementById('price').value;
-                const categoryFilter = document.getElementById('category').value;
+            // Toggle advanced filters
+            const toggleFiltersBtn = document.getElementById('toggle-filters');
+            const advancedFilters = document.getElementById('advanced-filters');
+            
+            toggleFiltersBtn.addEventListener('click', function() {
+                advancedFilters.classList.toggle('hidden');
+                const icon = this.querySelector('.fa-chevron-down');
+                icon.classList.toggle('rotate-180');
+            });
+            
+            // Quick filter functionality
+            const filterPills = document.querySelectorAll('.filter-pill');
+            const tourCards = document.querySelectorAll('.tour-card');
+            
+            filterPills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    // Remove active class from all pills
+                    filterPills.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked pill
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Show/hide tours based on filter
+                    tourCards.forEach(card => {
+                        if (filter === 'all') {
+                            card.style.display = 'block';
+                        } else {
+                            if (card.getAttribute('data-destination') === filter || 
+                                card.getAttribute('data-category') === filter) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // Advanced filter functionality
+            const applyFiltersBtn = document.getElementById('apply-filters');
+            const durationFilter = document.getElementById('duration-filter');
+            const destinationFilter = document.getElementById('destination-filter');
+            const priceFilter = document.getElementById('price-filter');
+            const categoryFilter = document.getElementById('category-filter');
+            
+            applyFiltersBtn.addEventListener('click', function() {
+                const durationValue = durationFilter.value;
+                const destinationValue = destinationFilter.value;
+                const priceValue = priceFilter.value;
+                const categoryValue = categoryFilter.value;
                 
                 tourCards.forEach(card => {
                     let showCard = true;
                     
-                    if(durationFilter && durationFilter !== '') {
-                        const duration = parseInt(card.getAttribute('data-duration'));
-                        const [min, max] = durationFilter.split('-');
+                    // Duration filter
+                    if (durationValue && durationValue !== '') {
+                        const tourDuration = parseInt(card.getAttribute('data-duration'));
                         
-                        if(max === '+') {
-                            if(duration < parseInt(min)) showCard = false;
-                        } else {
-                            if(duration < parseInt(min) || duration > parseInt(max)) showCard = false;
+                        if (durationValue === '1-3') {
+                            showCard = tourDuration >= 1 && tourDuration <= 3;
+                        } else if (durationValue === '4-7') {
+                            showCard = tourDuration >= 4 && tourDuration <= 7;
+                        } else if (durationValue === '8-14') {
+                            showCard = tourDuration >= 8 && tourDuration <= 14;
+                        } else if (durationValue === '15+') {
+                            showCard = tourDuration >= 15;
+                    }
+                    
+                        if (!showCard) {
+                            card.style.display = 'none';
+                            return;
                         }
                     }
                     
-                    if(showCard && destinationFilter && destinationFilter !== '') {
-                        const destination = card.getAttribute('data-destination');
-                        if(destination !== destinationFilter) showCard = false;
+                    // Destination filter
+                    if (destinationValue && destinationValue !== '') {
+                        const tourDestination = card.getAttribute('data-destination');
+                        if (destinationValue.toLowerCase().replace(/\s+/g, '-') !== tourDestination) {
+                            card.style.display = 'none';
+                            return;
+                    }
                     }
                     
-                    if(showCard && priceFilter && priceFilter !== '') {
-                        const price = parseInt(card.getAttribute('data-price'));
-                        const [min, max] = priceFilter.split('-');
+                    // Price filter
+                    if (priceValue && priceValue !== '') {
+                        const tourPrice = parseInt(card.getAttribute('data-price').replace(/[^0-9]/g, ''));
                         
-                        if(max === '+') {
-                            if(price < parseInt(min)) showCard = false;
-                        } else {
-                            if(price < parseInt(min) || price > parseInt(max)) showCard = false;
+                        if (priceValue === '0-500') {
+                            showCard = tourPrice >= 0 && tourPrice <= 500;
+                        } else if (priceValue === '500-1000') {
+                            showCard = tourPrice > 500 && tourPrice <= 1000;
+                        } else if (priceValue === '1000-2000') {
+                            showCard = tourPrice > 1000 && tourPrice <= 2000;
+                        } else if (priceValue === '2000+') {
+                            showCard = tourPrice > 2000;
+                    }
+                    
+                        if (!showCard) {
+                            card.style.display = 'none';
+                            return;
                         }
                     }
                     
-                    if(showCard && categoryFilter && categoryFilter !== '') {
-                        const category = card.getAttribute('data-category');
-                        if(category !== categoryFilter) showCard = false;
+                    // Category filter
+                    if (categoryValue && categoryValue !== '') {
+                        const tourCategory = card.getAttribute('data-category');
+                        if (categoryValue.toLowerCase() !== tourCategory) {
+                            card.style.display = 'none';
+                            return;
+                    }
                     }
                     
-                    card.style.display = showCard ? 'block' : 'none';
+                    // If all filters pass, show the card
+                    card.style.display = 'block';
                 });
             });
-            
-            // Lazy loading for images
-            const lazyImages = document.querySelectorAll('.lazy-image');
-            
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src;
-                            img.classList.remove('lazy-image');
-                            imageObserver.unobserve(img);
-                        }
-                    });
-                });
-                
-                lazyImages.forEach(img => {
-                    imageObserver.observe(img);
-                });
-            } else {
-                // Fallback for browsers without IntersectionObserver support
-                lazyImages.forEach(img => {
-                    img.src = img.dataset.src;
-                });
-            }
         });
     </script>
 </body>

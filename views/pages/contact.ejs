@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title><%= pageTitle %></title>
+    <meta name="title" content="Contact Us | Voyageo Tours">
+    <meta name="description" content="Get in touch with our travel experts to plan your perfect Moroccan adventure. Questions, custom tours, or booking assistance - we're here to help.">
+    <meta name="keywords" content="contact Voyageo Tours, Morocco tour contact, travel assistance, Morocco trip planning">
+    <meta name="author" content="Voyageo Tours">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/contact">
+    <meta property="og:title" content="Contact Us | Voyageo Tours">
+    <meta property="og:description" content="Get in touch with our travel experts to plan your perfect Moroccan adventure. Questions, custom tours, or booking assistance - we're here to help.">
+    <meta property="og:image" content="/images/headers/morocco-tour-bg.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/contact">
+    <meta property="twitter:title" content="Contact Us | Voyageo Tours">
+    <meta property="twitter:description" content="Get in touch with our travel experts to plan your perfect Moroccan adventure. Questions, custom tours, or booking assistance - we're here to help.">
+    <meta property="twitter:image" content="/images/headers/morocco-tour-bg.jpg">
+    
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://voyageo-tours.com/contact">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    },
+                    lineHeight: {
+                        'extra-tight': '1.05',
+                        'tighter': '1.1'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Additional CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
+            background-color: #F9F6F0;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+        
+        /* Decorative elements */
+        .decorative-line {
+            position: relative;
+        }
+        
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Form styling */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.25rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #B8860B;
+            box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.2);
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1F1F1F;
+        }
+    </style>
+</head>
+<body class="bg-cream">
+    <%- include('../partials/navbar') %>
+    
+    <!-- Hero Section -->
+    <section class="relative py-20 md:py-28 bg-charcoal overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="<%= headerImagePath %>" alt="Contact Us" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/80 to-charcoal/70"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="max-w-3xl" data-aos="fade-up">
+                <span class="inline-block mb-4 text-primary uppercase tracking-widest text-sm font-medium">Voyageo Tours</span>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-medium mb-6 text-white leading-tighter">
+                    <%= heroTitle %>
+                </h1>
+                <p class="text-lg md:text-xl text-white/80 mb-8 max-w-2xl">
+                    <%= heroSubtitle %>
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-12 lg:max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+                <!-- Contact Form -->
+                <div class="md:col-span-7 lg:col-span-8" data-aos="fade-up">
+                    <h2 class="text-3xl font-serif mb-6 decorative-line">Send Us a Message</h2>
+                    <p class="text-gray-600 mb-8">
+                        Have questions about our tours or need help planning your perfect Moroccan adventure? Fill out the form below, and our travel experts will get back to you within 24 hours.
+                    </p>
+                    
+                    <% if (locals.success) { %>
+                        <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg p-6 mb-8">
+                            <h3 class="font-bold text-lg mb-2">Message Sent Successfully!</h3>
+                            <p>Thank you for contacting us. One of our travel experts will get back to you within 24 hours.</p>
+                        </div>
+                    <% } %>
+                    
+                    <% if (locals.error) { %>
+                        <div class="bg-red-50 border border-red-200 text-red-800 rounded-lg p-6 mb-8">
+                            <h3 class="font-bold text-lg mb-2">Error</h3>
+                            <p><%= error %></p>
+                        </div>
+                    <% } %>
+                    
+                    <form action="/contact" method="POST" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="fullName" class="form-label">Full Name*</label>
+                                <input type="text" id="fullName" name="fullName" class="form-input" required value="<%= locals.formData ? formData.fullName : '' %>">
+                            </div>
+                            <div>
+                                <label for="email" class="form-label">Email Address*</label>
+                                <input type="email" id="email" name="email" class="form-input" required value="<%= locals.formData ? formData.email : '' %>">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" value="<%= locals.formData ? formData.phone : '' %>">
+                            </div>
+                            <div>
+                                <label for="subject" class="form-label">Subject*</label>
+                                <select id="subject" name="subject" class="form-input" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="General Inquiry" <%= locals.formData && formData.subject === 'General Inquiry' ? 'selected' : '' %>>General Inquiry</option>
+                                    <option value="Tour Information" <%= locals.formData && formData.subject === 'Tour Information' ? 'selected' : '' %>>Tour Information</option>
+                                    <option value="Booking Question" <%= locals.formData && formData.subject === 'Booking Question' ? 'selected' : '' %>>Booking Question</option>
+                                    <option value="Custom Tour Request" <%= locals.formData && formData.subject === 'Custom Tour Request' ? 'selected' : '' %>>Custom Tour Request</option>
+                                    <option value="Feedback" <%= locals.formData && formData.subject === 'Feedback' ? 'selected' : '' %>>Feedback</option>
+                                    <option value="Other" <%= locals.formData && formData.subject === 'Other' ? 'selected' : '' %>>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="form-label">Message*</label>
+                            <textarea id="message" name="message" rows="6" class="form-input" required><%= locals.formData ? formData.message : '' %></textarea>
+                        </div>
+                        
+                        <!-- Security check (honeypot field) -->
+                        <div class="hidden">
+                            <label for="website">Website</label>
+                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+                        
+                        <!-- Simple math captcha -->
+                        <div class="border border-stone/20 p-6 rounded-lg bg-beige/50">
+                            <label class="form-label">Security Check*</label>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <% 
+                                    const num1 = Math.floor(Math.random() * 10) + 1;
+                                    const num2 = Math.floor(Math.random() * 10) + 1;
+                                    const answer = num1 + num2;
+                                %>
+                                <span class="text-lg">What is <%= num1 %> + <%= num2 %>?</span>
+                                <input type="number" name="mathCaptcha" class="form-input w-24" required>
+                                <input type="hidden" name="expectedAnswer" value="<%= answer %>">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-md transition-colors">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="md:col-span-5 lg:col-span-4" data-aos="fade-up" data-aos-delay="200">
+                    <h2 class="text-3xl font-serif mb-6 decorative-line">Contact Information</h2>
+                    <p class="text-gray-600 mb-8">
+                        We're here to help you plan an unforgettable Moroccan experience. Feel free to contact us through any of the following methods.
+                    </p>
+                    
+                    <div class="space-y-6 mb-12">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-beige p-3 rounded-full text-primary">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium text-lg">Our Location</h4>
+                                <p class="text-gray-600">Jamaa El Fna Square, Marrakech, Morocco</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-beige p-3 rounded-full text-primary">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium text-lg">Email Us</h4>
+                                <p class="text-gray-600">info@voyageo-tours.com</p>
+                                <p class="text-gray-600">bookings@voyageo-tours.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-beige p-3 rounded-full text-primary">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium text-lg">Call Us</h4>
+                                <p class="text-gray-600">+212 600-123456</p>
+                                <p class="text-gray-600">+212 700-123456 (WhatsApp)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-beige p-3 rounded-full text-primary">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-medium text-lg">Working Hours</h4>
+                                <p class="text-gray-600">Monday - Saturday: 9:00 AM - 8:00 PM</p>
+                                <p class="text-gray-600">Sunday: 10:00 AM - 4:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-10">
+                        <h3 class="text-xl font-serif mb-4">Follow Us</h3>
+                        <div class="flex space-x-4">
+                            <a href="https://facebook.com" class="bg-beige hover:bg-primary hover:text-white transition-colors p-3 rounded-full text-primary">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://instagram.com" class="bg-beige hover:bg-primary hover:text-white transition-colors p-3 rounded-full text-primary">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://twitter.com" class="bg-beige hover:bg-primary hover:text-white transition-colors p-3 rounded-full text-primary">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://youtube.com" class="bg-beige hover:bg-primary hover:text-white transition-colors p-3 rounded-full text-primary">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Map Section -->
+    <section class="py-16 bg-cream">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-serif mb-6 decorative-line centered">Find Us</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">
+                    Our office is located in the heart of Marrakech, near the famous Jamaa El Fna Square. 
+                    Drop by to discuss your travel plans in person!
+                </p>
+            </div>
+            
+            <div class="h-[450px] bg-white rounded-xl overflow-hidden shadow-medium" data-aos="fade-up">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3396.8972174669125!2d-7.9929136855582015!3d31.6294376813301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdafee43ad1ac411%3A0x570a73576736e95c!2sJemaa%20el-Fnaa!5e0!3m2!1sen!2sma!4v1655555555555!5m2!1sen!2sma" 
+                    width="100%" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-12 lg:max-w-6xl">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-serif mb-6 decorative-line centered">Frequently Asked Questions</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">
+                    Here are some common questions from our travelers. If you can't find the answer to your question, 
+                    please don't hesitate to contact us directly.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                <div class="shadow-medium rounded-lg overflow-hidden" data-aos="fade-up">
+                    <div class="bg-beige/50 p-6">
+                        <h3 class="text-xl font-serif">How far in advance should I book a tour?</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600">We recommend booking at least 2-3 months in advance, especially during the high season (March-May and September-November). For custom tours or travel during peak holidays, 4-6 months advance booking is advisable.</p>
+                    </div>
+                </div>
+                
+                <div class="shadow-medium rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-beige/50 p-6">
+                        <h3 class="text-xl font-serif">What payment methods do you accept?</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600">We accept credit/debit cards (Visa, MasterCard, American Express), PayPal, bank transfers, and in some cases, cash payments for last-minute bookings made in person at our office.</p>
+                    </div>
+                </div>
+                
+                <div class="shadow-medium rounded-lg overflow-hidden" data-aos="fade-up">
+                    <div class="bg-beige/50 p-6">
+                        <h3 class="text-xl font-serif">Can I customize one of your existing tours?</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600">Absolutely! Most of our tours can be customized to fit your preferences. Contact us with your desired changes, and we'll work with you to create the perfect itinerary.</p>
+                    </div>
+                </div>
+                
+                <div class="shadow-medium rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-beige/50 p-6">
+                        <h3 class="text-xl font-serif">Do you offer airport transfers?</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600">Yes, we provide airport transfers to and from all major Moroccan airports. These can be booked separately or included as part of your tour package.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer') %>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out',
+            once: true,
+        });
+    </script>
+</body>
+</html> 
