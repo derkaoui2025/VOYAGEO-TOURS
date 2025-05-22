@@ -1,3 +1,36 @@
+<!-- AOS Animation Overflow Fix -->
+<style>
+    /* Fix for horizontal overflow with AOS animations */
+    html, body {
+        overflow-x: hidden !important;
+        width: 100%;
+        position: relative;
+    }
+    
+    /* Additional fixes for AOS animations that might cause overflow */
+    [data-aos] {
+        overflow: hidden; /* Ensure animated elements don't create overflow */
+        pointer-events: none; /* Prevent interaction issues during animation */
+    }
+    
+    [data-aos].aos-animate {
+        pointer-events: auto; /* Restore interaction after animation completes */
+    }
+    
+    /* Fix for transform-based animations */
+    [data-aos^="fade"][data-aos^="fade"] {
+        transform-origin: center center;
+        will-change: transform, opacity;
+    }
+    
+    /* Fix for mobile viewport width calculation issues */
+    @media screen and (max-width: 768px) {
+        .aos-init[data-aos][data-aos][data-aos-delay] {
+            transition-delay: 0s !important; /* Remove delays on mobile for better performance */
+        }
+    }
+</style>
+
 <!-- Navbar -->
 <nav class="fixed top-0 left-0 w-full z-50 transition-transform duration-300">
     <div class="bg-charcoal/90 backdrop-blur-md shadow-md">
