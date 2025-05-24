@@ -69,66 +69,23 @@ const deleteImage = async (publicId) => {
   }
 };
 
-// Configure multer storage with Cloudinary for main images
-const mainImageStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'voyageo-tours/main',
-    format: async (req, file) => 'webp', // Convert all images to WebP
-    public_id: (req, file) => `tour-main-${Date.now()}-${Math.round(Math.random() * 1e9)}`
-  }
-});
-
-// Configure multer storage with Cloudinary for map images
-const mapImageStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'voyageo-tours/maps',
-    format: async (req, file) => 'webp', // Convert all images to WebP
-    public_id: (req, file) => `tour-map-${Date.now()}-${Math.round(Math.random() * 1e9)}`
-  }
-});
-
-// Configure multer upload
-const mainUpload = multer({
-  storage: mainImageStorage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-  fileFilter: (req, file, cb) => {
-    // Accept only image files
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed!'), false);
-    }
-  }
-});
-
-// Configure multer upload for map images
-const mapUpload = multer({
-  storage: mapImageStorage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-  fileFilter: (req, file, cb) => {
-    // Accept only image files
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed!'), false);
-    }
-  }
-});
+// Check if running on Vercel
+const isVercel = process.env.VERCEL === '1';
 
 // Create an upload object that handles both types of files
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, './uploads'); // Save to /uploads directory
-    },
-    filename: (req, file, cb) => {
-      // Create unique filename
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.originalname.split('.').pop());
-    }
-  }),
+  storage: isVercel 
+    ? multer.memoryStorage() // Use memory storage on Vercel
+    : multer.diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, './uploads'); // Save to /uploads directory (only for local dev)
+        },
+        filename: (req, file, cb) => {
+          // Create unique filename
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.originalname.split('.').pop());
+        }
+      }),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     // Accept only image files
@@ -151,15 +108,50 @@ const processUploads = async (req, res, next) => {
     if (req.files.mainImage && req.files.mainImage[0]) {
       try {
         const mainImageFile = req.files.mainImage[0];
-        // Upload from path
-        const mainImageResult = await cloudinary.uploader.upload(mainImageFile.path, {
-          folder: 'voyageo-tours/main',
-          format: 'webp',
-          transformation: [
-            { quality: 'auto:good' },
-            { fetch_format: 'webp' }
-          ]
-        });
+        let mainImageResult;
+        
+        // Different upload strategy for Vercel vs local
+        if (isVercel) {
+          // On Vercel, upload directly from buffer
+          console.log('Uploading main image directly from buffer (Vercel)');
+          mainImageResult = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream({
+              folder: 'voyageo-tours/main',
+              format: 'webp',
+              transformation: [
+                { quality: 'auto:good' },
+                { fetch_format: 'webp' }
+              ]
+            }, (error, result) => {
+              if (error) {
+                console.error('Error uploading main image to Cloudinary:', error);
+                return reject(error);
+              }
+              resolve(result);
+            });
+            
+            // Pass the buffer to the stream
+            streamifier.createReadStream(mainImageFile.buffer).pipe(uploadStream);
+          });
+        } else {
+          // On local, upload from file path
+          console.log('Uploading main image from file path (local):', mainImageFile.path);
+          mainImageResult = await cloudinary.uploader.upload(mainImageFile.path, {
+            folder: 'voyageo-tours/main',
+            format: 'webp',
+            transformation: [
+              { quality: 'auto:good' },
+              { fetch_format: 'webp' }
+            ]
+          });
+          
+          // Clean up local file (only needed for local dev)
+          try {
+            await unlinkAsync(mainImageFile.path);
+          } catch (unlinkError) {
+            console.warn('Failed to delete temporary main image file:', unlinkError);
+          }
+        }
         
         req.body.mainImage = mainImageResult.secure_url;
         req.body.mainImagePublicId = mainImageResult.public_id;
@@ -173,15 +165,50 @@ const processUploads = async (req, res, next) => {
     if (req.files.mapImage && req.files.mapImage[0]) {
       try {
         const mapImageFile = req.files.mapImage[0];
-        // Upload from path
-        const mapImageResult = await cloudinary.uploader.upload(mapImageFile.path, {
-          folder: 'voyageo-tours/maps',
-          format: 'webp',
-          transformation: [
-            { quality: 'auto:good' },
-            { fetch_format: 'webp' }
-          ]
-        });
+        let mapImageResult;
+        
+        // Different upload strategy for Vercel vs local
+        if (isVercel) {
+          // On Vercel, upload directly from buffer
+          console.log('Uploading map image directly from buffer (Vercel)');
+          mapImageResult = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream({
+              folder: 'voyageo-tours/maps',
+              format: 'webp',
+              transformation: [
+                { quality: 'auto:good' },
+                { fetch_format: 'webp' }
+              ]
+            }, (error, result) => {
+              if (error) {
+                console.error('Error uploading map image to Cloudinary:', error);
+                return reject(error);
+              }
+              resolve(result);
+            });
+            
+            // Pass the buffer to the stream
+            streamifier.createReadStream(mapImageFile.buffer).pipe(uploadStream);
+          });
+        } else {
+          // On local, upload from file path
+          console.log('Uploading map image from file path (local):', mapImageFile.path);
+          mapImageResult = await cloudinary.uploader.upload(mapImageFile.path, {
+            folder: 'voyageo-tours/maps',
+            format: 'webp',
+            transformation: [
+              { quality: 'auto:good' },
+              { fetch_format: 'webp' }
+            ]
+          });
+          
+          // Clean up local file (only needed for local dev)
+          try {
+            await unlinkAsync(mapImageFile.path);
+          } catch (unlinkError) {
+            console.warn('Failed to delete temporary map image file:', unlinkError);
+          }
+        }
         
         req.body.mapImage = mapImageResult.secure_url;
         req.body.mapImagePublicId = mapImageResult.public_id;
@@ -216,7 +243,9 @@ const excursionGalleryStorage = new CloudinaryStorage({
 
 // Configure multer upload for excursion gallery images
 const excursionGalleryUpload = multer({
-  storage: excursionGalleryStorage,
+  storage: isVercel 
+    ? multer.memoryStorage() 
+    : excursionGalleryStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     // Accept only image files
@@ -242,32 +271,66 @@ const processExcursionGallery = async (req, res, next) => {
     // Process each gallery image
     for (const file of req.files) {
       try {
-        // Upload to Cloudinary
-        const result = await cloudinary.uploader.upload(file.path, {
-          folder: 'voyageo-tours/excursions',
-          format: 'webp',
-          transformation: [
-            { quality: 'auto:good' },
-            { fetch_format: 'webp' }
-          ]
-        });
+        let result;
         
-        // Store the secure URL and public ID
+        // Different upload strategy for Vercel vs local
+        if (isVercel) {
+          // On Vercel, upload directly from buffer
+          result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream({
+              folder: 'voyageo-tours/excursions',
+              format: 'webp',
+              transformation: [
+                { quality: 'auto:good' },
+                { fetch_format: 'webp' }
+              ]
+            }, (error, result) => {
+              if (error) {
+                console.error('Error uploading excursion image to Cloudinary:', error);
+                return reject(error);
+              }
+              resolve(result);
+            });
+            
+            // Pass the buffer to the stream
+            streamifier.createReadStream(file.buffer).pipe(uploadStream);
+          });
+        } else {
+          // On local, upload from file path
+          result = await cloudinary.uploader.upload(file.path, {
+            folder: 'voyageo-tours/excursions',
+            format: 'webp',
+            transformation: [
+              { quality: 'auto:good' },
+              { fetch_format: 'webp' }
+            ]
+          });
+          
+          // Clean up the temporary file after upload (local only)
+          try {
+            await unlinkAsync(file.path);
+          } catch (unlinkError) {
+            console.warn('Failed to delete temporary gallery image file:', unlinkError);
+            // Non-fatal error, continue processing
+          }
+        }
+
+        // Add image URL and public ID to arrays
         galleryImages.push(result.secure_url);
         galleryPublicIds.push(result.public_id);
       } catch (uploadError) {
         console.error('Error uploading gallery image:', uploadError);
-        // Continue with other images even if one fails
+        // Continue processing other images
       }
     }
 
-    // Add the URLs and public IDs to the request body
-    req.body.gallery = galleryImages;
+    // Add gallery image URLs and public IDs to request body
+    req.body.galleryImages = galleryImages;
     req.body.galleryPublicIds = galleryPublicIds;
-    
+
     next();
   } catch (error) {
-    console.error('Error processing excursion gallery uploads:', error);
+    console.error('Error processing excursion gallery:', error);
     next(error);
   }
 };
@@ -284,7 +347,9 @@ const blogStorage = new CloudinaryStorage({
 
 // Configure multer upload for blog images
 const uploadBlogImage = multer({
-  storage: blogStorage,
+  storage: isVercel 
+    ? multer.memoryStorage() 
+    : blogStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     // Accept only image files
@@ -308,7 +373,9 @@ const activityGalleryStorage = new CloudinaryStorage({
 
 // Configure multer upload for activity gallery images
 const activityGalleryUpload = multer({
-  storage: activityGalleryStorage,
+  storage: isVercel 
+    ? multer.memoryStorage() 
+    : activityGalleryStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     // Accept only image files
@@ -334,41 +401,66 @@ const processActivityGallery = async (req, res, next) => {
     // Process each gallery image
     for (const file of req.files) {
       try {
-        // Upload to Cloudinary
-        const result = await cloudinary.uploader.upload(file.path, {
-          folder: 'voyageo-tours/activities',
-          format: 'webp',
-          transformation: [
-            { quality: 'auto:good' },
-            { fetch_format: 'webp' }
-          ]
-        });
+        let result;
         
-        // Add URLs and public IDs to arrays
+        // Different upload strategy for Vercel vs local
+        if (isVercel) {
+          // On Vercel, upload directly from buffer
+          result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream({
+              folder: 'voyageo-tours/activities',
+              format: 'webp',
+              transformation: [
+                { quality: 'auto:good' },
+                { fetch_format: 'webp' }
+              ]
+            }, (error, result) => {
+              if (error) {
+                console.error('Error uploading activity image to Cloudinary:', error);
+                return reject(error);
+              }
+              resolve(result);
+            });
+            
+            // Pass the buffer to the stream
+            streamifier.createReadStream(file.buffer).pipe(uploadStream);
+          });
+        } else {
+          // On local, upload from file path
+          result = await cloudinary.uploader.upload(file.path, {
+            folder: 'voyageo-tours/activities',
+            format: 'webp',
+            transformation: [
+              { quality: 'auto:good' },
+              { fetch_format: 'webp' }
+            ]
+          });
+          
+          // Clean up the temporary file after upload (local only)
+          try {
+            await unlinkAsync(file.path);
+          } catch (unlinkError) {
+            console.warn('Failed to delete temporary activity image file:', unlinkError);
+            // Non-fatal error, continue processing
+          }
+        }
+
+        // Add image URL and public ID to arrays
         galleryImages.push(result.secure_url);
         galleryPublicIds.push(result.public_id);
-        
-        // Delete temporary file - only if it's a local file, not a URL
-        try {
-          // Check if the path is a local file (not a URL)
-          if (file.path && !file.path.startsWith('http') && !file.path.startsWith('https')) {
-            await unlinkAsync(file.path);
-          }
-        } catch (err) {
-          console.error('Error deleting temporary file:', err);
-        }
-      } catch (err) {
-        console.error('Error uploading gallery image:', err);
+      } catch (uploadError) {
+        console.error('Error uploading activity gallery image:', uploadError);
+        // Continue processing other images
       }
     }
-    
-    // Add gallery images to request body
-    req.body.gallery = galleryImages;
+
+    // Add gallery image URLs and public IDs to request body
+    req.body.galleryImages = galleryImages;
     req.body.galleryPublicIds = galleryPublicIds;
-    
+
     next();
   } catch (error) {
-    console.error('Error processing gallery uploads:', error);
+    console.error('Error processing activity gallery:', error);
     next(error);
   }
 };
@@ -385,7 +477,9 @@ const transferGalleryStorage = new CloudinaryStorage({
 
 // Configure multer upload for transfer gallery images
 const transferGalleryUpload = multer({
-  storage: transferGalleryStorage,
+  storage: isVercel 
+    ? multer.memoryStorage() 
+    : transferGalleryStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     // Accept only image files
@@ -411,41 +505,66 @@ const processTransferGallery = async (req, res, next) => {
     // Process each gallery image
     for (const file of req.files) {
       try {
-        // Upload to Cloudinary
-        const result = await cloudinary.uploader.upload(file.path, {
-          folder: 'voyageo-tours/transfers',
-          format: 'webp',
-          transformation: [
-            { quality: 'auto:good' },
-            { fetch_format: 'webp' }
-          ]
-        });
+        let result;
         
-        // Add URLs and public IDs to arrays
+        // Different upload strategy for Vercel vs local
+        if (isVercel) {
+          // On Vercel, upload directly from buffer
+          result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream({
+              folder: 'voyageo-tours/transfers',
+              format: 'webp',
+              transformation: [
+                { quality: 'auto:good' },
+                { fetch_format: 'webp' }
+              ]
+            }, (error, result) => {
+              if (error) {
+                console.error('Error uploading transfer image to Cloudinary:', error);
+                return reject(error);
+              }
+              resolve(result);
+            });
+            
+            // Pass the buffer to the stream
+            streamifier.createReadStream(file.buffer).pipe(uploadStream);
+          });
+        } else {
+          // On local, upload from file path
+          result = await cloudinary.uploader.upload(file.path, {
+            folder: 'voyageo-tours/transfers',
+            format: 'webp',
+            transformation: [
+              { quality: 'auto:good' },
+              { fetch_format: 'webp' }
+            ]
+          });
+          
+          // Clean up the temporary file after upload (local only)
+          try {
+            await unlinkAsync(file.path);
+          } catch (unlinkError) {
+            console.warn('Failed to delete temporary transfer image file:', unlinkError);
+            // Non-fatal error, continue processing
+          }
+        }
+
+        // Add image URL and public ID to arrays
         galleryImages.push(result.secure_url);
         galleryPublicIds.push(result.public_id);
-        
-        // Delete temporary file - only if it's a local file, not a URL
-        try {
-          // Check if the path is a local file (not a URL)
-          if (file.path && !file.path.startsWith('http') && !file.path.startsWith('https')) {
-            await unlinkAsync(file.path);
-          }
-        } catch (err) {
-          console.error('Error deleting temporary file:', err);
-        }
-      } catch (err) {
-        console.error('Error uploading gallery image:', err);
+      } catch (uploadError) {
+        console.error('Error uploading transfer gallery image:', uploadError);
+        // Continue processing other images
       }
     }
-    
-    // Add gallery images to request body
-    req.body.gallery = galleryImages;
+
+    // Add gallery image URLs and public IDs to request body
+    req.body.galleryImages = galleryImages;
     req.body.galleryPublicIds = galleryPublicIds;
-    
+
     next();
   } catch (error) {
-    console.error('Error processing gallery uploads:', error);
+    console.error('Error processing transfer gallery:', error);
     next(error);
   }
 };
@@ -457,8 +576,6 @@ module.exports = {
   uploadImage,
   deleteImage,
   bufferUpload,
-  mainUpload,
-  mapUpload,
   excursionGalleryUpload,
   processExcursionGallery,
   uploadBlogImage,
