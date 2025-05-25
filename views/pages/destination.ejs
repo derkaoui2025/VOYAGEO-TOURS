@@ -3,249 +3,746 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= pageTitle %></title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="<%= metaDescription %>">
     <meta name="keywords" content="<%= metaKeywords %>">
+    <meta name="author" content="Voyageo Tours">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/destinations/<%= tour.slug %>">
+    <meta property="og:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
+    <meta property="og:description" content="<%= metaDescription %>">
+    <meta property="og:image" content="<%= tour.mainImage %>">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/destinations/<%= tour.slug %>">
+    <meta property="twitter:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
+    <meta property="twitter:description" content="<%= metaDescription %>">
+    <meta property="twitter:image" content="<%= tour.mainImage %>">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Title -->
+    <title><%= pageTitle %> | Voyageo Tours Morocco</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3498db',
-                        secondary: '#2c3e50',
-                        accent: '#e67e22',
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
                     },
-                    maxWidth: {
-                        'screen-xl': '1280px',
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    fontSize: {
+                        '4.5xl': '2.5rem',
+                        '5.5xl': '3.5rem',
+                        '6.5xl': '4rem'
                     },
                     spacing: {
                         '18': '4.5rem',
+                        '68': '17rem',
+                        '100': '25rem',
+                        '120': '30rem'
+                    },
+                    height: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    width: {
+                        '100': '25rem',
+                        '120': '30rem',
+                        '144': '36rem'
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)',
+                        'inner-bottom': 'inset 0 -2px 10px rgba(0, 0, 0, 0.06)',
+                        'inner-top': 'inset 0 2px 10px rgba(0, 0, 0, 0.06)',
+                        'highlight': '0 10px 40px rgba(184, 134, 11, 0.15)'
+                    },
+                    lineHeight: {
+                        'extra-tight': '1.05',
+                        'tighter': '1.1'
                     }
                 }
             }
         }
     </script>
     
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json"><%- structuredData %></script>
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+        
+        /* Decorative elements */
+        .decorative-line {
+            position: relative;
+        }
+        
+        .decorative-line::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background-color: #B8860B;
+        }
+        
+        .decorative-line.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            display: inline-block;
+            background-color: #B8860B;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary:hover {
+            color: #B8860B;
+        }
+        
+        .btn-primary:hover::after {
+            width: 100%;
+        }
+        
+        /* Airbnb-inspired gallery */
+        .airbnb-gallery {
+            height: 70vh;
+            min-height: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            height: 100%;
+            padding: 0;
+        }
+        
+        .gallery-main {
+            grid-row: 1 / 3;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .gallery-side {
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-view-all {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #252525;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-view-all:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+        }
+        
+        /* Gallery Modal */
+        .gallery-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .gallery-modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+        }
+        
+        .gallery-modal-main {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        
+        .gallery-modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-modal-close:hover {
+            color: #B8860B;
+        }
+        
+        .gallery-modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-modal-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #B8860B;
+        }
+        
+        .gallery-modal-prev {
+            left: -70px;
+        }
+        
+        .gallery-modal-next {
+            right: -70px;
+        }
+        
+        .gallery-modal-thumbs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .gallery-modal-thumb {
+            width: 60px;
+            height: 40px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .gallery-modal-thumb.active,
+        .gallery-modal-thumb:hover {
+            opacity: 1;
+            border-color: #B8860B;
+        }
+        
+        .gallery-modal-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Content Card Styles */
+        .content-card {
+            background-color: white;
+            border-radius: 0;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+        }
+        
+        .content-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* FAQ styles */
+        .faq-toggle {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-content {
+            padding: 15px 0;
+            display: none;
+        }
+        
+        /* Booking sidebar */
+        .booking-sidebar {
+            position: sticky;
+            top: 80px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Mobile responsive gallery */
+        @media (max-width: 768px) {
+            .airbnb-gallery {
+                height: 50vh;
+                min-height: 300px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: 2fr 1fr 1fr;
+            }
+            
+            .gallery-main {
+                grid-row: 1;
+            }
+            
+            .gallery-side {
+                grid-template-rows: none;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            
+            .gallery-modal-nav {
+                display: none;
+            }
+            
+            .gallery-modal-content {
+                max-width: 95vw;
+                max-height: 95vh;
+            }
+        }
+    </style>
 </head>
-<body class="text-gray-800 bg-gray-50">
+
+<body class="bg-cream font-sans text-secondary antialiased">
     <%- include('../partials/navbar') %>
 
-    <!-- Hero Section with Main Image -->
-    <section class="relative w-full h-[70vh] max-h-[600px] mb-8" aria-label="Tour hero image">
-        <img 
-            id="mainImage" 
-            src="<%= tour.mainImage %>" 
-            alt="<%= tour.title %> - Featured image" 
-            class="w-full h-full object-cover"
-            loading="eager"
-        >
-        
-        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 md:p-8">
-            <div class="container mx-auto max-w-screen-xl px-4">
-                <h1 class="text-white text-3xl md:text-5xl font-bold leading-tight"><%= tour.title %></h1>
-                <div class="flex flex-wrap gap-6 text-white mt-4">
-                    <div class="flex items-center">
-                        <i class="fas fa-clock mr-2 text-primary"></i>
-                        <span><%= tour.duration %> <%= tour.duration === 1 ? 'Day' : 'Days' %></span>
+    <!-- Airbnb-Style Gallery Section -->
+    <section class="airbnb-gallery relative" data-aos="fade-in">
+        <div class="gallery-grid">
+            <!-- Main large image -->
+            <div class="gallery-main gallery-item">
+                <img src="<%= tour.mainImage %>" alt="<%= tour.title %> - Main view" class="gallery-grid-img">
+            </div>
+            
+            <!-- Side images grid -->
+            <div class="gallery-side">
+                <% if (tour.images && tour.images.length > 0) { %>
+                    <% tour.images.slice(0, 2).forEach((image, index) => { %>
+                        <div class="gallery-item">
+                            <img src="<%= image %>" alt="<%= tour.title %> - View <%= index + 1 %>" class="gallery-grid-img">
                     </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
-                        <span><%= tour.startLocation %></span>
+                    <% }) %>
+                <% } else { %>
+                    <div class="gallery-item">
+                        <img src="<%= tour.mainImage %>" alt="<%= tour.title %> - View 1" class="gallery-grid-img">
                     </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-users mr-2 text-primary"></i>
-                        <span>Max <%= tour.groupSize %> people</span>
+                    <div class="gallery-item">
+                        <img src="<%= tour.mainImage %>" alt="<%= tour.title %> - View 2" class="gallery-grid-img">
                     </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-star mr-2 text-yellow-400"></i>
-                        <span><%= tour.rating %> (<%= tour.reviewsCount %> reviews)</span>
+                <% } %>
                     </div>
                 </div>
-            </div>
-        </div>
+        
+        <!-- View all photos button -->
+        <button class="gallery-view-all">
+            <i class="fas fa-th mr-2"></i>
+            Show all photos
+        </button>
     </section>
     
-    <!-- Image Gallery Thumbnails -->
-    <div class="container mx-auto max-w-screen-xl px-4 mb-8">
-        <div class="flex gap-3 overflow-x-auto py-4 px-2 -mx-2 scrollbar-none bg-white border border-gray-200" id="thumbnails" role="region" aria-label="Tour image gallery">
-            <button 
-                class="thumbnail-item active h-20 w-32 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary" 
-                data-img="<%= tour.mainImage %>"
-                aria-label="View main tour image"
-            >
-                <img src="<%= tour.mainImage %>" alt="Main view" class="h-full w-full object-cover">
+    <!-- Gallery Modal -->
+    <div class="gallery-modal hidden">
+        <div class="gallery-modal-content">
+            <button class="gallery-modal-close">
+                <i class="fas fa-times"></i>
             </button>
             
+            <button class="gallery-modal-nav gallery-modal-prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <img src="<%= tour.mainImage %>" alt="Gallery image" class="gallery-modal-main">
+            
+            <button class="gallery-modal-nav gallery-modal-next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <div class="gallery-modal-thumbs">
+                <div class="gallery-modal-thumb active" data-index="0">
+                    <img src="<%= tour.mainImage %>" alt="Main view">
+                </div>
             <% if (tour.images && tour.images.length > 0) { %>
                 <% tour.images.forEach((image, index) => { %>
-                    <button 
-                        class="thumbnail-item h-20 w-32 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary" 
-                        data-img="<%= image %>"
-                        aria-label="View tour image <%= index + 1 %>"
-                    >
-                        <img src="<%= image %>" alt="Tour view <%= index + 1 %>" class="h-full w-full object-cover">
-                    </button>
-                <% }); %>
+                        <div class="gallery-modal-thumb" data-index="<%= index + 1 %>">
+                            <img src="<%= image %>" alt="View <%= index + 1 %>">
+                        </div>
+                    <% }) %>
             <% } %>
-            
             <% if (tour.mapImage) { %>
-                <button 
-                    class="thumbnail-item h-20 w-32 flex-shrink-0 relative focus:outline-none focus:ring-2 focus:ring-primary" 
-                    data-img="<%= tour.mapImage %>"
-                    aria-label="View tour route map"
-                >
-                    <img src="<%= tour.mapImage %>" alt="Tour route map" class="h-full w-full object-cover">
-                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-                        <span class="text-white text-xs font-semibold bg-black/50 px-2 py-1">MAP</span>
+                    <div class="gallery-modal-thumb" data-index="<%= (tour.images ? tour.images.length : 0) + 1 %>">
+                        <img src="<%= tour.mapImage %>" alt="Route map">
                     </div>
-                </button>
             <% } %>
+            </div>
         </div>
     </div>
     
-    <!-- Main Content Area -->
-    <main class="container mx-auto max-w-screen-xl px-4 pb-16">
-        <div class="flex flex-col lg:flex-row gap-10">
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 md:px-6 lg:px-12 py-12">
+        <div class="flex flex-col lg:flex-row gap-12">
             <!-- Left Column: Tour Details -->
             <div class="w-full lg:w-2/3">
-                <!-- Section Navigation -->
-                <nav class="border-b border-gray-200 mb-10 sticky top-0 bg-white z-10 -mx-4 px-4" aria-label="Tour sections">
-                    <div class="max-w-screen-xl mx-auto">
-                        <ul class="flex space-x-8 text-sm overflow-x-auto py-4">
-                            <li><a href="#overview" class="nav-link text-primary font-medium px-1 py-2 border-b-2 border-primary">Overview</a></li>
-                            <li><a href="#itinerary" class="nav-link text-gray-500 hover:text-primary px-1 py-2 border-b-2 border-transparent">Itinerary</a></li>
-                            <li><a href="#includes" class="nav-link text-gray-500 hover:text-primary px-1 py-2 border-b-2 border-transparent">What's Included</a></li>
-                            <li><a href="#accommodation" class="nav-link text-gray-500 hover:text-primary px-1 py-2 border-b-2 border-transparent">Accommodation</a></li>
-                            <% if (relatedTours && relatedTours.length > 0) { %>
-                                <li><a href="#related" class="nav-link text-gray-500 hover:text-primary px-1 py-2 border-b-2 border-transparent">Related Tours</a></li>
-                            <% } %>
-                        </ul>
-                    </div>
-                </nav>
-                
-                <!-- Overview Section -->
-                <section id="overview" class="mb-16 bg-white p-8 border border-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">Tour Overview</h2>
-                    <div class="prose prose-lg max-w-none">
-                        <p class="text-gray-700 leading-relaxed"><%= tour.description %></p>
+                <!-- Tour Header -->
+                <div class="mb-8" data-aos="fade-up">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="flex text-primary text-sm">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-secondary/60 text-sm">(<%= tour.reviewsCount %> reviews)</span>
+                        <span class="text-secondary/40">•</span>
+                        <span class="text-secondary/60 text-sm"><%= tour.startLocation %>, Morocco</span>
                     </div>
                     
-                    <% if (tour.category) { %>
-                        <div class="mt-8 inline-block bg-gray-100 py-2 px-4 text-sm">
-                            <span class="font-medium">Category:</span> <%= tour.category %>
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-secondary mb-6 leading-tight">
+                        <%= tour.title %>
+                    </h1>
+                    
+                    <div class="flex flex-wrap gap-6 text-secondary/70">
+                        <div class="flex items-center">
+                            <i class="fas fa-clock mr-2 text-primary"></i>
+                            <span><%= tour.duration %> <%= tour.duration === 1 ? 'Day' : 'Days' %></span>
                         </div>
-                    <% } %>
+                        <div class="flex items-center">
+                            <i class="fas fa-users mr-2 text-primary"></i>
+                            <span>Max <%= tour.groupSize %> people</span>
+                        </div>
+                        <% if (tour.category) { %>
+                            <div class="flex items-center">
+                                <i class="fas fa-tag mr-2 text-primary"></i>
+                                <span><%= tour.category %></span>
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+                
+                <!-- Overview Section -->
+                <section class="mb-12" data-aos="fade-up">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">About This Experience</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Tour Overview
+                    </h2>
+                    
+                    <div class="content-card p-8 bg-white">
+                    <div class="prose prose-lg max-w-none">
+                            <p class="text-secondary/80 leading-relaxed text-lg"><%= tour.description %></p>
+                    </div>
+                        </div>
                 </section>
                 
                 <!-- Itinerary Section -->
-                <section id="itinerary" class="mb-16 bg-white p-8 border border-gray-200">
-                    <h2 class="text-2xl font-bold mb-8 pb-2 border-b border-gray-200">Itinerary</h2>
+                <section class="mb-12" data-aos="fade-up">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Day by Day</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Detailed Itinerary
+                    </h2>
                     
+                    <div class="content-card p-8 bg-white">
                     <% if (tour.itinerary && tour.itinerary.length > 0) { %>
-                        <div class="space-y-12">
+                            <div class="space-y-8">
                             <% tour.itinerary.forEach((day, index) => { %>
-                                <div class="border-l-4 border-primary pl-6">
-                                    <div class="flex items-center mb-4">
-                                        <div class="bg-primary text-white font-bold h-10 w-10 flex items-center justify-center -ml-8 shadow-md">
+                                    <div class="relative pl-8 border-l-2 border-beige last:border-l-0">
+                                        <div class="absolute -left-4 top-0 w-8 h-8 bg-primary text-white font-serif font-medium flex items-center justify-center text-sm">
                                             <%= day.day %>
-                                        </div>
-                                        <h3 class="text-xl font-semibold ml-4"><%= day.title %></h3>
                                     </div>
                                     
-                                    <div class="prose prose-lg max-w-none">
-                                        <p class="text-gray-700 mb-4"><%= day.description %></p>
-                                    </div>
+                                        <div class="pb-8">
+                                            <h3 class="text-xl font-serif font-medium text-secondary mb-3"><%= day.title %></h3>
+                                            <p class="text-secondary/80 leading-relaxed mb-4"><%= day.description %></p>
                                     
                                     <% if (day.distance) { %>
-                                        <div class="flex items-center text-sm text-gray-500 mb-3 bg-gray-50 p-2 inline-block">
+                                                <div class="inline-flex items-center bg-beige/50 px-3 py-1 text-sm text-secondary/70 mb-4">
                                             <i class="fas fa-route mr-2 text-primary"></i>
                                             <span>Distance: <%= day.distance %></span>
                                         </div>
                                     <% } %>
                                     
                                     <% if (day.highlights && day.highlights.length > 0) { %>
-                                        <div class="mt-6 bg-gray-50 p-4">
-                                            <h4 class="text-sm font-semibold uppercase text-gray-500 mb-3">Highlights</h4>
-                                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                <div class="bg-beige/30 p-4 mt-4">
+                                                    <h4 class="text-sm font-medium uppercase text-secondary/70 mb-3 tracking-wider">Day Highlights</h4>
+                                                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-2">
                                                 <% day.highlights.forEach(highlight => { %>
                                                     <li class="flex items-start">
-                                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                                        <span><%= highlight %></span>
+                                                                <i class="fas fa-check-circle text-primary mt-1 mr-2 text-sm"></i>
+                                                                <span class="text-secondary/80 text-sm"><%= highlight %></span>
                                                     </li>
-                                                <% }); %>
+                                                        <% }) %>
                                             </ul>
                                         </div>
                                     <% } %>
                                 </div>
-                            <% }); %>
+                                    </div>
+                                <% }) %>
                         </div>
                     <% } else { %>
-                        <div class="bg-gray-50 p-6 text-center">
-                            <p class="text-gray-500 italic">Detailed itinerary information available upon request.</p>
-                            <a href="mailto:info@voyageo-tours.com?subject=Itinerary request for <%= tour.title %>" class="inline-block mt-4 text-primary hover:underline">
-                                <i class="fas fa-envelope mr-1"></i> Request detailed itinerary
+                            <div class="text-center py-12 bg-beige/30">
+                                <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-route text-primary text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-serif text-secondary/70 mb-2">Detailed Itinerary Available</h3>
+                                <p class="text-secondary/60 mb-4">Contact us for a complete day-by-day breakdown of this tour</p>
+                                <a href="mailto:info@voyageo-tours.com?subject=Itinerary request for <%= tour.title %>" class="btn-primary">
+                                    <i class="fas fa-envelope mr-2"></i> Request Itinerary
                             </a>
                         </div>
                     <% } %>
+                    </div>
                 </section>
                 
-                <!-- Includes/Excludes Section -->
-                <section id="includes" class="mb-16 bg-white p-8 border border-gray-200">
-                    <h2 class="text-2xl font-bold mb-8 pb-2 border-b border-gray-200">What's Included</h2>
+                <!-- Inclusions & Exclusions Section -->
+                <section class="mb-12" data-aos="fade-up">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">What's Included</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Inclusions & Exclusions
+                    </h2>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="content-card p-8 bg-white">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Inclusions -->
                         <div>
-                            <h3 class="text-xl font-semibold mb-5 flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                <span>Includes</span>
+                                <h3 class="text-xl font-serif font-medium mb-4 flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                    What's Included
                             </h3>
                             <ul class="space-y-3">
                                 <% if (tour.includes && tour.includes.length > 0) { %>
                                     <% tour.includes.forEach(item => { %>
                                         <li class="flex items-start">
                                             <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
-                                            <span><%= item %></span>
+                                                <span class="text-secondary/80"><%= item %></span>
                                         </li>
-                                    <% }); %>
+                                        <% }) %>
                                 <% } else { %>
-                                    <li class="text-gray-500 italic">No inclusions specified</li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                            <span class="text-secondary/80">Professional local guide</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                            <span class="text-secondary/80">Transportation in comfortable vehicle</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                            <span class="text-secondary/80">All entrance fees</span>
+                                        </li>
                                 <% } %>
                             </ul>
                 </div>
 
+                            <!-- Exclusions -->
                         <div>
-                            <h3 class="text-xl font-semibold mb-5 flex items-center">
-                                <i class="fas fa-times-circle text-red-500 mr-2"></i>
-                                <span>Excludes</span>
+                                <h3 class="text-xl font-serif font-medium mb-4 flex items-center">
+                                    <i class="fas fa-times-circle text-red-500 mr-3"></i>
+                                    What's Not Included
                             </h3>
                             <ul class="space-y-3">
                                 <% if (tour.excludes && tour.excludes.length > 0) { %>
                                     <% tour.excludes.forEach(item => { %>
                                         <li class="flex items-start">
                                             <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
-                                            <span><%= item %></span>
+                                                <span class="text-secondary/80"><%= item %></span>
                                         </li>
-                                    <% }); %>
+                                        <% }) %>
                                 <% } else { %>
-                                    <li class="text-gray-500 italic">No exclusions specified</li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                                            <span class="text-secondary/80">Personal expenses</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                                            <span class="text-secondary/80">Tips and gratuities</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                                            <span class="text-secondary/80">Travel insurance</span>
+                                        </li>
                                 <% } %>
                             </ul>
+                            </div>
                         </div>
                     </div>
                 </section>
                 
                 <!-- Accommodation Section -->
-                <section id="accommodation" class="mb-16 bg-white p-8 border border-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">Accommodation</h2>
-                    <div class="bg-gray-50 p-6">
+                <section class="mb-12" data-aos="fade-up">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Where You'll Stay</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Accommodation
+                    </h2>
+                    
+                    <div class="content-card p-8 bg-white">
                         <div class="flex items-start">
-                            <i class="fas fa-bed text-primary text-2xl mt-1 mr-4"></i>
+                            <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mr-6 flex-shrink-0">
+                                <i class="fas fa-bed text-primary text-xl"></i>
+                            </div>
                             <div class="prose prose-lg max-w-none">
-                                <p class="text-gray-700 leading-relaxed"><%= tour.accommodation %></p>
+                                <p class="text-secondary/80 leading-relaxed text-lg"><%= tour.accommodation %></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- FAQ Section -->
+                <section class="mb-12" data-aos="fade-up">
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Common Questions</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
+                        Frequently Asked Questions
+                    </h2>
+                    
+                    <div class="content-card p-8 bg-white">
+                        <div class="faq-container">
+                            <div class="faq-item">
+                                <button class="faq-toggle">
+                                    <span class="font-medium">What's the best time to visit?</span>
+                                    <i class="fas fa-chevron-down text-primary"></i>
+                                </button>
+                                <div class="faq-content">
+                                    <p class="text-secondary/80">The best time depends on your preferences. Spring (March-May) and fall (September-November) offer pleasant weather. Summer can be hot but is great for mountain regions, while winter is perfect for desert experiences.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-toggle">
+                                    <span class="font-medium">Is this tour suitable for children?</span>
+                                    <i class="fas fa-chevron-down text-primary"></i>
+                                </button>
+                                <div class="faq-content">
+                                    <p class="text-secondary/80">Yes, this tour is family-friendly and suitable for children of all ages. We can adjust the pace and activities to accommodate families with young children.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-toggle">
+                                    <span class="font-medium">What should I pack?</span>
+                                    <i class="fas fa-chevron-down text-primary"></i>
+                                </button>
+                                <div class="faq-content">
+                                    <p class="text-secondary/80">Pack comfortable walking shoes, sun protection, layers for temperature changes, and a camera. We'll provide a detailed packing list upon booking.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-toggle">
+                                    <span class="font-medium">Can dietary restrictions be accommodated?</span>
+                                    <i class="fas fa-chevron-down text-primary"></i>
+                                </button>
+                                <div class="faq-content">
+                                    <p class="text-secondary/80">Absolutely! Please inform us of any dietary restrictions or allergies when booking, and we'll ensure all meals are prepared accordingly.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -253,34 +750,37 @@
                 
                 <!-- Related Tours Section -->
                 <% if (relatedTours && relatedTours.length > 0) { %>
-                    <section id="related" class="mb-12 bg-white p-8 border border-gray-200">
-                        <h2 class="text-2xl font-bold mb-8 pb-2 border-b border-gray-200">Similar Tours You May Like</h2>
+                    <section class="mb-12" data-aos="fade-up">
+                        <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">More Experiences</span>
+                        <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
+                            Similar Tours You May Like
+                        </h2>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <% relatedTours.forEach(relatedTour => { %>
-                                <a href="/tours/<%= relatedTour.slug %>" class="group block bg-white border border-gray-200 hover:border-primary transition-all duration-300">
+                                <a href="/tours/<%= relatedTour.slug %>" class="group block bg-white content-card overflow-hidden hover:-translate-y-2 transition-all duration-500">
                                     <div class="h-48 overflow-hidden">
                                         <img 
                                             src="<%= relatedTour.mainImage %>" 
                                             alt="<%= relatedTour.title %>" 
-                                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                                             loading="lazy"
                                         >
                                     </div>
-                                    <div class="p-4">
-                                        <h3 class="font-semibold text-lg group-hover:text-primary transition-colors"><%= relatedTour.title %></h3>
-                                        <div class="flex justify-between mt-3">
-                                            <div class="flex items-center text-sm">
+                                    <div class="p-6">
+                                        <h3 class="font-serif text-lg font-medium group-hover:text-primary transition-colors mb-3"><%= relatedTour.title %></h3>
+                                        <div class="flex justify-between items-center">
+                                            <div class="flex items-center text-sm text-secondary/60">
                                                 <i class="fas fa-clock mr-1 text-primary"></i>
                                                 <%= relatedTour.duration %> <%= relatedTour.duration === 1 ? 'day' : 'days' %>
                                             </div>
-                                            <div class="text-primary font-semibold">
-                                                <%= relatedTour.price %> MAD
+                                            <div class="text-primary font-serif font-medium text-lg">
+                                                <%= relatedTour.price %> $
                                             </div>
                                         </div>
                                     </div>
                                 </a>
-                            <% }); %>
+                            <% }) %>
                         </div>
                     </section>
                 <% } %>
@@ -288,47 +788,53 @@
 
             <!-- Right Column: Booking Sidebar -->
             <div class="w-full lg:w-1/3">
-                <div class="bg-white border border-gray-200 p-8 sticky top-20">
-                    <h2 class="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">Book This Tour</h2>
-                    
-                    <!-- Price -->
-                    <div class="mb-8">
-                        <div class="flex items-baseline">
-                            <span class="text-4xl font-bold text-primary"><%= tour.price %> MAD</span>
-                            <span class="text-sm text-gray-500 ml-2">per person</span>
+                <div class="booking-sidebar bg-white content-card p-8">
+                    <div class="mb-6">
+                        <div class="flex items-baseline mb-2">
+                            <span class="text-3xl font-serif font-medium text-primary"><%= tour.price %> $</span>
+                            <span class="text-sm text-secondary/60 ml-2">per person</span>
+                        </div>
+                        <div class="flex items-center text-sm text-secondary/60">
+                            <div class="flex text-primary text-xs mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span>(<%= tour.reviewsCount %> reviews)</span>
                         </div>
                     </div>
                     
                     <!-- Tour Details Summary -->
-                    <div class="space-y-4 mb-8">
-                        <div class="flex justify-between pb-2 border-b border-gray-100">
-                            <span class="text-gray-600">Duration</span>
+                    <div class="space-y-4 mb-8 pb-6 border-b border-beige">
+                        <div class="flex justify-between items-center">
+                            <span class="text-secondary/70">Duration</span>
                             <span class="font-medium"><%= tour.duration %> <%= tour.duration === 1 ? 'day' : 'days' %></span>
                         </div>
-                        <div class="flex justify-between pb-2 border-b border-gray-100">
-                            <span class="text-gray-600">Group Size</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-secondary/70">Group Size</span>
                             <span class="font-medium">Up to <%= tour.groupSize %> people</span>
                         </div>
-                        <div class="flex justify-between pb-2 border-b border-gray-100">
-                            <span class="text-gray-600">Starting Point</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-secondary/70">Starting Point</span>
                             <span class="font-medium"><%= tour.startLocation %></span>
                         </div>
                         <% if (tour.category) { %>
-                            <div class="flex justify-between pb-2 border-b border-gray-100">
-                                <span class="text-gray-600">Category</span>
+                            <div class="flex justify-between items-center">
+                                <span class="text-secondary/70">Category</span>
                                 <span class="font-medium"><%= tour.category %></span>
                             </div>
                         <% } %>
                     </div>
                     
-                    <!-- Desktop Contact buttons -->
-                    <div class="space-y-4 hidden lg:block">
+                    <!-- Contact Options -->
+                    <div class="space-y-4">
                         <a 
                             href="mailto:info@voyageo-tours.com?subject=Tour inquiry for <%= tour.title %>" 
-                            class="flex items-center justify-center bg-primary hover:bg-primary/90 text-white p-4 w-full transition-colors"
-                            aria-label="Send email inquiry"
+                            class="flex items-center justify-center bg-primary hover:bg-primary/90 text-white py-4 px-6 w-full transition-all duration-300 group"
                         >
-                            <i class="fas fa-envelope mr-2"></i>
+                            <i class="fas fa-envelope mr-3"></i>
                             <span>Email Inquiry</span>
                         </a>
                         
@@ -336,361 +842,285 @@
                             href="https://wa.me/212661123456?text=Hello, I'd like to book the <%= tour.title %> tour" 
                             target="_blank"
                             rel="noopener" 
-                            class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white p-4 w-full transition-colors"
-                            aria-label="Contact via WhatsApp"
+                            class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white py-4 px-6 w-full transition-all duration-300 group"
                         >
-                            <i class="fab fa-whatsapp mr-2"></i>
+                            <i class="fab fa-whatsapp mr-3"></i>
                         <span>WhatsApp</span>
                     </a>
                     
                         <a 
                             href="tel:+212661123456" 
-                            class="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-4 w-full transition-colors"
-                            aria-label="Call us"
+                            class="flex items-center justify-center bg-secondary hover:bg-secondary/90 text-white py-4 px-6 w-full transition-all duration-300 group"
                         >
-                            <i class="fas fa-phone-alt mr-2"></i>
+                            <i class="fas fa-phone-alt mr-3"></i>
                         <span>Call Us</span>
                     </a>
                     </div>
                     
-                    <div class="text-center text-sm text-gray-500 mt-6 hidden lg:block">
-                        <p>Our team is available 24/7 to assist you</p>
+                    <div class="text-center text-sm text-secondary/60 mt-6 pt-6 border-t border-beige">
+                        <p><i class="fas fa-shield-alt text-primary mr-1"></i> Secure booking & 24/7 support</p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
     
-    <!-- Mobile Contact Button -->
-    <div class="fixed bottom-6 left-6 z-30 lg:hidden">
-        <button 
-            id="contactBtn" 
-            class="bg-primary text-white h-12 w-24 flex items-center justify-center shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-            aria-label="Contact options"
-            aria-expanded="false"
-            aria-controls="contactSheet"
-        >
-           i want this
+    <!-- Mobile Sticky Contact Buttons -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-beige p-3 z-30 flex items-center justify-between shadow-large">
+        <a href="mailto:info@voyageo-tours.com?subject=Booking inquiry for <%= tour.title %>" class="flex-1 py-2 flex flex-col items-center justify-center text-primary">
+            <i class="fas fa-envelope text-lg mb-1"></i>
+            <span class="text-xs">Email</span>
+        </a>
+        <a href="https://wa.me/212661123456?text=Hello, I'd like to book the <%= tour.title %> tour" target="_blank" class="flex-1 py-2 flex flex-col items-center justify-center text-green-500">
+            <i class="fab fa-whatsapp text-xl mb-1"></i>
+            <span class="text-xs">WhatsApp</span>
+        </a>
+        <a href="tel:+212661123456" class="flex-1 py-2 flex flex-col items-center justify-center text-primary">
+            <i class="fas fa-phone-alt text-lg mb-1"></i>
+            <span class="text-xs">Call</span>
+        </a>
+        <button id="mobile-book-btn" class="flex-1 py-2 flex flex-col items-center justify-center bg-primary text-white rounded-md">
+            <i class="fas fa-calendar-check text-lg mb-1"></i>
+            <span class="text-xs">Book Now</span>
         </button>
     </div>
 
-    <!-- Mobile Contact Sheet Modal -->
-    <div 
-        id="contactSheet" 
-        class="fixed inset-0 bg-black/50 z-40 hidden" 
-        role="dialog" 
-        aria-modal="true" 
-        aria-labelledby="contactSheetTitle"
-    >
-        <div 
-            class="absolute bottom-0 left-0 right-0 bg-white transform translate-y-full transition-transform duration-300" 
-            id="sheetContent"
-        >
-            <div class="w-16 h-1 bg-gray-300 mx-auto my-3 rounded-full"></div>
-            
-            <div class="p-8">
-                <h3 id="contactSheetTitle" class="text-xl font-bold mb-6">Contact Us</h3>
-                
-                <div class="space-y-4">
-                    <a 
-                        href="mailto:info@voyageo-tours.com?subject=Tour inquiry for <%= tour.title %>" 
-                        class="flex items-center p-4 border border-gray-200 w-full hover:border-primary transition-colors"
-                    >
-                        <div class="bg-primary/10 text-primary h-12 w-12 flex items-center justify-center mr-4">
-            <i class="fas fa-envelope"></i>
-                        </div>
+    <!-- Footer -->
+    <footer class="bg-charcoal text-gray-300 mt-16">
+        <div class="container mx-auto px-4 md:px-6 lg:px-12 pt-16 pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Company Info -->
                         <div>
-                            <div class="font-medium">Email Us</div>
-                            <div class="text-sm text-gray-500">info@voyageo-tours.com</div>
-                        </div>
-                    </a>
-                    
-                    <a 
-                        href="https://wa.me/212661123456?text=Hello, I'd like to book the <%= tour.title %> tour" 
-                        target="_blank"
-                        rel="noopener"
-                        class="flex items-center p-4 border border-gray-200 w-full hover:border-green-500 transition-colors"
-                    >
-                        <div class="bg-green-500/10 text-green-500 h-12 w-12 flex items-center justify-center mr-4">
-            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <div>
-                            <div class="font-medium">WhatsApp</div>
-                            <div class="text-sm text-gray-500">+212 661 123 456</div>
-                        </div>
-                    </a>
-                    
-                    <a 
-                        href="tel:+212661123456" 
-                        class="flex items-center p-4 border border-gray-200 w-full hover:border-gray-800 transition-colors"
-                    >
-                        <div class="bg-gray-800/10 text-gray-800 h-12 w-12 flex items-center justify-center mr-4">
-            <i class="fas fa-phone-alt"></i>
-                        </div>
-                        <div>
-                            <div class="font-medium">Call Us</div>
-                            <div class="text-sm text-gray-500">+212 661 123 456</div>
-                        </div>
-        </a>
-    </div>
-
-                <button 
-                    id="closeSheet" 
-                    class="mt-8 w-full py-4 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                    Close
-                </button>
-            </div>
+                    <h3 class="text-xl font-semibold mb-6 text-primary">Voyageo Tours</h3>
+                    <p class="text-gray-300 mb-6">
+                        Your trusted Morocco travel partner, offering authentic tours, day trips, activities, and transportation services throughout the country.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://facebook.com" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://twitter.com" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://youtube.com" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
         </div>
     </div>
 
-    <!-- Replace included footer with simple hard-coded footer -->
-    <footer class="bg-white border-t border-gray-200 py-10 mt-12">
-        <div class="container mx-auto max-w-screen-xl px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Quick Links -->
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/" class="text-gray-600 hover:text-primary">Home</a></li>
-                        <li><a href="/tours" class="text-gray-600 hover:text-primary">All Tours</a></li>
-                        <li><a href="/activities" class="text-gray-600 hover:text-primary">Activities</a></li>
-                        <li><a href="/customize" class="text-gray-600 hover:text-primary">Custom Tours</a></li>
+                    <h3 class="text-xl font-semibold mb-6 text-primary">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/" class="text-gray-300 hover:text-primary transition-colors">Home</a></li>
+                        <li><a href="/tours" class="text-gray-300 hover:text-primary transition-colors">All Tours</a></li>
+                        <li><a href="/activities" class="text-gray-300 hover:text-primary transition-colors">Activities</a></li>
+                        <li><a href="/excursions" class="text-gray-300 hover:text-primary transition-colors">Excursions</a></li>
+                        <li><a href="/transfers" class="text-gray-300 hover:text-primary transition-colors">Transfers</a></li>
+                        <li><a href="/customize" class="text-gray-300 hover:text-primary transition-colors">Custom Tours</a></li>
                     </ul>
                 </div>
                 
                 <!-- Tour Categories -->
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Tour Categories</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/tours?category=Adventure" class="text-gray-600 hover:text-primary">Adventure Tours</a></li>
-                        <li><a href="/tours?category=Cultural" class="text-gray-600 hover:text-primary">Cultural Tours</a></li>
-                        <li><a href="/tours?category=Desert" class="text-gray-600 hover:text-primary">Desert Experiences</a></li>
-                        <li><a href="/tours?category=Mountain" class="text-gray-600 hover:text-primary">Mountain Treks</a></li>
+                    <h3 class="text-xl font-semibold mb-6 text-primary">Tour Categories</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/tours?category=Adventure" class="text-gray-300 hover:text-primary transition-colors">Adventure Tours</a></li>
+                        <li><a href="/tours?category=Cultural" class="text-gray-300 hover:text-primary transition-colors">Cultural Tours</a></li>
+                        <li><a href="/tours?category=Desert" class="text-gray-300 hover:text-primary transition-colors">Desert Experiences</a></li>
+                        <li><a href="/tours?category=Mountain" class="text-gray-300 hover:text-primary transition-colors">Mountain Treks</a></li>
                     </ul>
                 </div>
                 
                 <!-- Popular Destinations -->
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Popular Destinations</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/tours?location=Marrakech" class="text-gray-600 hover:text-primary">Marrakech</a></li>
-                        <li><a href="/tours?location=Fes" class="text-gray-600 hover:text-primary">Fes</a></li>
-                        <li><a href="/tours?location=Sahara" class="text-gray-600 hover:text-primary">Sahara Desert</a></li>
-                        <li><a href="/tours?location=Atlas" class="text-gray-600 hover:text-primary">Atlas Mountains</a></li>
+                    <h3 class="text-xl font-semibold mb-6 text-primary">Popular Destinations</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/tours?location=Marrakech" class="text-gray-300 hover:text-primary transition-colors">Marrakech</a></li>
+                        <li><a href="/tours?location=Fes" class="text-gray-300 hover:text-primary transition-colors">Fes</a></li>
+                        <li><a href="/tours?location=Sahara" class="text-gray-300 hover:text-primary transition-colors">Sahara Desert</a></li>
+                        <li><a href="/tours?location=Atlas" class="text-gray-300 hover:text-primary transition-colors">Atlas Mountains</a></li>
+                        <li><a href="/tours?location=Chefchaouen" class="text-gray-300 hover:text-primary transition-colors">Chefchaouen</a></li>
+                        <li><a href="/tours?location=Casablanca" class="text-gray-300 hover:text-primary transition-colors">Casablanca</a></li>
                     </ul>
                 </div>
             </div>
             
-            <div class="border-t border-gray-200 mt-8 pt-8 text-center text-sm text-gray-500">
-                <p>© <%= new Date().getFullYear() %> Voyageo Tours Morocco. Experience authentic Morocco tours with expert local guides.</p>
-                <p class="mt-2">Morocco desert tours, imperial cities, mountain treks, cultural experiences, camel trekking, and customized adventures.</p>
+            <!-- SEO Footer -->
+            <div class="py-8 border-t border-gray-700 text-sm">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <h4 class="font-semibold mb-2 text-primary/80">Top Tours in Morocco</h4>
+                        <p class="text-gray-400">Desert Tours, Imperial Cities, Atlas Mountains, Coastal Tours, Sahara Adventures, 4x4 Expeditions, Camel Trekking, Photography Tours</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2 text-primary/80">Popular Excursions</h4>
+                        <p class="text-gray-400">Ouzoud Waterfalls, Essaouira Day Trip, Atlas Mountains Day Tour, Agafay Desert, Palm Grove Quad Biking, Ourika Valley, Ait Ben Haddou</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2 text-primary/80">Morocco Travel Experiences</h4>
+                        <p class="text-gray-400">Authentic Riads, Hammam Spa, Cooking Classes, Handicraft Workshops, Desert Camping, Food Tours, Photography Tours, Historical Sites</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="pt-8 border-t border-gray-700 text-center">
+                <p class="text-gray-400">
+                    © <%= new Date().getFullYear() %> Voyageo Tours. All Rights Reserved. | <a href="/privacy-policy" class="hover:text-primary transition-colors">Privacy Policy</a> | <a href="/terms-conditions" class="hover:text-primary transition-colors">Terms & Conditions</a>
+                </p>
+                <p class="text-gray-500 text-sm mt-3">
+                    Designed with <i class="fas fa-heart text-primary"></i> for Morocco travelers
+                </p>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // DOM Elements 
-            const mainImg = document.getElementById('mainImage');
-            const thumbnails = document.querySelectorAll('.thumbnail-item');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const contactBtn = document.getElementById('contactBtn');
-            const contactSheet = document.getElementById('contactSheet');
-            const sheetContent = document.getElementById('sheetContent');
-            const closeSheet = document.getElementById('closeSheet');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
+            });
             
-            // Image gallery functionality
-            thumbnails.forEach(thumb => {
-                thumb.addEventListener('click', () => {
-                    // Update main image
-                    const imgSrc = thumb.dataset.img;
-                    mainImg.src = imgSrc;
-                    
-                    // Update active state
-                    thumbnails.forEach(t => t.classList.remove('active'));
-                    thumb.classList.add('active');
-                });
-                
-                // Keyboard accessibility
-                thumb.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        thumb.click();
-                    }
+            // Gallery functionality
+            const galleryModal = document.querySelector('.gallery-modal');
+            const galleryViewAllBtn = document.querySelector('.gallery-view-all');
+            const galleryModalClose = document.querySelector('.gallery-modal-close');
+            const galleryModalMain = document.querySelector('.gallery-modal-main');
+            const galleryModalThumbs = document.querySelectorAll('.gallery-modal-thumb');
+            const galleryModalPrev = document.querySelector('.gallery-modal-prev');
+            const galleryModalNext = document.querySelector('.gallery-modal-next');
+            const galleryGridItems = document.querySelectorAll('.gallery-grid-img');
+            
+            // Click on grid items also opens modal
+            galleryGridItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    openGalleryModal();
                 });
             });
             
-            // Helper function for throttling events
-            const throttle = (fn, delay) => {
-                let lastCall = 0;
-                return function(...args) {
-                    const now = new Date().getTime();
-                    if (now - lastCall < delay) {
-                        return;
-                    }
-                    lastCall = now;
-                    return fn(...args);
-                };
-            };
-            
-            // Section navigation highlighting
-            const updateActiveLink = throttle(() => {
-                const scrollPosition = window.scrollY + 100;
-                
-                // Find all sections by id
-                const sections = document.querySelectorAll('section[id]');
-                
-                // Find which section is currently in view
-                let currentSection = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.offsetHeight;
-                    
-                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                        currentSection = section.getAttribute('id');
-                    }
+            if (galleryViewAllBtn) {
+                galleryViewAllBtn.addEventListener('click', function() {
+                    openGalleryModal();
                 });
-                
-                // Update navigation highlighting
-                if (currentSection) {
-                    navLinks.forEach(link => {
-                        // Reset all links
-                        link.classList.remove('text-primary', 'font-medium', 'border-primary');
-                        link.classList.add('text-gray-500', 'border-transparent');
-                        
-                        // Set active link
-                        if (link.getAttribute('href') === `#${currentSection}`) {
-                            link.classList.remove('text-gray-500', 'border-transparent');
-                            link.classList.add('text-primary', 'font-medium', 'border-primary');
-                        }
-                    });
-                }
-            }, 100);
-            
-            window.addEventListener('scroll', updateActiveLink);
-            
-            // Smooth scrolling for section navigation
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                        
-                        // Update URL fragment without scrolling
-                        history.pushState(null, null, targetId);
-                        
-                        // Update active link
-                        navLinks.forEach(link => {
-                            link.classList.remove('text-primary', 'font-medium', 'border-primary');
-                            link.classList.add('text-gray-500', 'border-transparent');
-                        });
-                        
-                        this.classList.remove('text-gray-500', 'border-transparent');
-                        this.classList.add('text-primary', 'font-medium', 'border-primary');
-                    }
-                });
-            });
-            
-            // Mobile contact sheet functionality
-            contactBtn.addEventListener('click', () => {
-                // Open the sheet
-                contactSheet.classList.remove('hidden');
-                contactBtn.setAttribute('aria-expanded', 'true');
-                
-                // Prevent page scrolling when sheet is open
-                document.body.style.overflow = 'hidden';
-                
-                // Animate in the sheet content
-                requestAnimationFrame(() => {
-                    sheetContent.classList.remove('translate-y-full');
-                });
-            });
-            
-            function closeContactSheet() {
-                // Animate out the sheet
-                sheetContent.classList.add('translate-y-full');
-                contactBtn.setAttribute('aria-expanded', 'false');
-                
-                // Re-enable page scrolling
-                document.body.style.overflow = '';
-                
-                // Hide the modal after animation completes
-                setTimeout(() => {
-                    contactSheet.classList.add('hidden');
-                }, 300);
             }
             
-            // Close button handler
-            closeSheet.addEventListener('click', closeContactSheet);
+            if (galleryModalClose) {
+                galleryModalClose.addEventListener('click', function() {
+                    galleryModal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                });
+            }
             
-            // Background click handler
-            contactSheet.addEventListener('click', (e) => {
-                if (e.target === contactSheet) {
-                    closeContactSheet();
+            // Add key event listener for ESC to close modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !galleryModal.classList.contains('hidden')) {
+                    galleryModal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
                 }
             });
             
-            // Escape key handler
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !contactSheet.classList.contains('hidden')) {
-                    closeContactSheet();
-                }
+            // Thumbnail navigation
+            galleryModalThumbs.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    updateModalImage(index);
+                });
             });
             
-            // Swipe down to close sheet
-            let startY, moveY;
-            
-            sheetContent.addEventListener('touchstart', (e) => {
-                startY = e.touches[0].clientY;
-            });
-            
-            sheetContent.addEventListener('touchmove', (e) => {
-                moveY = e.touches[0].clientY;
-                const diff = moveY - startY;
+            // Previous and Next buttons
+            if (galleryModalPrev && galleryModalNext) {
+                galleryModalPrev.addEventListener('click', function() {
+                    navigateGallery(-1);
+                });
                 
-                // Only allow swiping down, not up
-                if (diff > 0) {
-                    sheetContent.style.transform = `translateY(${diff}px)`;
-                    e.preventDefault();
-                }
-            }, { passive: false });
+                galleryModalNext.addEventListener('click', function() {
+                    navigateGallery(1);
+                });
+                
+                // Add key event listeners for arrow navigation
+                document.addEventListener('keydown', function(e) {
+                    if (galleryModal.classList.contains('hidden')) return;
+                    
+                    if (e.key === 'ArrowLeft') {
+                        navigateGallery(-1);
+                    } else if (e.key === 'ArrowRight') {
+                        navigateGallery(1);
+                    }
+                });
+            }
             
-            sheetContent.addEventListener('touchend', () => {
-                if (moveY && moveY - startY > 100) {
-                    // If swiped down far enough, close the sheet
-                    closeContactSheet();
+            function openGalleryModal() {
+                galleryModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function updateModalImage(index) {
+                const activeThumbs = document.querySelectorAll('.gallery-modal-thumb');
+                if (index >= 0 && index < activeThumbs.length) {
+                    // Update active thumb
+                    galleryModalThumbs.forEach(t => t.classList.remove('active'));
+                    activeThumbs[index].classList.add('active');
+                    
+                    // Update main image
+                    const imgSrc = activeThumbs[index].querySelector('img').src;
+                    galleryModalMain.src = imgSrc;
+                }
+            }
+            
+            function navigateGallery(direction) {
+                const activeThumbs = document.querySelectorAll('.gallery-modal-thumb');
+                const activeThumb = document.querySelector('.gallery-modal-thumb.active');
+                if (!activeThumb) return;
+                
+                const currentIndex = parseInt(activeThumb.dataset.index);
+                let newIndex = currentIndex + direction;
+                
+                // Loop around if needed
+                if (newIndex < 0) newIndex = activeThumbs.length - 1;
+                if (newIndex >= activeThumbs.length) newIndex = 0;
+                
+                updateModalImage(newIndex);
+            }
+            
+            // FAQ toggles
+            const faqToggles = document.querySelectorAll('.faq-toggle');
+            
+            faqToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('i');
+                    
+                    // Toggle display
+                    if (content.style.display === 'block') {
+                        content.style.display = 'none';
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
                 } else {
-                    // Otherwise snap back to original position
-                    sheetContent.style.transform = '';
-                }
-                
-                // Reset touch tracking
-                startY = null;
-                moveY = null;
+                        content.style.display = 'block';
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                });
             });
             
-            // Initialize page by triggering scroll event
-            updateActiveLink();
-            
-            // Check for URL fragment on page load and scroll to it
-            if (window.location.hash) {
-                const targetElement = document.querySelector(window.location.hash);
-                if (targetElement) {
-                    setTimeout(() => {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }, 100);
-                }
+            // Mobile book button
+            const mobileBookBtn = document.getElementById('mobile-book-btn');
+            if (mobileBookBtn) {
+                mobileBookBtn.addEventListener('click', function() {
+                    const bookingSection = document.querySelector('.booking-sidebar');
+                    if (bookingSection) {
+                        bookingSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
             }
         });
     </script>

@@ -167,7 +167,7 @@ router.get('/tours/:destinationSlug', async (req, res) => {
       "offers": {
         "@type": "Offer",
         "price": tour.price,
-        "priceCurrency": "MAD"
+        "priceCurrency": "$"
       },
       "tourOperator": {
         "@type": "Organization",

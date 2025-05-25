@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Frequently Asked Questions about Morocco travel with Voyageo Tours. Get answers to common questions about tours, bookings, travel requirements, and more.">
+    <meta name="keywords" content="Voyageo FAQ, Morocco travel questions, Morocco tour FAQ, travel guide Morocco, Voyageo Tours questions">
+    <meta name="author" content="Voyageo Tours">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/faqs">
+    <meta property="og:title" content="<%= pageTitle %> | Voyageo Tours">
+    <meta property="og:description" content="Get answers to frequently asked questions about Morocco travel with Voyageo Tours. Everything you need to know for your Morocco journey.">
+    <meta property="og:image" content="/images/morocco-share.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/faqs">
+    <meta property="twitter:title" content="<%= pageTitle %> | Voyageo Tours">
+    <meta property="twitter:description" content="Get answers to frequently asked questions about Morocco travel with Voyageo Tours.">
+    <meta property="twitter:image" content="/images/morocco-share.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Title -->
+    <title><%= pageTitle %> | Voyageo Tours</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(37, 37, 37, 0.8) 0%, rgba(37, 37, 37, 0.6) 100%), url('<%= headerImagePath %>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-bg {
+                background-attachment: scroll;
+            }
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        
+        .faq-question {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            color: #B8860B;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer.active {
+            max-height: 500px;
+        }
+        
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-icon.active {
+            transform: rotate(45deg);
+        }
+        
+        .category-nav {
+            position: sticky;
+            top: 100px;
+            z-index: 10;
+        }
+        
+        .category-link {
+            transition: all 0.3s ease;
+        }
+        
+        .category-link.active {
+            color: #B8860B;
+            border-color: #B8860B;
+        }
+    </style>
+</head>
+
+<body class="bg-cream font-sans text-secondary antialiased">
+    <%- include('../partials/navbar') %>
+    
+    <!-- Hero Section -->
+    <section class="min-h-96 hero-bg flex items-center justify-center relative overflow-hidden pt-20">
+        <div class="container mx-auto px-6 md:px-12 text-center relative z-10">
+            <div class="max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="800">
+                <!-- Badge -->
+                <div class="inline-block mb-6">
+                    <span class="text-xs uppercase tracking-[0.2em] text-white/80 font-medium bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
+                        Voyageo Travel Guide
+                    </span>
+                </div>
+                
+                <!-- Main Heading -->
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-white leading-[0.9] mb-6">
+                    <%= heroTitle %>
+                </h1>
+                
+                <!-- Divider -->
+                <div class="w-16 h-px bg-primary mx-auto mb-6"></div>
+                
+                <!-- Subtitle -->
+                <p class="text-xl md:text-2xl text-white/90 font-light leading-relaxed max-w-3xl mx-auto">
+                    <%= heroSubtitle %>
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Categories Navigation -->
+    <section class="bg-white border-b border-gray-200 category-nav">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-wrap justify-center gap-4 py-6">
+                <a href="#general" class="category-link px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">General</a>
+                <a href="#booking" class="category-link px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">Booking</a>
+                <a href="#travel" class="category-link px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">Travel Requirements</a>
+                <a href="#tours" class="category-link px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">Tours & Activities</a>
+                <a href="#accommodation" class="category-link px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">Accommodation</a>
+                <a href="#payment" class="category-link px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">Payment</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Content -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="max-w-4xl mx-auto">
+                
+                <!-- General Questions -->
+                <div id="general" class="mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-serif font-medium text-secondary mb-8 flex items-center">
+                        <i class="fas fa-info-circle text-primary mr-3"></i>
+                        General Questions
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">What makes Voyageo different from other tour operators?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Voyageo is a locally-owned Morocco travel agency with deep roots in Moroccan culture. Our team consists of native Moroccans who provide authentic, personalized experiences. We focus on small group tours, sustainable tourism, and creating genuine connections between travelers and local communities.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">Do you offer private tours?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Yes! We specialize in private, customized tours tailored to your interests, budget, and schedule. Whether you're traveling solo, as a couple, or with a group, we can create a personalized itinerary just for you.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">What languages do your guides speak?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Our professional guides are multilingual and speak English, French, Spanish, Arabic, and Berber. We can arrange guides who speak other languages upon request with advance notice.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Booking Questions -->
+                <div id="booking" class="mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-serif font-medium text-secondary mb-8 flex items-center">
+                        <i class="fas fa-calendar-check text-primary mr-3"></i>
+                        Booking & Reservations
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">How far in advance should I book my tour?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">We recommend booking at least 2-4 weeks in advance, especially during peak seasons (March-May and September-November). However, we can often accommodate last-minute bookings depending on availability.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">What is your cancellation policy?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Cancellations made 30+ days before departure: Full refund minus 10% processing fee. 15-29 days: 50% refund. 7-14 days: 25% refund. Less than 7 days: No refund. We recommend travel insurance for unexpected circumstances.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">Can I modify my booking after confirmation?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Yes, modifications are possible subject to availability and may incur additional costs. We'll do our best to accommodate changes, but some services may be non-refundable once booked.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Travel Requirements -->
+                <div id="travel" class="mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-serif font-medium text-secondary mb-8 flex items-center">
+                        <i class="fas fa-passport text-primary mr-3"></i>
+                        Travel Requirements
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">Do I need a visa to visit Morocco?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Citizens of many countries including USA, Canada, EU, UK, Australia, and Japan can enter Morocco visa-free for up to 90 days. Your passport must be valid for at least 6 months from entry date. Please check current requirements with your local Moroccan consulate.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">What vaccinations do I need?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">No special vaccinations are required for Morocco. However, we recommend being up-to-date on routine vaccines (MMR, DPT, flu, etc.). Consult your doctor or travel clinic for personalized medical advice.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">What should I pack for Morocco?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Pack comfortable walking shoes, modest clothing (covering shoulders and knees), sunscreen, hat, and layers for temperature changes. For desert tours, bring warm clothes for cold nights and light, breathable fabrics for hot days.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tours & Activities -->
+                <div id="tours" class="mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-serif font-medium text-secondary mb-8 flex items-center">
+                        <i class="fas fa-map-marked-alt text-primary mr-3"></i>
+                        Tours & Activities
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">What's included in your tour packages?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Our tours typically include accommodation, transportation, professional guide, some meals, and entrance fees to major attractions. Specific inclusions vary by tour - check individual tour descriptions for detailed information.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">Are your tours suitable for families with children?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Absolutely! We offer family-friendly tours with activities suitable for children. We can adjust itineraries, provide child seats in vehicles, and recommend family-appropriate accommodations. Many families love our cultural experiences and camel trekking adventures.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">How physically demanding are your tours?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Most of our tours involve moderate walking and are suitable for average fitness levels. We offer options for different activity levels and can customize tours for specific mobility needs. Desert tours involve some walking on sand, but camels are available for those who prefer not to walk.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Accommodation -->
+                <div id="accommodation" class="mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-serif font-medium text-secondary mb-8 flex items-center">
+                        <i class="fas fa-bed text-primary mr-3"></i>
+                        Accommodation
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">What types of accommodation do you offer?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">We offer a range from traditional riads and kasbahs to luxury hotels and desert camps. All accommodations are carefully selected for comfort, authenticity, and quality. We can accommodate different budgets and preferences.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">Are single rooms available?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Yes, single rooms are available for most accommodations with a single supplement fee. In desert camps, private tents can be arranged. We'll always try to accommodate solo travelers' preferences.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment -->
+                <div id="payment" class="mb-16" data-aos="fade-up">
+                    <h2 class="text-3xl font-serif font-medium text-secondary mb-8 flex items-center">
+                        <i class="fas fa-credit-card text-primary mr-3"></i>
+                        Payment & Pricing
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">What payment methods do you accept?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">We accept major credit cards (Visa, MasterCard), bank transfers, and PayPal. A deposit is required to secure your booking, with the balance due before departure. Cash payments can be arranged for certain services in Morocco.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">Are there any hidden fees?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">No hidden fees! Our prices are transparent and include all mentioned services. Optional activities, personal expenses, tips, and international flights are clearly listed as not included. We believe in honest, upfront pricing.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item bg-beige/30 rounded-lg p-6">
+                            <div class="faq-question flex justify-between items-center" onclick="toggleFAQ(this)">
+                                <h3 class="text-lg font-medium">Do you offer group discounts?</h3>
+                                <i class="fas fa-plus faq-icon text-primary"></i>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-secondary/70 leading-relaxed">Yes! We offer attractive discounts for groups of 6 or more people. The larger the group, the better the rate. Contact us for a customized group quote - we love hosting families, friends, and organizations!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact CTA Section -->
+    <section class="py-16 bg-beige">
+        <div class="container mx-auto px-6 md:px-12 text-center" data-aos="fade-up">
+            <h2 class="text-3xl font-serif font-medium text-secondary mb-6">Still Have Questions?</h2>
+            <p class="text-lg text-secondary/70 mb-8 max-w-2xl mx-auto">
+                Our travel experts are here to help! Contact us for personalized assistance with your Morocco travel plans.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://wa.me/212600123456?text=Hi%20Voyageo!%20I%20have%20a%20question%20about%20Morocco%20travel." 
+                   target="_blank" 
+                   class="inline-flex items-center justify-center px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition-colors">
+                    <i class="fab fa-whatsapp mr-2"></i>
+                    WhatsApp Us
+                </a>
+                <a href="/contact" 
+                   class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors">
+                    <i class="fas fa-envelope mr-2"></i>
+                    Contact Form
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../partials/footer') %>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
+            });
+            
+            // Category navigation
+            const categoryLinks = document.querySelectorAll('.category-link');
+            const sections = document.querySelectorAll('[id]');
+            
+            // Set active category on scroll
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 150;
+                    if (scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                categoryLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            // Smooth scroll for category links
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+        
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.faq-icon');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-answer').forEach(item => {
+                if (item !== answer) {
+                    item.classList.remove('active');
+                }
+            });
+            
+            document.querySelectorAll('.faq-icon').forEach(item => {
+                if (item !== icon) {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Toggle current FAQ
+            answer.classList.toggle('active');
+            icon.classList.toggle('active');
+        }
+    </script>
+</body>
+</html> 

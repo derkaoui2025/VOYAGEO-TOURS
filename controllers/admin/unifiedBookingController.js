@@ -359,7 +359,7 @@ exports.exportBookingsCsv = async (req, res) => {
         { id: 'itemName', title: 'Item' },
         { id: 'date', title: 'Date' },
         { id: 'numberOfPeople', title: 'People' },
-        { id: 'totalPrice', title: 'Total Price (MAD)' },
+        { id: 'totalPrice', title: 'Total Price ($)' },
         { id: 'status', title: 'Status' },
         { id: 'paymentStatus', title: 'Payment Status' },
         { id: 'createdAt', title: 'Created At' }
@@ -469,7 +469,7 @@ exports.exportBookingsExcel = async (req, res) => {
       { header: 'Item', key: 'itemName', width: 40 },
       { header: 'Date', key: 'date', width: 15 },
       { header: 'People', key: 'numberOfPeople', width: 10 },
-      { header: 'Total Price (MAD)', key: 'totalPrice', width: 15 },
+      { header: 'Total Price ($)', key: 'totalPrice', width: 15 },
       { header: 'Status', key: 'status', width: 15 },
       { header: 'Payment Status', key: 'paymentStatus', width: 15 },
       { header: 'Created At', key: 'createdAt', width: 20 },

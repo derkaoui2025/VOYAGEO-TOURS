@@ -37,11 +37,11 @@ const today = new Date().toISOString().split('T')[0];
             <div>
                 <% if (item.originalPrice && item.originalPrice > item.price) { %>
                 <span class="text-gray-500 line-through text-sm">
-                    <%= item.originalPrice %> MAD
+                    <%= item.originalPrice %> $
                 </span>
                 <% } %>
                 <span class="text-xl font-bold text-primary">
-                    <%= item.price %> MAD
+                    <%= item.price %> $
                 </span>
                 <span class="text-sm text-gray-600">
                     <%= isPrivate ? 'per vehicle/group' : 'per person' %>

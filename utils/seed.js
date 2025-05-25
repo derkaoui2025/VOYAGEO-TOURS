@@ -360,7 +360,7 @@ const createBlogs = async (admin, categories, tags) => {
             <h2>Signature Dishes of Morocco</h2>
             
             <h3>Tagine</h3>
-            <p>Named after the conical clay pot it's cooked in, tagine is a slow-cooked stew typically made with meat (lamb, chicken, or beef), vegetables, and a blend of spices. Popular variations include chicken with preserved lemons and olives, lamb with prunes and almonds, and vegetable tagine with couscous. The cooking method allows the flavors to meld together while keeping the ingredients tender and moist.</p>
+            <p>Named after the conical clay pot it's cooked in, tagine is a slow-cooked stew typically $e with meat (lamb, chicken, or beef), vegetables, and a blend of spices. Popular variations include chicken with preserved lemons and olives, lamb with prunes and almonds, and vegetable tagine with couscous. The cooking method allows the flavors to meld together while keeping the ingredients tender and moist.</p>
             
             <h3>Couscous</h3>
             <p>Traditionally served on Fridays after prayers, couscous is tiny steamed semolina granules typically served with a flavorful vegetable stew and meat. The preparation is labor-intensive when done traditionally, involving multiple steamings to achieve the perfect light and fluffy texture.</p>
@@ -369,7 +369,7 @@ const createBlogs = async (admin, categories, tags) => {
             <p>This sweet and savory pie represents the height of Moroccan culinary artistry. Traditional pastilla features layers of paper-thin pastry filled with pigeon (or chicken), almonds, eggs, and spices, then topped with powdered sugar and cinnamon. The combination of savory meat, crunchy nuts, and sweet spices creates an unforgettable flavor experience.</p>
             
             <h3>Harira</h3>
-            <p>This hearty soup is especially popular during Ramadan to break the fast. Made with tomatoes, lentils, chickpeas, herbs, and sometimes meat, harira is thickened with beaten eggs or a flour mixture and finished with a squeeze of lemon juice.</p>
+            <p>This hearty soup is especially popular during Ra$an to break the fast. $e with tomatoes, lentils, chickpeas, herbs, and sometimes meat, harira is thickened with beaten eggs or a flour mixture and finished with a squeeze of lemon juice.</p>
             
             <h2>Essential Moroccan Spices and Ingredients</h2>
             

@@ -201,13 +201,15 @@ exports.createTransferBooking = async (req, res) => {
  * Render custom transfer request form
  */
 exports.renderCustomTransferForm = (req, res) => {
-  res.render('pages/custom-transfer', { 
-    pageTitle: 'Custom Transfer Request',
-    heroTitle: 'Request a Custom Transfer',
-    heroSubtitle: 'Design your perfect transfer between any cities in Morocco',
-    headerImagePath: '/images/headers/custom-transfer-banner.jpg',
-    success: req.query.success || false
-  });
+  // REDIRECT TO custom
+  res.redirect('/customize');
+  // res.render('pages/custom-transfer', { 
+  //   pageTitle: 'Custom Transfer Request',
+  //   heroTitle: 'Request a Custom Transfer',
+  //   heroSubtitle: 'Design your perfect transfer between any cities in Morocco',
+  //   headerImagePath: '/images/headers/custom-transfer-banner.jpg',
+  //   success: req.query.success || false
+  // });
 };
 
 /**

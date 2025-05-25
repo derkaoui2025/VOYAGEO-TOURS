@@ -3,723 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customize Your Tour | Voyageo Tours Morocco</title>
-    <meta name="description" content="Design your ideal Morocco tour with Voyageo Tours. Personalized itineraries, local expertise, and tailored experiences for your perfect Moroccan adventure.">
-    <meta name="keywords" content="morocco tours, customize tour, personalized travel, morocco itinerary, custom trip planning">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Get a custom Morocco tour, excursion, activity, or transfer with Voyageo. Contact us via WhatsApp or email.">
+    <meta name="keywords" content="Voyageo, custom Morocco tour, custom excursion, custom activity, custom transfer">
+    <meta name="author" content="Voyageo Tours">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voyageo-tours.com/customize">
+    <meta property="og:title" content="Get Custom Morocco Experience | Voyageo">
+    <meta property="og:description" content="Get a custom Morocco tour, excursion, activity, or transfer with Voyageo.">
+    <meta property="og:image" content="/images/morocco-share.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://voyageo-tours.com/customize">
+    <meta property="twitter:title" content="Get Custom Morocco Experience | Voyageo">
+    <meta property="twitter:description" content="Get a custom Morocco tour, excursion, activity, or transfer with Voyageo.">
+    <meta property="twitter:image" content="/images/morocco-share.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Title -->
+    <title>Get Custom Morocco Experience | Voyageo</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: '#B8860B',
-              secondary: '#2c3e50',
-              accent: '#e67e22',
-              warning: '#f39c12'
-            },
-            maxWidth: {
-                'screen-xl': '1280px',
-            },
-            spacing: {
-                '18': '4.5rem',
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#B8860B',
+                        secondary: '#252525',
+                        tertiary: '#86644B',
+                        beige: '#F5F1E9',
+                        cream: '#F9F6F0',
+                        stone: '#A49E8D',
+                        charcoal: '#1F1F1F'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Urbanist', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'soft': '0 5px 20px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'large': '0 15px 50px rgba(0, 0, 0, 0.1)'
+                    }
+                }
             }
-          }
         }
-      }
     </script>
     
-    <!-- JSON-LD Structured Data for Customize Tour Page -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "TouristTrip",
-            "name": "Customize Your Morocco Tour",
-            "description": "Create your own personalized Morocco tour with our expert travel planners. Tailor your trip to your preferences and interests.",
-            "url": "https://voyageo-tours.com/customize",
-            "image": "/images/headers/customize-bg.jpg",
-            "touristType": ["Adventure tourists", "Cultural tourists", "Experience seekers"],
-            "provider": {
-                "@type": "TravelAgency",
-                "name": "Voyageo Tours Morocco",
-                "url": "https://voyageo-tours.com"
-            }
-        }
-    </script>
-
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
     <style>
-        /* Minimal design system */
-        .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e5e7eb;
-            transition: all 0.2s ease;
+        html {
+            scroll-behavior: smooth;
         }
         
-        .form-control:focus {
-            outline: none;
-            border-color: #B8860B;
-            box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.2);
+        body {
+            font-family: 'Urbanist', sans-serif;
+            color: #252525;
         }
         
-        .form-control.is-invalid {
-            border-color: #e74c3c;
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
         }
         
-        .form-control.is-valid {
-            border-color: #2ecc71;
-        }
-        
-        .invalid-feedback {
-            display: none;
-            color: #e74c3c;
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-        }
-        
-        /* Feature card styles */
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        /* Contact button styles */
-        .submit-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            width: 100%;
-            padding: 0.875rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
+        /* Button styles inspired by home page */
+        .btn-primary {
+            display: inline-block;
             background-color: #B8860B;
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-primary:hover {
+            color: #B8860B;
+        }
+        
+        .btn-primary:hover::after {
+            width: 100%;
+        }
+        
+        .btn-outline {
+            display: inline-block;
+            background-color: transparent;
+            color: #B8860B;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 12px 30px;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-outline::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #B8860B;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .btn-outline:hover {
             color: white;
         }
         
-        .submit-btn:hover {
-            background-color: #9f7409;
+        .btn-outline:hover::after {
+            width: 100%;
         }
         
-        /* Sticky sidebar */
-        @media (min-width: 1024px) {
-            .form-sidebar {
-                position: sticky;
-                top: 90px;
-            }
+        /* Contact button specific styles */
+        .contact-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            padding: 16px 40px;
+            border-radius: 0;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-decoration: none;
+        }
+        
+        .whatsapp-button {
+            background-color: #25D366;
+            color: white;
+            border: 1px solid #25D366;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .whatsapp-button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .whatsapp-button:hover {
+            color: #25D366;
+        }
+        
+        .whatsapp-button:hover::after {
+            width: 100%;
+        }
+        
+        .email-button {
+            background-color: #B8860B;
+            color: white;
+            border: 1px solid #B8860B;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .email-button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            z-index: -1;
+            transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .email-button:hover {
+            color: #B8860B;
+        }
+        
+        .email-button:hover::after {
+            width: 100%;
+        }
+        
+        /* Animation styles */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero-text-container h1 {
+            line-height: 1.05;
+            animation: fadeIn 1.2s ease-out forwards;
+        }
+        
+        .hero-text-container p {
+            animation: fadeIn 1.2s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+        
+        .hero-buttons {
+            animation: fadeIn 1.2s ease-out 0.6s forwards;
+            opacity: 0;
         }
     </style>
 </head>
 
-<body class="text-gray-800 bg-gray-50">
-    <!-- Include Navbar -->
+<body class="bg-cream font-sans text-secondary antialiased">
     <%- include('../partials/navbar') %>
-
-    <main class="pt-[74px] pb-12">
-        <!-- Hero Header -->
-        <div class="w-full relative overflow-hidden">
-            <img src="/images/headers/customize-bg.jpg" alt="Customize Your Morocco Tour" class="w-full h-[40vh] md:h-[50vh] object-cover">
-            
-            <!-- Overlay with title -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6 md:p-10">
-                <div class="container mx-auto">
-                    <div class="max-w-4xl">
-                        <h1 class="text-2xl md:text-4xl text-white font-bold mb-2">Customize Your Morocco Adventure</h1>
-                        <div class="flex flex-wrap items-center gap-4 text-white">
-                            <div class="flex items-center">
-                                <i class="fas fa-map-marker-alt mr-2 text-warning"></i>
-                                <span>Morocco</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-pencil-alt mr-2 text-warning"></i>
-                                <span>Personalized Itineraries</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-user-check mr-2 text-warning"></i>
-                                <span>Expert Travel Planners</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen bg-white flex items-center justify-center relative overflow-hidden pt-20">
+        <!-- Minimal Background Elements -->
+        <div class="absolute inset-0">
+            <!-- Single subtle accent -->
+            <div class="absolute top-1/4 right-1/4 w-1 h-1 bg-primary rounded-full opacity-60"></div>
+            <div class="absolute bottom-1/3 left-1/3 w-0.5 h-0.5 bg-primary rounded-full opacity-40"></div>
         </div>
-
-        <!-- Main Content -->
-        <div class="container mx-auto px-4 mt-8">
-            <div class="flex flex-col lg:flex-row gap-8">
-                <!-- Form Details -->
-                <div class="w-full lg:w-2/3">
-                    <!-- Navigation Tabs -->
-                    <div class="mb-6 border-b border-gray-200">
-                        <nav class="flex space-x-6" id="customize-nav">
-                            <a href="#how-it-works" class="py-3 border-b-2 border-primary font-medium text-primary">How It Works</a>
-                            <a href="#request-form" class="py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700">Request Form</a>
-                            <a href="#faq" class="py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700">FAQs</a>
-                        </nav>
-                    </div>
-
-                    <!-- How It Works Section -->
-                    <div id="how-it-works" class="bg-white border border-gray-200 p-6 mb-8">
-                        <h2 class="text-2xl font-semibold text-secondary mb-6">How Our Custom Tours Work</h2>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div class="feature-card bg-gray-50 p-6 border border-gray-200">
-                                <div class="text-primary text-3xl mb-4">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </div>
-                                <h3 class="text-lg font-semibold mb-2">1. Share Your Vision</h3>
-                                <p class="text-gray-600">Tell us about your dream Morocco experience, preferences, and must-see destinations.</p>
-                            </div>
-                            
-                            <div class="feature-card bg-gray-50 p-6 border border-gray-200">
-                                <div class="text-primary text-3xl mb-4">
-                                    <i class="fas fa-map"></i>
-                                </div>
-                                <h3 class="text-lg font-semibold mb-2">2. Receive Your Itinerary</h3>
-                                <p class="text-gray-600">Our experts will craft a personalized itinerary based on your input within 24 hours.</p>
-                            </div>
-                            
-                            <div class="feature-card bg-gray-50 p-6 border border-gray-200">
-                                <div class="text-primary text-3xl mb-4">
-                                    <i class="fas fa-suitcase"></i>
-                                </div>
-                                <h3 class="text-lg font-semibold mb-2">3. Enjoy Your Journey</h3>
-                                <p class="text-gray-600">Once finalized, we'll handle all the details so you can enjoy a stress-free experience.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="prose max-w-none text-gray-700">
-                            <p>At Voyageo Tours, we believe that every traveler is unique, and your Morocco experience should be too. Our custom tours are designed around your interests, schedule, and travel style.</p>
-                            <p class="mt-4">Whether you're looking for cultural immersion, adventure activities, relaxation, or a mix of experiences, our local experts will create the perfect itinerary that matches your vision.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Request Form Section -->
-                    <div id="request-form" class="bg-white border border-gray-200 p-6 mb-8">
-                        <h2 class="text-2xl font-semibold text-secondary mb-6">Request Your Custom Tour</h2>
-                        
-                        <% if (typeof success !== 'undefined' && success) { %>
-                            <div class="bg-green-50 border border-green-200 text-green-800 rounded p-4 mb-6">
-                                <div class="flex items-start">
-                                    <i class="fas fa-check-circle text-2xl mr-3 mt-0.5"></i>
-                                    <div>
-                                        <h5 class="font-medium text-lg mb-1">Thank you for your request!</h5>
-                                        <p>We've received your tour customization details and will contact you shortly to discuss your dream Morocco adventure.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        <% } %>
-
-                        <% if (typeof error !== 'undefined' && error) { %>
-                            <div class="bg-red-50 border border-red-200 text-red-800 rounded p-4 mb-6">
-                                <div class="flex items-start">
-                                    <i class="fas fa-exclamation-triangle text-2xl mr-3 mt-0.5"></i>
-                                    <p><%= error %></p>
-                                </div>
-                            </div>
-                        <% } %>
-
-                        <form action="/customize" method="POST" id="customTourForm">
-                            <!-- Honeypot field - hidden from humans but bots will fill it -->
-                            <div class="hidden">
-                                <label for="website">Website (leave empty)</label>
-                                <input type="text" id="website" name="website" autocomplete="off">
-                            </div>
-                            
-                            <!-- Personal Information Section -->
-                            <div class="mb-8">
-                                <h3 class="text-xl font-semibold text-secondary mb-4 pb-2 border-b border-gray-200">
-                                    <i class="fas fa-user text-primary mr-2"></i>
-                                    Personal Information
-                                </h3>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label for="fullName" class="block text-gray-700 font-medium mb-2">Full Name <span class="text-primary">*</span></label>
-                                        <input 
-                                            type="text" 
-                                            class="form-control" 
-                                            id="fullName" 
-                                            name="fullName" 
-                                            required
-                                            value="<%= typeof formData !== 'undefined' ? formData.fullName || '' : '' %>"
-                                        >
-                                        <div class="invalid-feedback">Please enter your full name (minimum 3 characters)</div>
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="email" class="block text-gray-700 font-medium mb-2">Email Address <span class="text-primary">*</span></label>
-                                        <input 
-                                            type="email" 
-                                            class="form-control" 
-                                            id="email" 
-                                            name="email" 
-                                            required
-                                            value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>"
-                                        >
-                                        <div class="invalid-feedback">Please enter a valid email address</div>
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number <span class="text-primary">*</span></label>
-                                        <input 
-                                            type="tel" 
-                                            class="form-control" 
-                                            id="phone" 
-                                            name="phone" 
-                                            required
-                                            placeholder="+1 (123) 456-7890"
-                                            value="<%= typeof formData !== 'undefined' ? formData.phone || '' : '' %>"
-                                        >
-                                        <div class="invalid-feedback">Please enter a valid phone number</div>
-                                        <div class="text-gray-500 text-sm mt-1">We may contact you regarding your tour request</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Tour Details Section -->
-                            <div class="mb-8">
-                                <h3 class="text-xl font-semibold text-secondary mb-4 pb-2 border-b border-gray-200">
-                                    <i class="fas fa-calendar-alt text-primary mr-2"></i>
-                                    Tour Details
-                                </h3>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                                    <div>
-                                        <label for="startDate" class="block text-gray-700 font-medium mb-2">Preferred Start Date <span class="text-primary">*</span></label>
-                                        <input 
-                                            type="date" 
-                                            class="form-control" 
-                                            id="startDate" 
-                                            name="startDate" 
-                                            required
-                                            min="<%= new Date().toISOString().split('T')[0] %>"
-                                            value="<%= typeof formData !== 'undefined' ? formData.startDate || '' : '' %>"
-                                        >
-                                        <div class="invalid-feedback">Please select a start date</div>
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="duration" class="block text-gray-700 font-medium mb-2">Duration (days) <span class="text-primary">*</span></label>
-                                        <input 
-                                            type="number" 
-                                            class="form-control" 
-                                            id="duration" 
-                                            name="duration" 
-                                            min="1" 
-                                            max="30" 
-                                            required
-                                            value="<%= typeof formData !== 'undefined' ? formData.duration || '7' : '7' %>"
-                                        >
-                                        <div class="invalid-feedback">Please enter a duration between 1-30 days</div>
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="groupSize" class="block text-gray-700 font-medium mb-2">Number of Travelers <span class="text-primary">*</span></label>
-                                        <input 
-                                            type="number" 
-                                            class="form-control" 
-                                            id="groupSize" 
-                                            name="groupSize" 
-                                            min="1" 
-                                            max="20" 
-                                            required
-                                            value="<%= typeof formData !== 'undefined' ? formData.groupSize || '2' : '2' %>"
-                                        >
-                                        <div class="invalid-feedback">Please enter a group size between 1-20 people</div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label for="requestDetails" class="block text-gray-700 font-medium mb-2">Your Tour Requirements <span class="text-primary">*</span></label>
-                                    <textarea 
-                                        class="form-control" 
-                                        id="requestDetails" 
-                                        name="requestDetails" 
-                                        rows="6" 
-                                        required
-                                        placeholder="Please describe your ideal tour, including destinations you'd like to visit, types of activities, accommodation preferences, and any special requirements."
-                                    ><%= typeof formData !== 'undefined' ? formData.requestDetails || '' : '' %></textarea>
-                                    <div class="invalid-feedback">Please provide more details about your tour request (minimum 20 characters)</div>
-                                    <div class="text-gray-500 text-sm mt-1">The more details you provide, the better we can customize your experience</div>
-                                </div>
-                            </div>
-
-                            <!-- Security Section -->
-                            <div class="mb-8">
-                                <h3 class="text-xl font-semibold text-secondary mb-4 pb-2 border-b border-gray-200">
-                                    <i class="fas fa-shield-alt text-primary mr-2"></i>
-                                    Security Check
-                                </h3>
-                                
-                                <div class="bg-gray-50 border border-gray-200 p-4 mb-6">
-                                    <div class="flex items-center flex-wrap">
-                                        <span class="mr-2">What is <span id="num1" class="font-bold">3</span> + <span id="num2" class="font-bold">5</span>? <span class="text-primary">*</span></span>
-                                        <input type="number" class="form-control w-24 ml-2" id="mathCaptcha" name="mathCaptcha" required>
-                                        <input type="hidden" id="expectedAnswer" name="expectedAnswer">
-                                        <div class="invalid-feedback w-full mt-2">Please enter the correct answer</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="text-gray-500 text-sm">
-                                    By submitting this form, you agree to our <a href="/terms-conditions" class="text-primary hover:underline">Terms & Conditions</a> and <a href="/privacy-policy" class="text-primary hover:underline">Privacy Policy</a>.
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <!-- FAQ Section -->
-                    <div id="faq" class="bg-white border border-gray-200 p-6 mb-8">
-                        <h2 class="text-2xl font-semibold text-secondary mb-6">Frequently Asked Questions</h2>
-                        
-                        <div class="space-y-4">
-                            <div class="border-b border-gray-200 pb-4">
-                                <h3 class="text-lg font-semibold mb-2">How long does it take to create a custom itinerary?</h3>
-                                <p class="text-gray-700">We typically respond within 24 hours with an initial proposal. The final itinerary is usually ready within 2-3 days, depending on the complexity of your request.</p>
-                            </div>
-                            
-                            <div class="border-b border-gray-200 pb-4">
-                                <h3 class="text-lg font-semibold mb-2">Is there a fee for requesting a custom tour?</h3>
-                                <p class="text-gray-700">No, our custom tour planning service is completely free. We only charge for the actual tour once you decide to book with us.</p>
-                            </div>
-                            
-                            <div class="border-b border-gray-200 pb-4">
-                                <h3 class="text-lg font-semibold mb-2">Can I modify the itinerary after receiving it?</h3>
-                                <p class="text-gray-700">Absolutely! We'll work with you to refine the itinerary until it perfectly matches your expectations. We can make adjustments to destinations, activities, accommodation types, and more.</p>
-                            </div>
-                            
-                            <div class="border-b border-gray-200 pb-4">
-                                <h3 class="text-lg font-semibold mb-2">What if I need to cancel or change my dates?</h3>
-                                <p class="text-gray-700">We understand plans change. Our flexible booking policy allows for date changes and cancellations according to our terms and conditions. Please refer to our cancellation policy for specific details.</p>
-                            </div>
-                            
-                            <div>
-                                <h3 class="text-lg font-semibold mb-2">Do you provide guides who speak languages other than English?</h3>
-                                <p class="text-gray-700">Yes, we have guides who speak multiple languages including French, Spanish, German, Italian, and more. Please specify your language preference in your request.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Form Sidebar -->
-                <div class="w-full lg:w-1/3">
-                    <div class="form-sidebar">
-                        <div class="bg-white border border-gray-200 p-6 mb-6">
-                            <h2 class="text-xl font-semibold mb-6 pb-4 border-b border-gray-200">Submit Your Request</h2>
-                            
-                            <div class="space-y-4">
-                                <p class="text-gray-700">Ready to start planning your dream Morocco adventure? Complete the form and our travel experts will be in touch soon.</p>
-                                
-                                <div class="bg-gray-50 p-4 border border-gray-200 mb-4">
-                                    <h3 class="font-medium mb-2">What to expect:</h3>
-                                    <ul class="text-gray-700 space-y-2">
-                                        <li class="flex items-start">
-                                            <i class="fas fa-check text-primary mr-2 mt-1"></i>
-                                            <span>A personal travel consultant</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <i class="fas fa-check text-primary mr-2 mt-1"></i>
-                                            <span>Custom itinerary within 24 hours</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <i class="fas fa-check text-primary mr-2 mt-1"></i>
-                                            <span>No obligation quote</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <i class="fas fa-check text-primary mr-2 mt-1"></i>
-                                            <span>Personalized recommendations</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                
-                                <button type="submit" form="customTourForm" class="submit-btn">
-                                    <i class="fas fa-paper-plane"></i>
-                                    <span>Submit Your Request</span>
-                                </button>
-                                
-                                <div class="text-center text-sm text-gray-500 mt-4">
-                                    <p>Our team is available 24/7 to assist you</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Testimonials -->
-                        <div class="bg-white border border-gray-200 p-6">
-                            <h3 class="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">What Our Travelers Say</h3>
-                            
-                            <div class="space-y-4">
-                                <div class="relative">
-                                    <div class="text-primary text-4xl absolute -top-2 left-0 opacity-20">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    <div class="relative pl-6">
-                                        <p class="text-gray-700 italic text-sm mb-2">
-                                            "Our custom tour through Morocco was the trip of a lifetime. The team at Voyageo Tours created an itinerary that perfectly matched our interests."
-                                        </p>
-                                        <div class="flex items-center">
-                                            <div class="text-warning text-xs">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                            <span class="ml-2 text-xs font-medium">Sarah & Michael, USA</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="relative">
-                                    <div class="text-primary text-4xl absolute -top-2 left-0 opacity-20">
-                                        <i class="fas fa-quote-left"></i>
-                                    </div>
-                                    <div class="relative pl-6">
-                                        <p class="text-gray-700 italic text-sm mb-2">
-                                            "As a solo traveler with specific interests, Voyageo Tours created the perfect custom itinerary. I felt safe and experienced Morocco in a way I never could have on my own."
-                                        </p>
-                                        <div class="flex items-center">
-                                            <div class="text-warning text-xs">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                            <span class="ml-2 text-xs font-medium">Elena, Canada</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        
+        <div class="container mx-auto px-6 md:px-12 text-center relative z-10">
+            <!-- Minimal Badge -->
+            <div class="inline-block mb-8" data-aos="fade-up" data-aos-duration="600">
+                <span class="text-xs uppercase tracking-[0.2em] text-secondary/60 font-medium">Voyageo - Custom Morocco Experiences</span>
             </div>
-        </div>
-    </main>
-
-    <!-- Featured Experiences -->
-    <section class="py-12 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <h2 class="text-2xl font-bold text-center mb-8">Popular Tour Experiences</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300">
-                    <div class="relative h-48">
-                        <img src="/images/tours/sahara-desert.jpg" alt="Sahara Desert Experience" class="object-cover w-full h-full">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Sahara Desert Experience</h3>
-                        <p class="text-gray-600 text-sm mb-3">Experience the magic of spending a night under the stars in the Sahara Desert.</p>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-fire-alt text-warning mr-1"></i> 
-                            <span>Most requested in custom tours</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Clean Typography -->
+            <div class="max-w-4xl mx-auto mb-12 hero-text-container" data-aos="fade-up" data-aos-delay="200" data-aos-duration="600">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-secondary leading-[0.9] mb-8">
+                    Get a Custom
+                    <span class="block text-primary font-medium">Tour</span>
+                    <span class="block text-primary font-medium">Excursion</span>
+                    <span class="block text-primary font-medium">Activity</span>
+                    <span class="block text-primary font-medium">Transfer</span>
+                </h1>
                 
-                <div class="bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300">
-                    <div class="relative h-48">
-                        <img src="/images/tours/chefchaouen.jpg" alt="Blue City of Chefchaouen" class="object-cover w-full h-full">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Blue City of Chefchaouen</h3>
-                        <p class="text-gray-600 text-sm mb-3">Explore the enchanting blue-washed streets of this picturesque mountain town.</p>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-camera text-warning mr-1"></i> 
-                            <span>Photographer's favorite</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Minimal Divider -->
+                <div class="w-12 h-px bg-primary mx-auto mb-8"></div>
                 
-                <div class="bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300">
-                    <div class="relative h-48">
-                        <img src="/images/tours/atlas-mountains.jpg" alt="Atlas Mountains Trek" class="object-cover w-full h-full">
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Atlas Mountains Trek</h3>
-                        <p class="text-gray-600 text-sm mb-3">Hike through stunning mountain landscapes and visit traditional Berber villages.</p>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-hiking text-warning mr-1"></i> 
-                            <span>Adventure seekers' choice</span>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-lg md:text-xl text-secondary/70 font-light leading-relaxed max-w-2xl mx-auto">
+                    Contact Voyageo to create your personalized Morocco experience. We'll design the perfect journey tailored to your preferences and dreams.
+                </p>
+            </div>
+            
+            <!-- Contact Buttons -->
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center hero-buttons" data-aos="fade-up" data-aos-delay="400" data-aos-duration="600">
+                <!-- WhatsApp Button -->
+                <a href="https://wa.me/212600123456?text=Hi%20Voyageo!%20I%27d%20like%20to%20get%20a%20custom%20Morocco%20experience." 
+                   target="_blank" 
+                   class="contact-button whatsapp-button">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                    <span>WhatsApp</span>
+                </a>
+                
+                <!-- Email Button -->
+                <a href="mailto:info@voyageo-tours.com?subject=Custom%20Morocco%20Experience&body=Hello%20Voyageo,%0A%0AI%27d%20like%20to%20get%20a%20custom%20Morocco%20experience.%0A%0AThank%20you!" 
+                   class="contact-button email-button">
+                    <i class="fas fa-envelope text-xl"></i>
+                    <span>Email</span>
+                </a>
+            </div>
+            
+            <!-- Bottom Text -->
+            <div class="mt-12 text-secondary/50 text-sm font-light" data-aos="fade-up" data-aos-delay="600" data-aos-duration="600">
+                <p>✨ Personalized Planning • 🚀 Quick Response • 🎯 Local Expertise</p>
             </div>
         </div>
     </section>
-
+    
     <%- include('../partials/footer') %>
-
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Set up math captcha
-            const num1 = Math.floor(Math.random() * 10);
-            const num2 = Math.floor(Math.random() * 10);
-            document.getElementById('num1').textContent = num1;
-            document.getElementById('num2').textContent = num2;
-            document.getElementById('expectedAnswer').value = num1 + num2;
-            
-            // Form validation with visual feedback
-            const form = document.getElementById('customTourForm');
-            const inputs = form.querySelectorAll('input, textarea');
-            
-            // Add input event listeners for real-time validation
-            inputs.forEach(input => {
-                if (input.id !== 'website') { // Skip honeypot field
-                    input.addEventListener('input', function() {
-                        validateInput(this);
-                    });
-                    
-                    input.addEventListener('blur', function() {
-                        validateInput(this);
-                    });
-                }
-            });
-            
-            // Function to validate a single input
-            function validateInput(input) {
-                let isValid = true;
-                const errorElement = input.nextElementSibling;
-                
-                // Remove existing validation classes
-                input.classList.remove('is-valid', 'is-invalid');
-                
-                // Validate based on input type
-                switch(input.id) {
-                    case 'fullName':
-                        isValid = input.value.trim().length >= 3;
-                        break;
-                        
-                    case 'email':
-                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        isValid = emailRegex.test(input.value.trim());
-                        break;
-                        
-                    case 'phone':
-                        isValid = input.value.trim().length >= 10;
-                        break;
-                        
-                    case 'startDate':
-                        isValid = input.value !== '';
-                        break;
-                        
-                    case 'duration':
-                        isValid = parseInt(input.value) >= 1 && parseInt(input.value) <= 30;
-                        break;
-                        
-                    case 'groupSize':
-                        isValid = parseInt(input.value) >= 1 && parseInt(input.value) <= 20;
-                        break;
-                        
-                    case 'requestDetails':
-                        isValid = input.value.trim().length >= 20;
-                        break;
-                        
-                    case 'mathCaptcha':
-                        isValid = parseInt(input.value) === parseInt(document.getElementById('expectedAnswer').value);
-                        break;
-                }
-                
-                // Add appropriate validation class
-                if (input.value.trim() === '') {
-                    // Don't show validation for empty fields until form submission
-                    return;
-                } else if (isValid) {
-                    input.classList.add('is-valid');
-                    if (errorElement && errorElement.classList.contains('invalid-feedback')) {
-                        errorElement.style.display = 'none';
-                    }
-                } else {
-                    input.classList.add('is-invalid');
-                    if (errorElement && errorElement.classList.contains('invalid-feedback')) {
-                        errorElement.style.display = 'block';
-                    }
-                }
-                
-                return isValid;
-            }
-            
-            // Form submission validation
-            form.addEventListener('submit', function(event) {
-                let isValid = true;
-                const errorMessages = [];
-                
-                // Validate all inputs
-                inputs.forEach(input => {
-                    if (input.id !== 'website' && input.id !== 'expectedAnswer') { // Skip honeypot field and hidden fields
-                        if (!validateInput(input)) {
-                            isValid = false;
-                            const label = input.previousElementSibling.textContent.replace('*', '').trim();
-                            
-                            // Only add message if not already in the array
-                            const message = `Please enter a valid ${label.toLowerCase()}`;
-                            if (!errorMessages.includes(message)) {
-                                errorMessages.push(message);
-                            }
-                        }
-                    }
-                });
-                
-                // Check honeypot
-                if (document.getElementById('website').value.trim() !== '') {
-                    isValid = false; // Bot detected, silently reject
-                }
-                
-                // If validation fails, prevent form submission and show errors
-                if (!isValid) {
-                    event.preventDefault();
-                    
-                    // Create or update error alert
-                    let errorAlert = document.querySelector('.bg-red-50');
-                    if (!errorAlert) {
-                        errorAlert = document.createElement('div');
-                        errorAlert.className = 'bg-red-50 border border-red-200 text-red-800 rounded p-4 mb-6';
-                        const formHeader = document.querySelector('#request-form h2');
-                        formHeader.insertAdjacentElement('afterend', errorAlert);
-                    }
-                    
-                    errorAlert.innerHTML = `
-                        <div class="flex items-start">
-                          <i class="fas fa-exclamation-triangle text-2xl mr-3 mt-0.5"></i>
-                          <div>
-                            <h5 class="font-medium mb-1">Please fix the following errors:</h5>
-                            <p>${errorMessages.join('<br>')}</p>
-                          </div>
-                        </div>
-                    `;
-                    
-                    // Scroll to the top of the form
-                    window.scrollTo({
-                        top: errorAlert.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-            
-            // Smooth scroll for navigation
-            document.querySelectorAll('#customize-nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Update active tab
-                    document.querySelectorAll('#customize-nav a').forEach(a => {
-                        a.classList.remove('border-primary', 'text-primary');
-                        a.classList.add('border-transparent', 'text-gray-500');
-                    });
-                    this.classList.add('border-primary', 'text-primary');
-                    this.classList.remove('border-transparent', 'text-gray-500');
-                });
+            // Initialize AOS animations
+            AOS.init({
+                duration: 600,
+                once: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
             });
         });
     </script>

@@ -363,7 +363,7 @@
                                 </div>
                                 
                                 <p class="text-secondary/70 text-sm mb-6 line-clamp-3">
-                                    <%= activity.description ? activity.description.substring(0, 150) + '...' : 'Experience authentic Moroccan culture with this unique activity.' %>
+                                    <%= activity.description ? activity.description.replace(/<[^>]*>/g, '').substring(0, 150) + '...' : 'Experience authentic Moroccan culture with this unique activity.' %>
                                 </p>
                                 
                                 <a href="/activities/<%= activity.slug %>" class="btn-primary w-full text-center">
@@ -466,7 +466,7 @@
                     <div class="accordion-item">
                         <h3 class="accordion-header">What is the cancellation policy?</h3>
                         <div class="accordion-body">
-                            <p>We understand that plans can change. For most activities, we offer free cancellation up to 48 hours before the scheduled time. Cancellations made less than 48 hours in advance may incur a fee. Please refer to the specific activity details for any unique cancellation policies.</p>
+                            <p>We understand that plans can change. For most activities, we offer free cancellation up to 48 hours before the scheduled time. Cancellations $e less than 48 hours in advance may incur a fee. Please refer to the specific activity details for any unique cancellation policies.</p>
                         </div>
                     </div>
                 </div>

@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
-    <meta name="keywords" content="Morocco tours, Morocco travel, Sahara Desert, Marrakech, Morocco vacation, Morocco experiences">
+    <meta name="description" content="Voyageo - The best travel agency in Morocco. Discover authentic Morocco tours, Sahara Desert adventures, and cultural experiences with Voyageo Tours, your trusted Morocco travel expert.">
+    <meta name="keywords" content="Voyageo, best travel agency in Morocco, Morocco tours, Voyageo Tours, Sahara Desert, Marrakech, Morocco vacation, Morocco travel agency, authentic Morocco experiences">
     <meta name="author" content="Voyageo Tours">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://voyageo-tours.com/">
-    <meta property="og:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
-    <meta property="og:description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+    <meta property="og:title" content="<%= pageTitle %> | Voyageo - Best Travel Agency in Morocco">
+    <meta property="og:description" content="Voyageo - The best travel agency in Morocco. Discover authentic Morocco tours and experiences with Voyageo Tours, your premier Morocco travel partner.">
     <meta property="og:image" content="/images/morocco-share.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://voyageo-tours.com/">
-    <meta property="twitter:title" content="<%= pageTitle %> | Voyageo Tours Morocco">
-    <meta property="twitter:description" content="Discover the best Morocco tours and travel experiences with Voyageo Tours. Explore the Sahara Desert, ancient cities, and vibrant culture with our expert guides.">
+    <meta property="twitter:title" content="<%= pageTitle %> | Voyageo - Best Travel Agency in Morocco">
+    <meta property="twitter:description" content="Voyageo - The best travel agency in Morocco. Discover authentic Morocco tours and experiences with Voyageo Tours.">
     <meta property="twitter:image" content="/images/morocco-share.jpg">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/images/favicon.png">
     
     <!-- Title -->
-    <title><%= pageTitle %> | Voyageo Tours Morocco</title>
+    <title><%= pageTitle %> | Voyageo - Best Travel Agency in Morocco</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -568,326 +568,456 @@
     <%- include('../partials/navbar') %>
     
     <!-- Hero Section -->
-    <section class="hero-section">
-        <video class="hero-bg-video" autoplay muted loop playsinline>
-            <source src="/videos/morocco-hero.mp4" type="video/mp4">
-            <!-- Fallback image from headers folder -->
-            <img src="/images/headers/morocco-banner.jpg" alt="Morocco Landscapes">
-        </video>
-        
-        <!-- Hero Background Image -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://www.moroccotoursagency.com/wp-content/uploads/2-days-marrakech-merzouga-1.jpg" alt="Morocco Experience" class="w-full h-full object-cover opacity-40">
+    <section class="min-h-screen bg-white flex items-center justify-center relative overflow-hidden pt-20">
+        <!-- Minimal Background Elements -->
+        <div class="absolute inset-0">
+            <!-- Single subtle accent -->
+            <div class="absolute top-1/4 right-1/4 w-1 h-1 bg-primary rounded-full opacity-60"></div>
+            <div class="absolute bottom-1/3 left-1/3 w-0.5 h-0.5 bg-primary rounded-full opacity-40"></div>
         </div>
         
-        <div class="hero-overlay"></div>
-        
-        <!-- Background pattern -->
-        <div class="brand-pattern top-10 right-10"></div>
-        <div class="brand-pattern bottom-10 left-20"></div>
-        
-        <div class="hero-content">
-            <div class="container mx-auto px-6 md:px-12">
-                <div class="hero-text-container md:max-w-3xl lg:max-w-4xl">
-                    <span class="inline-block mb-4 font-sans text-primary uppercase tracking-widest text-sm font-medium">Real Moroccan Travel</span>
-                    <h1 class="text-4xl md:text-5.5xl lg:text-6.5xl font-serif font-medium mb-6 text-white leading-extra-tight">
-                        See the Real <br class="hidden md:block">Beauty of <span class="text-primary">Morocco</span>
-                    </h1>
-                    <p class="text-lg md:text-xl text-white/90 mb-6 max-w-2xl">
-                        We show you Morocco as it really is - from busy markets to quiet desert camps. Our local guides know the best places to eat, shop, and see.
-                    </p>
-                    
-                    <div class="hero-buttons flex flex-wrap gap-6">
-                        <a href="/tours" class="btn-primary group relative">
-                            <span>Explore Our Tours</span>
-                           
-                        </a>
-                        <a href="/customize" class="btn-outline">
-                            Design Your Journey
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div class="container mx-auto px-6 md:px-12 text-center relative z-10">
+            <!-- Minimal Badge -->
+            <div class="inline-block mb-8" data-aos="fade-up" data-aos-duration="600">
+                <span class="text-xs uppercase tracking-[0.2em] text-secondary/60 font-medium">Voyageo - Morocco Travel Experts</span>
         </div>
-    </section>
-    
-    <!-- Activities Section with standardized cards -->
-    <section class="py-24 bg-beige relative">
-        <div class="section-label">Activities</div>
-        <div class="pattern-diagonal"></div>
         
-        <div class="container mx-auto px-6 md:px-12">
-            <div class="flex flex-col sm:flex-row justify-between items-start mb-12">
-                <div class="max-w-md" data-aos="fade-right">
-                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Local Experiences</span>
-                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
-                        Moroccan Cultural Activities
-                    </h2>
-                    <p class="text-secondary/80">
-                        Try local cooking, crafts, and music with our Moroccan guides. You'll learn about daily life and traditions from locals.
-                    </p>
-                </div>
-                <a href="/activities" class="mt-6 sm:mt-0 group flex items-center hover-link text-primary" data-aos="fade-left">
-                    <span class="mr-2 font-medium">View All</span>
-                    <i class="fas fa-long-arrow-alt-right transition-transform group-hover:translate-x-1"></i>
-                </a>
+            <!-- Clean Typography -->
+            <div class="max-w-4xl mx-auto mb-12" data-aos="fade-up" data-aos-delay="200" data-aos-duration="600">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-secondary leading-[0.9] mb-8">
+                    Authentic
+                    <span class="block text-primary font-medium">Morocco</span>
+                    <span class="block font-light">with Voyageo</span>
+                </h1>
+                
+                <!-- Minimal Divider -->
+                <div class="w-12 h-px bg-primary mx-auto mb-8"></div>
+                
+                <p class="text-lg md:text-xl text-secondary/70 font-light leading-relaxed max-w-2xl mx-auto">
+                    Discover why the best travel agency in Morocco is Voyageo. We create carefully curated journeys that connect you with local culture, stunning landscapes, and unforgettable moments across Morocco.
+                </p>
             </div>
             
+            <!-- Clean CTA Buttons Grid -->
+            <div class="mb-16 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="400" data-aos-duration="600">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    <!-- Tours CTA -->
+                    <a href="/tours" class="group bg-secondary text-white px-6 py-4 text-sm uppercase tracking-wider font-medium hover:bg-primary transition-all duration-300 flex items-center justify-center space-x-2">
+                        <i class="fas fa-route text-sm group-hover:scale-110 transition-transform"></i>
+                        <span>Voyageo Tours</span>
+                    </a>
+                    
+                    <!-- Excursions CTA -->
+                    <a href="/excursions" class="group bg-white border border-secondary/20 text-secondary px-6 py-4 text-sm uppercase tracking-wider font-medium hover:bg-secondary hover:text-white hover:border-secondary transition-all duration-300 flex items-center justify-center space-x-2">
+                        <i class="fas fa-hiking text-sm group-hover:scale-110 transition-transform"></i>
+                        <span>Excursions</span>
+                    </a>
+                    
+                    <!-- Activities CTA -->
+                    <a href="/activities" class="group bg-white border border-secondary/20 text-secondary px-6 py-4 text-sm uppercase tracking-wider font-medium hover:bg-secondary hover:text-white hover:border-secondary transition-all duration-300 flex items-center justify-center space-x-2">
+                        <i class="fas fa-star text-sm group-hover:scale-110 transition-transform"></i>
+                        <span>Activities</span>
+                    </a>
+                    
+                    <!-- Transfers CTA -->
+                    <a href="/transfers" class="group bg-white border border-secondary/20 text-secondary px-6 py-4 text-sm uppercase tracking-wider font-medium hover:bg-secondary hover:text-white hover:border-secondary transition-all duration-300 flex items-center justify-center space-x-2">
+                        <i class="fas fa-car-side text-sm group-hover:scale-110 transition-transform"></i>
+                        <span>Transfers</span>
+                        </a>
+                    </div>
+                
+                <!-- Secondary CTA -->
+                <div class="mt-8">
+                    <a href="/customize" class="inline-block text-primary text-sm uppercase tracking-wider font-medium border-b border-primary/30 hover:border-primary transition-colors duration-300">
+                        Customize Your Voyageo Journey
+                    </a>
+                </div>
+            </div>
+            
+           
+        </div>
+        
+       
+    </section>
+    
+    <!-- Activities Section with minimal clean design -->
+    <section class="py-16 md:py-24 bg-white relative overflow-hidden">
+        <!-- Subtle background pattern -->
+        <div class="absolute top-0 right-0 w-64 h-64 opacity-5">
+            <div class="w-full h-full bg-gradient-to-br from-primary to-transparent rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 md:px-6 lg:px-12">
+            <!-- Section Header -->
+            <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+                <span class="inline-block px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+                    Voyageo Local Experiences
+                </span>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-secondary mb-4">
+                    Moroccan <span class="relative inline-block">
+                        <span class="relative z-10">Activities</span>
+                        <span class="absolute bottom-0 left-0 w-full h-1 bg-primary/30 rounded-full"></span>
+                    </span>
+                    </h2>
+                <p class="text-lg text-secondary/70 max-w-2xl mx-auto leading-relaxed">
+                    Immerse yourself in authentic Moroccan culture through hands-on experiences with local artisans and Voyageo expert guides
+                    </p>
+            </div>
+            
+            <!-- Activities Grid -->
             <% if (typeof featuredActivities !== 'undefined' && featuredActivities && featuredActivities.length > 0) { %>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
                     <% featuredActivities.slice(0, 3).forEach((activity, index) => { %>
-                        <div class="standard-card" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
-                            <div class="category-tag">Activity</div>
-                            <img src="/images/headers/activities-banner.jpg" alt="<%= activity.title %>" class="w-full h-full object-cover">
-                            <div class="standard-card-content">
-                                <h3 class="text-xl font-serif font-medium mb-2"><%= activity.title %></h3>
-                                <div class="flex items-center justify-between mb-4">
-                                    <div class="flex items-center text-white/70 text-sm">
-                                        <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                        <div class="group relative bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-large transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 100) %>">
+                            <!-- Image Container -->
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="/images/headers/activities-banner.jpg" alt="<%= activity.title %> - Voyageo Morocco" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
+                                
+                                <!-- Category Badge -->
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                    Voyageo Activity
+                                    </div>
+                                
+                                <!-- Price Badge -->
+                                <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                                    <%= activity.price.toLocaleString() %> $
+                                </div>
+                            </div>
+                            
+                            <!-- Content -->
+                            <div class="p-6">
+                                <h3 class="text-xl font-serif font-medium text-secondary mb-3 group-hover:text-primary transition-colors">
+                                    <%= activity.title %>
+                                </h3>
+                                
+                                <div class="flex items-center text-secondary/60 text-sm mb-4 space-x-4">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-map-marker-alt text-primary mr-2"></i>
                                         <span><%= activity.location || 'Morocco' %></span>
                                     </div>
-                                    <span class="text-white font-medium"><%= activity.price.toLocaleString() %> MAD</span>
-                                </div>
-                                <div class="flex items-center text-white/70 text-sm mb-4">
-                                    <i class="fas fa-clock mr-2 text-primary"></i>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-primary mr-2"></i>
                                     <span><%= activity.duration %> <%= activity.durationType %></span>
                                 </div>
-                                <a href="/activities/<%= activity.slug %>" class="btn-white text-sm">
-                                    View Details
+                                </div>
+                                
+                                <a href="/activities/<%= activity.slug %>" class="inline-flex items-center justify-center w-full py-3 px-6 bg-secondary text-white rounded-xl font-medium transition-all duration-300 hover:bg-primary group-hover:shadow-lg">
+                                    <span>Book with Voyageo</span>
+                                    <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                                 </a>
                             </div>
                         </div>
                     <% }) %>
                 </div>
             <% } else { %>
-                <div class="py-16 border border-gray-200 text-center" data-aos="fade-up">
-                    <div class="w-16 h-16 mx-auto rounded-full border-2 border-primary/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-star text-primary/40 text-xl"></i>
+                <div class="text-center py-16 bg-beige/30 rounded-2xl" data-aos="fade-up">
+                    <div class="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-star text-primary text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-serif text-secondary/70 mb-2">Activities Coming Soon</h3>
-                    <p class="text-secondary/60 text-sm">Check back soon for authentic Moroccan activities</p>
+                    <h3 class="text-2xl font-serif text-secondary/70 mb-3">Voyageo Activities Coming Soon</h3>
+                    <p class="text-secondary/60 max-w-md mx-auto">We're preparing amazing cultural experiences for you. Check back soon!</p>
                 </div>
             <% } %>
+            
+            <!-- View All Button -->
+            <div class="text-center" data-aos="fade-up">
+                <a href="/activities" class="inline-flex items-center px-8 py-4 bg-transparent border-2 border-primary text-primary rounded-xl font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg">
+                    <span>Explore All Voyageo Activities</span>
+                    <i class="fas fa-long-arrow-alt-right ml-3"></i>
+                </a>
+            </div>
         </div>
     </section>
     
-    <!-- Diagonal Divider -->
-    <div class="diagonal-divider"></div>
-    
-    <!-- Excursions Section with standardized cards -->
-    <section class="py-24 bg-white relative">
-        <div class="section-label">Day Trips</div>
-        <div class="pattern-diagonal"></div>
+    <!-- Excursions Section with minimal clean design -->
+    <section class="py-16 md:py-24 bg-beige/30 relative overflow-hidden">
+        <!-- Subtle background pattern -->
+        <div class="absolute bottom-0 left-0 w-64 h-64 opacity-5">
+            <div class="w-full h-full bg-gradient-to-tr from-primary to-transparent rounded-full blur-3xl"></div>
+        </div>
         
-        <div class="container mx-auto px-6 md:px-12">
-            <div class="flex flex-col md:flex-row items-start justify-between mb-16">
-                <div class="max-w-lg md:max-w-xl" data-aos="fade-right">
-                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Day Trips</span>
-                    <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">
-                        Great One-Day <br>Adventures
+        <div class="container mx-auto px-4 md:px-6 lg:px-12">
+            <!-- Section Header -->
+            <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+                <span class="inline-block px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+                    Voyageo Day Adventures
+                </span>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-secondary mb-4">
+                    Perfect <span class="relative inline-block">
+                        <span class="relative z-10">Excursions</span>
+                        <span class="absolute bottom-0 left-0 w-full h-1 bg-primary/30 rounded-full"></span>
+                    </span>
                     </h2>
-                    <p class="text-secondary/80 max-w-md">
-                        Visit mountains, waterfalls, and historic sites in a single day. Perfect when you're short on time but want to see Morocco's highlights.
+                <p class="text-lg text-secondary/70 max-w-2xl mx-auto leading-relaxed">
+                    Discover Morocco's natural wonders and historic treasures in unforgettable day trips with Voyageo
                     </p>
                 </div>
                 
-                <a href="/excursions" class="mt-6 md:mt-0 group relative overflow-hidden" data-aos="fade-left">
-                    <div class="relative z-10 px-6 py-3 border border-primary flex items-center">
-                        <span class="mr-3 text-primary font-medium transition-all group-hover:mr-5">View All Excursions</span>
-                        <i class="fas fa-arrow-right text-primary text-sm transition-all group-hover:transform group-hover:translate-x-1"></i>
-                    </div>
-                    <div class="absolute inset-0 w-0 bg-primary transition-all duration-300 group-hover:w-full"></div>
-                </a>
-            </div>
-            
+            <!-- Excursions Grid -->
             <% if (typeof featuredExcursions !== 'undefined' && featuredExcursions && featuredExcursions.length > 0) { %>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
                     <% featuredExcursions.slice(0, 6).forEach((excursion, index) => { %>
-                        <div class="standard-card" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
-                            <div class="category-tag">Excursion</div>
-                            <img src="/images/headers/excursion-details-banner.jpg" alt="<%= excursion.title %>" class="w-full h-full object-cover">
-                            <div class="standard-card-content">
-                                <h3 class="text-xl font-serif font-medium mb-2"><%= excursion.title %></h3>
-                                <div class="flex items-center text-white/70 text-sm mb-3">
-                                    <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
-                                    <span><%= excursion.startLocation %></span>
+                        <div class="group relative bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-large transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
+                            <!-- Image Container -->
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="/images/headers/excursion-details-banner.jpg" alt="<%= excursion.title %> - Voyageo Morocco" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
+                                
+                                <!-- Category Badge -->
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                    Voyageo Day Trip
                                 </div>
-                                <div class="flex items-center text-white/70 text-sm mb-4">
-                                    <i class="fas fa-clock mr-2 text-primary"></i>
-                                    <span><%= excursion.duration %> <%= excursion.durationType %></span>
+                                
+                                <!-- Duration Badge -->
+                                <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                                    <%= excursion.duration %> <%= excursion.durationType %>
                                 </div>
-                                <a href="/excursions/<%= excursion.slug %>" class="btn-white text-sm">
-                                    View Details
+                            </div>
+                            
+                            <!-- Content -->
+                            <div class="p-6">
+                                <h3 class="text-xl font-serif font-medium text-secondary mb-3 group-hover:text-primary transition-colors">
+                                    <%= excursion.title %>
+                                </h3>
+                                
+                                <div class="flex items-center text-secondary/60 text-sm mb-4">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                    <span>From <%= excursion.startLocation %></span>
+                                </div>
+                                
+                                <a href="/excursions/<%= excursion.slug %>" class="inline-flex items-center justify-center w-full py-3 px-6 bg-secondary text-white rounded-xl font-medium transition-all duration-300 hover:bg-primary group-hover:shadow-lg">
+                                    <span>Book with Voyageo</span>
+                                    <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                                 </a>
                             </div>
                         </div>
                     <% }) %>
                 </div>
             <% } else { %>
-                <div class="py-20 border border-gray-200 flex flex-col items-center justify-center" data-aos="fade-up">
-                    <div class="w-20 h-20 rounded-full border-2 border-primary/20 flex items-center justify-center mb-6">
-                        <i class="fas fa-hiking text-primary/40 text-2xl"></i>
+                <div class="text-center py-16 bg-white rounded-2xl shadow-soft" data-aos="fade-up">
+                    <div class="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-hiking text-primary text-2xl"></i>
                     </div>
-                    <h3 class="text-2xl font-serif text-secondary/80 mb-2">Excursions Coming Soon</h3>
-                    <p class="text-secondary/60">Check back soon for our exciting day trips around Morocco</p>
+                    <h3 class="text-2xl font-serif text-secondary/70 mb-3">Voyageo Excursions Coming Soon</h3>
+                    <p class="text-secondary/60 max-w-md mx-auto">Amazing day trips are being prepared for you. Stay tuned!</p>
                 </div>
             <% } %>
+            
+            <!-- View All Button -->
+            <div class="text-center" data-aos="fade-up">
+                <a href="/excursions" class="inline-flex items-center px-8 py-4 bg-transparent border-2 border-primary text-primary rounded-xl font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg">
+                    <span>Explore All Voyageo Excursions</span>
+                    <i class="fas fa-long-arrow-alt-right ml-3"></i>
+                </a>
+            </div>
         </div>
     </section>
     
-    <!-- Wave Divider -->
-    <div class="wave-divider">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
-        </svg>
+    <!-- Transfers Section with minimal clean design -->
+    <section class="py-16 md:py-24 bg-white relative overflow-hidden">
+        <!-- Subtle background pattern -->
+        <div class="absolute top-1/2 right-0 w-64 h-64 opacity-5 transform -translate-y-1/2">
+            <div class="w-full h-full bg-gradient-to-bl from-primary to-transparent rounded-full blur-3xl"></div>
     </div>
     
-    <!-- Transfers Section with standardized cards -->
-    <section class="py-24 bg-beige relative">
-        <div class="section-label">Transportation</div>
-        <div class="pattern-diagonal"></div>
-        
-        <div class="container mx-auto px-6 md:px-12">
-            <div class="flex flex-col sm:flex-row justify-between items-start mb-12">
-                <div class="max-w-md" data-aos="fade-right">
-                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Comfortable Travel</span>
-                    <h2 class="text-2xl md:text-3xl font-serif font-medium mb-5 leading-tight decorative-line">
-                        Private Transfer Services
+        <div class="container mx-auto px-4 md:px-6 lg:px-12">
+            <!-- Section Header -->
+            <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+                <span class="inline-block px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+                    Voyageo Comfortable Travel
+                </span>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-secondary mb-4">
+                    Private <span class="relative inline-block">
+                        <span class="relative z-10">Transfers</span>
+                        <span class="absolute bottom-0 left-0 w-full h-1 bg-primary/30 rounded-full"></span>
+                    </span>
                     </h2>
-                    <p class="text-secondary/80">
-                        Get around Morocco safely in our comfortable vehicles. Our professional drivers know the roads and help make travel easy.
+                <p class="text-lg text-secondary/70 max-w-2xl mx-auto leading-relaxed">
+                    Travel safely and comfortably across Morocco with Voyageo's professional drivers and modern vehicles
                     </p>
-                </div>
-                <a href="/transfers" class="mt-6 sm:mt-0 group flex items-center hover-link text-primary" data-aos="fade-left">
-                    <span class="mr-2 font-medium">View All</span>
-                    <i class="fas fa-long-arrow-alt-right transition-transform group-hover:translate-x-1"></i>
-                </a>
             </div>
             
+            <!-- Transfers Grid -->
             <% if (typeof popularTransfers !== 'undefined' && popularTransfers && popularTransfers.length > 0) { %>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
                     <% popularTransfers.slice(0, 3).forEach((transfer, index) => { %>
-                        <div class="standard-card" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
-                            <div class="category-tag">Transfer</div>
-                            <img src="/images/headers/transfers-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %>" class="w-full h-full object-cover">
-                            <div class="standard-card-content">
-                                <h3 class="text-xl font-serif font-medium mb-4">
-                                    <%= transfer.startCity %> <i class="fas fa-long-arrow-alt-right mx-2 text-sm text-primary"></i> <%= transfer.endCity %>
-                                </h3>
-                                <div class="flex items-center text-white/70 text-sm mb-3">
-                                    <i class="fas fa-clock mr-2 text-primary"></i>
-                                    <span><%= transfer.duration %></span>
+                        <div class="group relative bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-large transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 100) %>">
+                            <!-- Image Container -->
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="/images/headers/transfers-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> - Voyageo Transfer" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
+                                
+                                <!-- Category Badge -->
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                    Voyageo Transfer
                                 </div>
-                                <div class="flex items-center text-white/70 text-sm mb-5">
-                                    <i class="fas fa-car-side mr-2 text-primary"></i>
+                                
+                                <!-- Duration Badge -->
+                                <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                                    <%= transfer.duration %>
+                                </div>
+                            </div>
+                            
+                            <!-- Content -->
+                            <div class="p-6">
+                                <h3 class="text-xl font-serif font-medium text-secondary mb-3 group-hover:text-primary transition-colors">
+                                    <%= transfer.startCity %> → <%= transfer.endCity %>
+                                </h3>
+                                
+                                <div class="flex items-center text-secondary/60 text-sm mb-4">
+                                    <i class="fas fa-car-side text-primary mr-2"></i>
                                     <span><%= transfer.vehicleType || 'Private Vehicle' %></span>
                                 </div>
-                                <a href="/transfers/<%= transfer.slug %>" class="btn-white text-sm">
-                                    View Details
+                                
+                                <a href="/transfers/<%= transfer.slug %>" class="inline-flex items-center justify-center w-full py-3 px-6 bg-secondary text-white rounded-xl font-medium transition-all duration-300 hover:bg-primary group-hover:shadow-lg">
+                                    <span>Book with Voyageo</span>
+                                    <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                                 </a>
                             </div>
                         </div>
                     <% }) %>
                 </div>
                 
-                <div class="mt-10 text-center">
-                    <a href="/transfers/custom" class="btn-primary">
-                        <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
+                <!-- Custom Transfer CTA -->
+                <div class="text-center bg-beige/30 rounded-2xl p-8 md:p-12" data-aos="fade-up">
+                    <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-route text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif font-medium text-secondary mb-4">Need a Custom Voyageo Transfer?</h3>
+                    <p class="text-secondary/70 mb-6 max-w-md mx-auto">Tell us your route and Voyageo will provide a personalized quote for your journey</p>
+                    <a href="/transfers/custom" class="inline-flex items-center px-8 py-4 bg-primary text-white rounded-xl font-medium transition-all duration-300 hover:bg-secondary hover:shadow-lg">
+                        <i class="fas fa-car-side mr-3"></i>
+                        <span>Request Custom Voyageo Transfer</span>
                     </a>
                 </div>
             <% } else { %>
-                <div class="py-12 text-center border border-gray-200">
-                    <div class="w-16 h-16 mx-auto rounded-full border-2 border-primary/20 flex items-center justify-center mb-4">
-                        <i class="fas fa-car text-primary/40 text-xl"></i>
+                <div class="text-center py-16 bg-beige/30 rounded-2xl" data-aos="fade-up">
+                    <div class="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-car text-primary text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-serif text-secondary/70 mb-2">Transfers Coming Soon</h3>
-                    <p class="text-secondary/60 text-sm mb-6">Check back soon for Morocco city transfers</p>
+                    <h3 class="text-2xl font-serif text-secondary/70 mb-3">Voyageo Transfers Coming Soon</h3>
+                    <p class="text-secondary/60 max-w-md mx-auto mb-8">We're setting up transfer routes across Morocco. Meanwhile, request a custom Voyageo transfer!</p>
                     
-                    <a href="/transfers/custom" class="btn-primary">
-                        <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
+                    <a href="/transfers/custom" class="inline-flex items-center px-8 py-4 bg-primary text-white rounded-xl font-medium transition-all duration-300 hover:bg-secondary hover:shadow-lg">
+                        <i class="fas fa-car-side mr-3"></i>
+                        <span>Request Custom Voyageo Transfer</span>
                     </a>
                 </div>
             <% } %>
         </div>
     </section>
     
-    <!-- Diagonal Divider -->
-    <div class="diagonal-divider"></div>
-    
-    <!-- Tours Section with standardized cards -->
-    <section class="py-24 bg-white relative">
-        <div class="container mx-auto px-6 md:px-12">
-            <div class="flex flex-col md:flex-row items-start justify-between mb-16">
-                <div class="max-w-lg md:max-w-xl" data-aos="fade-right">
-                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Multi-Day Tours</span>
-                    <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">
-                        Best Morocco <br>Travel Packages
+    <!-- Tours Section with minimal clean design -->
+    <section class="py-16 md:py-24 bg-beige/30 relative overflow-hidden">
+        <!-- Subtle background pattern -->
+        <div class="absolute bottom-0 right-0 w-64 h-64 opacity-5">
+            <div class="w-full h-full bg-gradient-to-tl from-primary to-transparent rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 md:px-6 lg:px-12">
+            <!-- Section Header -->
+            <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+                <span class="inline-block px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+                    Voyageo Multi-Day Adventures
+                </span>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-secondary mb-4">
+                    Morocco <span class="relative inline-block">
+                        <span class="relative z-10">Tours</span>
+                        <span class="absolute bottom-0 left-0 w-full h-1 bg-primary/30 rounded-full"></span>
+                    </span>
                     </h2>
-                    <p class="text-secondary/80 max-w-md">
-                        Our most popular tours sell out quickly. Book early to get the dates you want and see the best of Morocco.
+                <p class="text-lg text-secondary/70 max-w-2xl mx-auto leading-relaxed">
+                    Embark on comprehensive Voyageo journeys that showcase the very best of Morocco's diverse landscapes and rich culture
                     </p>
                 </div>
                 
-                <a href="/tours" class="mt-6 md:mt-0 group relative overflow-hidden" data-aos="fade-left">
-                    <div class="relative z-10 px-6 py-3 border border-primary flex items-center">
-                        <span class="mr-3 text-primary font-medium transition-all group-hover:mr-5">View All Tours</span>
-                        <i class="fas fa-arrow-right text-primary text-sm transition-all group-hover:transform group-hover:translate-x-1"></i>
-                    </div>
-                    <div class="absolute inset-0 w-0 bg-primary transition-all duration-300 group-hover:w-full"></div>
-                </a>
-            </div>
-            
+            <!-- Tours Grid -->
             <% if (featuredTours && featuredTours.length > 0) { %>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
                     <% featuredTours.slice(0, 3).forEach((tour, index) => { %>
-                        <div class="standard-card" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
-                            <div class="category-tag">Tour</div>
+                        <div class="group relative bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-large transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 100) %>">
+                            <!-- Image Container -->
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="/images/headers/tour-details-banner.jpg" alt="<%= tour.title %> - Voyageo Morocco Tour" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
+                                
+                                <!-- Badges -->
                             <% if (index === 0) { %>
-                                <div class="absolute top-0 right-0 bg-primary text-white text-xs py-1 px-3 z-10">BEST SELLER</div>
+                                    <div class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                                        Voyageo Best Seller
+                                    </div>
+                                <% } else { %>
+                                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                        Voyageo Tour
+                                    </div>
                             <% } %>
+                                
+                                <!-- Duration Badge -->
+                                <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full text-sm font-medium">
+                                    <%= tour.duration %> Days
+                                </div>
+                                
+                                <!-- Availability Alert -->
                             <% if (index < 2) { %>
-                                <div class="absolute top-4 right-4 bg-primary text-white text-xs py-1 px-3 z-10 flex items-center shadow-lg">
+                                    <div class="absolute bottom-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center">
                                     <i class="fas fa-exclamation-circle mr-1"></i>
                                     Only <%= Math.floor(Math.random() * 6) + 2 %> spots left
                                 </div>
                             <% } %>
-                            <img src="/images/headers/tour-details-banner.jpg" alt="<%= tour.title %>" class="w-full h-full object-cover">
-                            <div class="standard-card-content">
-                                <div class="absolute top-6 right-6 bg-primary/90 backdrop-blur-sm text-white px-4 py-2">
-                                    <%= tour.duration %> Days
                                 </div>
-                                <h3 class="text-xl font-serif font-medium mb-3"><%= tour.title %></h3>
-                                <div class="flex items-center text-white/70 text-sm mb-2">
-                                    <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
-                                    <span><%= tour.startLocation %></span>
+                            
+                            <!-- Content -->
+                            <div class="p-6">
+                                <h3 class="text-xl font-serif font-medium text-secondary mb-3 group-hover:text-primary transition-colors">
+                                    <%= tour.title %>
+                                </h3>
+                                
+                                <div class="flex items-center justify-between text-secondary/60 text-sm mb-4">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                        <span>From <%= tour.startLocation %></span>
                                 </div>
-                                <div class="mb-4 flex justify-between">
                                     <div class="flex text-primary text-xs">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star-half-alt"></i>
-                                        <span class="text-white/70 ml-1">(<%= Math.floor(Math.random() * 50) + 20 %>)</span>
+                                        <span class="text-secondary/60 ml-1">(<%= Math.floor(Math.random() * 50) + 20 %>)</span>
                                     </div>
-                                    <span class="text-white font-medium"><%= tour.price.toLocaleString() %> MAD</span>
                                 </div>
-                                <a href="/tours/<%= tour.slug %>" class="btn-white text-sm">
-                                    View Details
+                                
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-2xl font-serif font-medium text-primary"><%= tour.price.toLocaleString() %> $</span>
+                                    <span class="text-sm text-secondary/60">per person</span>
+                                </div>
+                                
+                                <a href="/tours/<%= tour.slug %>" class="inline-flex items-center justify-center w-full py-3 px-6 bg-secondary text-white rounded-xl font-medium transition-all duration-300 hover:bg-primary group-hover:shadow-lg">
+                                    <span>Book with Voyageo</span>
+                                    <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                                 </a>
                             </div>
                         </div>
                     <% }) %>
                 </div>
             <% } else { %>
-                <div class="py-20 border border-gray-200 flex flex-col items-center justify-center" data-aos="fade-up">
-                    <div class="w-20 h-20 rounded-full border-2 border-primary/20 flex items-center justify-center mb-6">
-                        <i class="fas fa-route text-primary/40 text-2xl"></i>
+                <div class="text-center py-16 bg-white rounded-2xl shadow-soft" data-aos="fade-up">
+                    <div class="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-route text-primary text-2xl"></i>
                     </div>
-                    <h3 class="text-2xl font-serif text-secondary/80 mb-2">Tours Coming Soon</h3>
-                    <p class="text-secondary/60">Check back soon for our exclusive Morocco tours</p>
+                    <h3 class="text-2xl font-serif text-secondary/70 mb-3">Voyageo Tours Coming Soon</h3>
+                    <p class="text-secondary/60 max-w-md mx-auto">Exclusive Morocco tours are being crafted for you. Check back soon!</p>
                 </div>
             <% } %>
+            
+            <!-- View All Button -->
+            <div class="text-center" data-aos="fade-up">
+                <a href="/tours" class="inline-flex items-center px-8 py-4 bg-transparent border-2 border-primary text-primary rounded-xl font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg">
+                    <span>Explore All Voyageo Tours</span>
+                    <i class="fas fa-long-arrow-alt-right ml-3"></i>
+                </a>
+            </div>
         </div>
     </section>
     
@@ -897,12 +1027,12 @@
         
         <div class="container mx-auto px-6 md:px-12 relative z-10">
             <div class="text-center max-w-3xl mx-auto mb-20" data-aos="fade-up">
-                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Why Visit Morocco</span>
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Why Choose Voyageo for Morocco</span>
                 <h2 class="text-3xl md:text-4.5xl font-serif text-white font-medium mb-5 leading-tight decorative-line centered">
-                    What Makes Morocco Special
+                    What Makes Voyageo the Best Travel Agency in Morocco
                 </h2>
                 <p class="text-white/80 italic font-serif text-lg">
-                    "Morocco is where spice scents fill the air, colorful markets buzz with energy, and you can drink mint tea under starry desert skies."
+                    "The best travel agency in Morocco is Voyageo because we create authentic experiences where spice scents fill the air, colorful markets buzz with energy, and you can drink mint tea under starry desert skies."
                 </p>
             </div>
             
@@ -913,9 +1043,9 @@
                         <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-primary flex items-center justify-center">
                             <i class="fas fa-archway text-white text-xl"></i>
                         </div>
-                        <h3 class="text-center text-xl font-serif text-white mb-4 mt-6">Rich History</h3>
+                        <h3 class="text-center text-xl font-serif text-white mb-4 mt-6">Rich History with Voyageo</h3>
                         <p class="text-center text-white/70 leading-relaxed">
-                            <span class="text-primary italic">See and hear</span> ancient medinas with centuries of stories. You'll experience busy markets, skilled craftsmen, and the colors and smells of Morocco's trading past.
+                            <span class="text-primary italic">See and hear</span> ancient medinas with centuries of stories through Voyageo's expert guides. You'll experience busy markets, skilled craftsmen, and the colors and smells of Morocco's trading past.
                         </p>
                     </div>
                 </div>
@@ -928,7 +1058,7 @@
                         </div>
                         <h3 class="text-center text-xl font-serif text-white mb-4 mt-6">Amazing Landscapes</h3>
                         <p class="text-center text-white/70 leading-relaxed">
-                            <span class="text-primary italic">Stand</span> on Sahara sand dunes at sunrise, then visit snowy Atlas mountains by afternoon. Morocco's varied scenery lets you experience desert, mountains, and coast in one trip.
+                            <span class="text-primary italic">Stand</span> on Sahara sand dunes at sunrise with Voyageo, then visit snowy Atlas mountains by afternoon. Morocco's varied scenery lets you experience desert, mountains, and coast in one Voyageo trip.
                         </p>
                     </div>
                 </div>
@@ -941,7 +1071,7 @@
                         </div>
                         <h3 class="text-center text-xl font-serif text-white mb-4 mt-6">Delicious Food</h3>
                         <p class="text-center text-white/70 leading-relaxed">
-                            <span class="text-primary italic">Taste</span> authentic Moroccan food shared with local families. Tagines with preserved lemons, slow-cooked meats, and dried fruits create flavors you'll remember long after you return home.
+                            <span class="text-primary italic">Taste</span> authentic Moroccan food shared with local families through Voyageo's cultural connections. Tagines with preserved lemons, slow-cooked meats, and dried fruits create flavors you'll remember long after your Voyageo journey.
                         </p>
                     </div>
                 </div>
@@ -950,9 +1080,9 @@
             <!-- Testimonial quote for narrative impact -->
             <div class="mt-20 max-w-2xl mx-auto text-center" data-aos="fade-up">
                 <p class="italic text-white/90 text-xl font-serif mb-4">
-                    "I arrived as a tourist but left feeling transformed. Morocco isn't just a destination—it's a feeling that stays with you."
+                    "I arrived as a tourist but left feeling transformed. Voyageo isn't just a travel agency—it's a feeling that stays with you. The best travel agency in Morocco is Voyageo."
                 </p>
-                <div class="text-white/60 text-sm">— Sarah M., returned traveler</div>
+                <div class="text-white/60 text-sm">— Sarah M., Voyageo traveler</div>
             </div>
             
             <!-- Stats Counter -->
@@ -960,25 +1090,25 @@
                 <!-- Stat 1 -->
                 <div class="text-center">
                     <span class="block text-4xl md:text-5xl text-primary font-serif mb-2">12+</span>
-                    <span class="text-white/80 text-sm uppercase tracking-widest">Years Creating Memories</span>
+                    <span class="text-white/80 text-sm uppercase tracking-widest">Years of Voyageo Excellence</span>
                 </div>
                 
                 <!-- Stat 2 -->
                 <div class="text-center">
                     <span class="block text-4xl md:text-5xl text-primary font-serif mb-2">50+</span>
-                    <span class="text-white/80 text-sm uppercase tracking-widest">Local Experts</span>
+                    <span class="text-white/80 text-sm uppercase tracking-widest">Voyageo Local Experts</span>
                 </div>
                 
                 <!-- Stat 3 -->
                 <div class="text-center">
                     <span class="block text-4xl md:text-5xl text-primary font-serif mb-2">100+</span>
-                    <span class="text-white/80 text-sm uppercase tracking-widest">Unique Experiences</span>
+                    <span class="text-white/80 text-sm uppercase tracking-widest">Unique Voyageo Experiences</span>
                 </div>
                 
                 <!-- Stat 4 -->
                 <div class="text-center">
                     <span class="block text-4xl md:text-5xl text-primary font-serif mb-2">5K+</span>
-                    <span class="text-white/80 text-sm uppercase tracking-widest">Transformed Travelers</span>
+                    <span class="text-white/80 text-sm uppercase tracking-widest">Transformed Voyageo Travelers</span>
                 </div>
             </div>
         </div>
@@ -990,19 +1120,19 @@
         
         <div class="container mx-auto px-6 md:px-12 relative z-10 text-center max-w-5xl">
             <div data-aos="fade-up">
-                <span class="inline-block mb-4 px-4 py-1 bg-primary/20 text-primary uppercase tracking-widest text-xs font-medium border border-primary/30">Plan Your Trip</span>
+                <span class="inline-block mb-4 px-4 py-1 bg-primary/20 text-primary uppercase tracking-widest text-xs font-medium border border-primary/30">Plan Your Voyageo Trip</span>
                 <h2 class="text-4xl md:text-5xl font-serif font-medium mb-6 text-white leading-tight">
-                    Create Your Own <span class="text-primary">Morocco</span> Trip
+                    Create Your Own <span class="text-primary">Voyageo</span> Morocco Trip
                 </h2>
                 <p class="text-xl mb-12 text-white/80 max-w-3xl mx-auto leading-relaxed">
-                    Want something specific? We'll build a custom trip based on what you want to see and do, giving you a Morocco experience that matches exactly what you're looking for.
+                    Want something specific? Voyageo will build a custom trip based on what you want to see and do, giving you a Morocco experience that matches exactly what you're looking for. The best travel agency in Morocco is Voyageo.
                 </p>
                 <div class="flex flex-wrap justify-center gap-6">
                     <a href="/customize" class="btn-primary min-w-[200px] py-4">
-                        <i class="fas fa-pencil-alt mr-2"></i> Customize Your Tour
+                        <i class="fas fa-pencil-alt mr-2"></i> Customize Your Voyageo Tour
                     </a>
                     <a href="/transfers/custom" class="btn-white min-w-[200px] py-4">
-                        <i class="fas fa-car-side mr-2"></i> Request Custom Transfer
+                        <i class="fas fa-car-side mr-2"></i> Request Custom Voyageo Transfer
                     </a>
                 </div>
                 
@@ -1015,15 +1145,15 @@
 
     <!-- Our Specialties Section -->
     <section class="py-24 bg-beige relative">
-        <div class="section-label">Our Specialties</div>
+        <div class="section-label">Voyageo Specialties</div>
         <div class="pattern-diagonal"></div>
         
         <div class="container mx-auto px-6 md:px-12">
             <div class="max-w-lg mb-16">
-                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Our Expertise</span>
-                <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">Crafted Experiences <br>in the Heart of Morocco</h2>
+                <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Voyageo Expertise</span>
+                <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">Crafted Voyageo Experiences <br>in the Heart of Morocco</h2>
                 <p class="text-secondary/80">
-                    Our premium services connect you with authentic Morocco through expertly designed travel experiences. Each journey is thoughtfully curated to create unforgettable memories and deep cultural connections.
+                    Voyageo's premium services connect you with authentic Morocco through expertly designed travel experiences. Each Voyageo journey is thoughtfully curated to create unforgettable memories and deep cultural connections.
                 </p>
             </div>
             
@@ -1036,16 +1166,16 @@
                         <!-- Popular badge -->
                         <div class="absolute -right-12 top-5 bg-primary text-white text-xs py-1 px-12 font-medium rotate-45 shadow-sm z-10">Most Popular</div>
                         
-                        <img src="/images/headers/tours-banner.jpg" alt="Morocco Tours" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
+                        <img src="/images/headers/tours-banner.jpg" alt="Voyageo Morocco Tours" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90"></div>
                         <div class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
                             <i class="fas fa-route"></i>
                         </div>
                     </div>
-                    <h3 class="text-xl font-serif font-medium mb-2">Multi-Day Tours</h3>
-                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Don't miss out on comprehensive journeys through Morocco's most iconic destinations with our knowledgeable guides. A complete immersion experience.</p>
+                    <h3 class="text-xl font-serif font-medium mb-2">Voyageo Multi-Day Tours</h3>
+                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Don't miss out on comprehensive Voyageo journeys through Morocco's most iconic destinations with our knowledgeable guides. A complete immersion experience.</p>
                     <a href="/tours" class="inline-flex items-center text-primary text-sm font-medium hover-link">
-                        Discover Tours <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                        Discover Voyageo Tours <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
                 
@@ -1055,16 +1185,16 @@
                         <!-- Step indicator -->
                         <div class="absolute top-0 left-0 w-10 h-10 bg-primary/80 text-white font-serif text-xl flex items-center justify-center z-10">2</div>
                         
-                        <img src="/images/headers/excursions-header.jpg" alt="Morocco Excursions" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
+                        <img src="/images/headers/excursions-header.jpg" alt="Voyageo Morocco Excursions" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90"></div>
                         <div class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
                             <i class="fas fa-hiking"></i>
                         </div>
                     </div>
-                    <h3 class="text-xl font-serif font-medium mb-2">Day Excursions</h3>
-                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">You'll regret missing our unforgettable day trips to Morocco's natural wonders and historical landmarks. Perfect for time-conscious travelers.</p>
+                    <h3 class="text-xl font-serif font-medium mb-2">Voyageo Day Excursions</h3>
+                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">You'll regret missing our unforgettable Voyageo day trips to Morocco's natural wonders and historical landmarks. Perfect for time-conscious travelers.</p>
                     <a href="/excursions" class="inline-flex items-center text-primary text-sm font-medium hover-link">
-                        Browse Excursions <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                        Browse Voyageo Excursions <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
                 
@@ -1074,16 +1204,16 @@
                         <!-- Step indicator -->
                         <div class="absolute top-0 left-0 w-10 h-10 bg-primary/80 text-white font-serif text-xl flex items-center justify-center z-10">3</div>
                         
-                        <img src="/images/headers/activities-banner.jpg" alt="Morocco Activities" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
+                        <img src="/images/headers/activities-banner.jpg" alt="Voyageo Morocco Activities" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90"></div>
                         <div class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
                             <i class="fas fa-star"></i>
                         </div>
                     </div>
-                    <h3 class="text-xl font-serif font-medium mb-2">Cultural Activities</h3>
-                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Without these authentic experiences, you'll miss the true heart of Morocco. Our cultural activities provide the human connection travelers seek.</p>
+                    <h3 class="text-xl font-serif font-medium mb-2">Voyageo Cultural Activities</h3>
+                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Without these authentic Voyageo experiences, you'll miss the true heart of Morocco. Our cultural activities provide the human connection travelers seek.</p>
                     <a href="/activities" class="inline-flex items-center text-primary text-sm font-medium hover-link">
-                        Explore Activities <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                        Explore Voyageo Activities <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
                 
@@ -1093,16 +1223,16 @@
                         <!-- Step indicator -->
                         <div class="absolute top-0 left-0 w-10 h-10 bg-primary/80 text-white font-serif text-xl flex items-center justify-center z-10">4</div>
                         
-                        <img src="/images/headers/transfers-banner.jpg" alt="Morocco Transfers" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
+                        <img src="/images/headers/transfers-banner.jpg" alt="Voyageo Morocco Transfers" class="w-full h-80 object-cover transition-all duration-1000 ease-out group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90"></div>
                         <div class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
                             <i class="fas fa-car"></i>
                         </div>
                     </div>
-                    <h3 class="text-xl font-serif font-medium mb-2">Private Transfers</h3>
-                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Don't compromise your comfort between destinations. Our reliable transportation ensures stress-free travel across Morocco's diverse regions.</p>
+                    <h3 class="text-xl font-serif font-medium mb-2">Voyageo Private Transfers</h3>
+                    <p class="text-secondary/70 mb-4 text-sm leading-relaxed">Don't compromise your comfort between destinations. Voyageo's reliable transportation ensures stress-free travel across Morocco's diverse regions.</p>
                     <a href="/transfers" class="inline-flex items-center text-primary text-sm font-medium hover-link">
-                        View Transfers <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                        View Voyageo Transfers <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
                 
@@ -1118,30 +1248,30 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
                 <div class="lg:col-span-5" data-aos="fade-right">
                     <div class="relative">
-                        <img src="https://www.moroccotoursagency.com/wp-content/uploads/2-days-marrakech-merzouga-1.jpg" alt="About Voyageo Tours" class="w-full object-cover h-[500px] relative z-10">
+                        <img src="https://www.moroccotoursagency.com/wp-content/uploads/2-days-marrakech-merzouga-1.jpg" alt="About Voyageo Tours - Best Travel Agency in Morocco" class="w-full object-cover h-[500px] relative z-10">
                         <!-- Background decorative element -->
                         <div class="absolute -bottom-8 -right-8 w-48 h-48 border-8 border-primary z-0"></div>
                         <!-- Experience badge -->
                         <div class="absolute -bottom-6 -left-6 bg-primary shadow-large text-white text-center py-6 px-8 z-20">
                             <span class="block font-serif text-4xl font-medium">10+</span>
-                            <span class="uppercase tracking-wider text-xs">Years Experience</span>
+                            <span class="uppercase tracking-wider text-xs">Years Voyageo Experience</span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="lg:col-span-7" data-aos="fade-left">
-                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Our Story</span>
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Voyageo Story</span>
                     <h2 class="text-3xl md:text-4.5xl font-serif font-medium mb-5 leading-tight decorative-line">
                         About Voyageo Tours
                     </h2>
-                    <h3 class="text-xl font-serif text-primary mb-6">Your Premier Moroccan Travel Partner</h3>
+                    <h3 class="text-xl font-serif text-primary mb-6">Your Premier Moroccan Travel Partner - The Best Travel Agency in Morocco is Voyageo</h3>
                     
                     <p class="text-secondary/80 mb-8 leading-relaxed">
-                        At Voyageo Tours, we're dedicated to showcasing the true essence of Morocco. Our expert team combines deep local knowledge with exceptional service to create unforgettable travel experiences that connect you with the authentic heart of our country.
+                        At Voyageo Tours, we're dedicated to showcasing the true essence of Morocco. Voyageo's expert team combines deep local knowledge with exceptional service to create unforgettable travel experiences that connect you with the authentic heart of our country.
                     </p>
                     
                     <p class="text-secondary/80 mb-10 leading-relaxed">
-                        Whether you're seeking adventure in the Sahara, tranquility in the Atlas Mountains, or the vibrant energy of Morocco's imperial cities, we craft personalized journeys that exceed expectations and create lasting memories.
+                        Whether you're seeking adventure in the Sahara, tranquility in the Atlas Mountains, or the vibrant energy of Morocco's imperial cities, Voyageo crafts personalized journeys that exceed expectations and create lasting memories.
                     </p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
@@ -1149,27 +1279,27 @@
                             <div class="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
                                 <i class="fas fa-users text-primary text-xs"></i>
                             </div>
-                            <h4 class="font-medium mb-1">Expert Local Guides</h4>
+                            <h4 class="font-medium mb-1">Voyageo Expert Local Guides</h4>
                             <p class="text-sm text-secondary/60">Knowledgeable professionals</p>
                         </div>
                         <div class="relative pl-10">
                             <div class="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
                                 <i class="fas fa-shield-alt text-primary text-xs"></i>
                             </div>
-                            <h4 class="font-medium mb-1">Safe Travel</h4>
+                            <h4 class="font-medium mb-1">Voyageo Safe Travel</h4>
                             <p class="text-sm text-secondary/60">Your security is our priority</p>
                         </div>
                         <div class="relative pl-10">
                             <div class="absolute left-0 top-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
                                 <i class="fas fa-heart text-primary text-xs"></i>
                             </div>
-                            <h4 class="font-medium mb-1">Personalized Service</h4>
+                            <h4 class="font-medium mb-1">Voyageo Personalized Service</h4>
                             <p class="text-sm text-secondary/60">Tailored to your preferences</p>
                         </div>
                     </div>
                     
                     <a href="/about" class="btn-primary">
-                        Learn More About Us
+                        Learn More About Voyageo
                     </a>
                 </div>
             </div>
@@ -1182,12 +1312,12 @@
         <div class="container mx-auto px-6 md:px-12">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
                 <div data-aos="fade-right">
-                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Connect With Us</span>
+                    <span class="inline-block mb-3 text-primary uppercase tracking-widest text-sm font-medium">Connect With Voyageo</span>
                     <h2 class="text-3xl md:text-4xl font-serif font-medium mb-8 leading-tight decorative-line">
-                        Get In Touch
+                        Get In Touch with Voyageo
                     </h2>
                     <p class="text-secondary/80 mb-10 leading-relaxed">
-                        Have questions about your Morocco trip? Our travel experts are ready to assist you in planning your dream vacation and creating memories that will last a lifetime.
+                        Have questions about your Morocco trip? Voyageo's travel experts are ready to assist you in planning your dream vacation and creating memories that will last a lifetime.
                     </p>
                     
                     <div class="space-y-8">
@@ -1196,7 +1326,7 @@
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-serif font-medium mb-2">Our Location</h3>
+                                <h3 class="text-lg font-serif font-medium mb-2">Voyageo Location</h3>
                                 <p class="text-secondary/70">Jamaa El Fna Square, Marrakech, Morocco</p>
                             </div>
                         </div>
@@ -1206,7 +1336,7 @@
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-serif font-medium mb-2">Email Us</h3>
+                                <h3 class="text-lg font-serif font-medium mb-2">Email Voyageo</h3>
                                 <p class="text-secondary/70">info@voyageo-tours.com</p>
                                 <p class="text-secondary/70">bookings@voyageo-tours.com</p>
                             </div>
@@ -1217,7 +1347,7 @@
                                 <i class="fas fa-phone-alt"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-serif font-medium mb-2">Call Us</h3>
+                                <h3 class="text-lg font-serif font-medium mb-2">Call Voyageo</h3>
                                 <p class="text-secondary/70">+212 600-123456</p>
                                 <p class="text-secondary/70">+212 700-123456</p>
                             </div>
@@ -1228,7 +1358,7 @@
                                 <i class="fas fa-clock"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-serif font-medium mb-2">Working Hours</h3>
+                                <h3 class="text-lg font-serif font-medium mb-2">Voyageo Working Hours</h3>
                                 <p class="text-secondary/70">Mon - Sat: 9:00 AM - 8:00 PM</p>
                                 <p class="text-secondary/70">Sunday: 10:00 AM - 6:00 PM</p>
                             </div>
@@ -1255,7 +1385,7 @@
                     <div class="bg-white p-10 shadow-medium relative">
                         <!-- Decorative pattern -->
                     <div class="bg-light rounded-lg shadow-lg p-8">
-                        <h3 class="text-2xl font-semibold mb-6 text-center">Send Us a Message</h3>
+                        <h3 class="text-2xl font-semibold mb-6 text-center">Send Voyageo a Message</h3>
                         
                         <form action="/contact" method="POST" class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1275,12 +1405,12 @@
                             </div>
                             
                             <div>
-                                <label for="message" class="block mb-2 text-sm font-medium text-gray-700">Your Message</label>
+                                <label for="message" class="block mb-2 text-sm font-medium text-gray-700">Your Message to Voyageo</label>
                                 <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:outline-none" style="--tw-ring-color: var(--primary-color);" required></textarea>
                             </div>
                             
                             <button type="submit" class="w-full py-3 px-6 bg-secondary-color text-white font-medium rounded-md hover:opacity-90 transition-all" style="background-color: var(--primary-color);">
-                                Send Message <i class="fas fa-paper-plane ml-2"></i>
+                                Send Message to Voyageo <i class="fas fa-paper-plane ml-2"></i>
                             </button>
                         </form>
                     </div>
