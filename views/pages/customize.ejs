@@ -34,7 +34,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -71,13 +71,13 @@
     <style>
         html {
             scroll-behavior: smooth;
-        }
-        
+    }
+
         body {
             font-family: 'Urbanist', sans-serif;
             color: #252525;
-        }
-        
+    }
+
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Cormorant Garamond', serif;
         }
@@ -88,7 +88,7 @@
             background-color: #B8860B;
             color: white;
             font-size: 15px;
-            font-weight: 500;
+      font-weight: 500;
             letter-spacing: 0.5px;
             padding: 12px 30px;
             border: 1px solid #B8860B;
@@ -96,8 +96,8 @@
             overflow: hidden;
             z-index: 1;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        
+    }
+
         .btn-primary::after {
             content: "";
             position: absolute;
@@ -108,8 +108,8 @@
             background-color: white;
             z-index: -1;
             transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        
+    }
+
         .btn-primary:hover {
             color: #B8860B;
         }
@@ -147,8 +147,8 @@
         
         .btn-outline:hover {
             color: white;
-        }
-        
+    }
+
         .btn-outline:hover::after {
             width: 100%;
         }
@@ -156,18 +156,18 @@
         /* Contact button specific styles */
         .contact-button {
             display: inline-flex;
-            align-items: center;
+      align-items: center;
             justify-content: center;
             gap: 0.75rem;
             font-size: 16px;
-            font-weight: 500;
+      font-weight: 500;
             letter-spacing: 0.5px;
             padding: 16px 40px;
             border-radius: 0;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             text-decoration: none;
-        }
-        
+    }
+
         .whatsapp-button {
             background-color: #25D366;
             color: white;
@@ -175,8 +175,8 @@
             position: relative;
             overflow: hidden;
             z-index: 1;
-        }
-        
+    }
+
         .whatsapp-button::after {
             content: "";
             position: absolute;
@@ -187,16 +187,16 @@
             background-color: white;
             z-index: -1;
             transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        
+    }
+
         .whatsapp-button:hover {
             color: #25D366;
         }
         
         .whatsapp-button:hover::after {
             width: 100%;
-        }
-        
+    }
+
         .email-button {
             background-color: #B8860B;
             color: white;
@@ -216,16 +216,16 @@
             background-color: white;
             z-index: -1;
             transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        
+    }
+    
         .email-button:hover {
             color: #B8860B;
         }
         
         .email-button:hover::after {
             width: 100%;
-        }
-        
+    }
+    
         /* Animation styles */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -235,7 +235,7 @@
         .hero-text-container h1 {
             line-height: 1.05;
             animation: fadeIn 1.2s ease-out forwards;
-        }
+      }
         
         .hero-text-container p {
             animation: fadeIn 1.2s ease-out 0.3s forwards;
@@ -245,13 +245,13 @@
         .hero-buttons {
             animation: fadeIn 1.2s ease-out 0.6s forwards;
             opacity: 0;
-        }
-    </style>
+    }
+  </style>
 </head>
 
 <body class="bg-cream font-sans text-secondary antialiased">
-    <%- include('../partials/navbar') %>
-    
+  <%- include('../partials/navbar') %>
+  
     <!-- Hero Section -->
     <section class="min-h-screen bg-white flex items-center justify-center relative overflow-hidden pt-20">
         <!-- Minimal Background Elements -->
@@ -302,7 +302,7 @@
                     <span>Email</span>
                 </a>
             </div>
-            
+
             <!-- Bottom Text -->
             <div class="mt-12 text-secondary/50 text-sm font-light" data-aos="fade-up" data-aos-delay="600" data-aos-duration="600">
                 <p>✨ Personalized Planning • 🚀 Quick Response • 🎯 Local Expertise</p>
@@ -314,16 +314,16 @@
     
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
             // Initialize AOS animations
             AOS.init({
                 duration: 600,
                 once: true,
                 offset: 100,
                 easing: 'ease-out-cubic'
-            });
-        });
-    </script>
+      });
+    });
+  </script>
 </body>
 </html> 
