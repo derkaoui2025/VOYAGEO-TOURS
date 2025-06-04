@@ -2,7 +2,7 @@
  * Upload Service
  * 
  * Provides methods for handling file uploads with support for
- * multiple storage providers (local file system or S3).
+ * Cloudinary cloud storage.
  */
 
 const fs = require('fs');
@@ -10,41 +10,24 @@ const path = require('path');
 const { promisify } = require('util');
 const sharp = require('sharp');
 const crypto = require('crypto');
+const { cloudinary } = require('../config/cloudinary');
 const config = require('../config');
 const mkdirp = require('mkdirp');
 
-// S3 setup if needed
-let s3, S3;
-if (config.upload.provider === 's3') {
-  try {
-    const AWS = require('aws-sdk');
-    S3 = AWS.S3;
-    s3 = new S3({
-      accessKeyId: config.upload.s3.accessKeyId,
-      secretAccessKey: config.upload.s3.secretAccessKey,
-      region: config.upload.s3.region
-    });
-  } catch (error) {
-    console.error('Error initializing S3:', error);
-  }
-}
-
 class UploadService {
   constructor() {
-    this.provider = config.upload.provider;
+    this.provider = 'cloudinary';
     
     // Create upload directory for local storage if it doesn't exist
-    if (this.provider === 'local') {
-      const uploadDir = path.join(process.cwd(), config.upload.basePath);
-      if (!fs.existsSync(uploadDir)) {
-        mkdirp.sync(uploadDir);
-      }
-      
-      // Ensure blog directory exists
-      const blogDir = path.join(uploadDir, 'blog');
-      if (!fs.existsSync(blogDir)) {
-        mkdirp.sync(blogDir);
-      }
+    const uploadDir = path.join(process.cwd(), 'public/uploads');
+    if (!fs.existsSync(uploadDir)) {
+      mkdirp.sync(uploadDir);
+    }
+    
+    // Ensure blog directory exists
+    const blogDir = path.join(uploadDir, 'blog');
+    if (!fs.existsSync(blogDir)) {
+      mkdirp.sync(blogDir);
     }
   }
   
@@ -62,7 +45,7 @@ class UploadService {
   }
   
   /**
-   * Upload a file to the configured storage provider
+   * Upload a file to Cloudinary
    * 
    * @param {Object} file File object from multer
    * @param {Object} options Upload options
@@ -74,166 +57,106 @@ class UploadService {
       width = null,
       height = null,
       quality = 80,
-      format = 'jpeg'
+      format = 'webp'
     } = options;
     
     // Check if file exists
-    if (!file || !file.buffer) {
+    if (!file || (!file.buffer && !file.path)) {
       throw new Error('No valid file provided');
     }
     
     // Check file type
-    if (!file.mimetype.startsWith('image/')) {
+    if (!file.mimetype || !file.mimetype.startsWith('image/')) {
       throw new Error('Only image files are supported');
     }
     
-    // Generate unique filename
-    const uniqueFilename = this.generateUniqueFilename(file.originalname);
-    
-    // Process image with sharp if dimensions or format are specified
-    let fileBuffer = file.buffer;
-    if (width || height || format) {
-      try {
-        const transformer = sharp(file.buffer, { failOnError: false });
-        
-        // Resize if width or height is specified
-        if (width || height) {
-          transformer.resize(width, height, {
-            fit: 'inside',
-            withoutEnlargement: true
-          });
-        }
-        
-        // Set format and quality
-        if (format === 'jpeg') {
-          transformer.jpeg({ quality });
-        } else if (format === 'png') {
-          transformer.png({ quality });
-        } else if (format === 'webp') {
-          transformer.webp({ quality });
-        }
-        
-        fileBuffer = await transformer.toBuffer();
-      } catch (error) {
-        console.error('Error processing image with Sharp:', error);
-        // Fall back to original buffer instead of failing
-        fileBuffer = file.buffer;
-      }
-    }
-    
-    // Upload to the appropriate storage provider
-    if (this.provider === 's3') {
-      return this.uploadToS3(fileBuffer, uniqueFilename, folder);
-    } else {
-      return this.uploadToLocal(fileBuffer, uniqueFilename, folder);
-    }
-  }
-  
-  /**
-   * Upload a file to S3
-   * 
-   * @param {Buffer} fileBuffer File buffer
-   * @param {String} filename Filename
-   * @param {String} folder Folder path
-   * @returns {Promise<Object>} Upload result with file URL
-   */
-  async uploadToS3(fileBuffer, filename, folder) {
-    if (!s3) {
-      throw new Error('S3 is not initialized');
-    }
-    
-    const s3Key = `${folder}/${filename}`;
-    
-    const params = {
-      Bucket: config.upload.s3.bucket,
-      Key: s3Key,
-      Body: fileBuffer,
-      ContentType: 'image/jpeg',
-      ACL: 'public-read'
-    };
-    
-    const result = await s3.upload(params).promise();
-    
-    // Return either the CDN URL or the S3 URL
-    const baseUrl = config.upload.s3.cdnUrl || result.Location;
-    const fileUrl = config.upload.s3.cdnUrl ? 
-      `${baseUrl}/${s3Key}` : 
-      result.Location;
-    
-    return {
-      url: fileUrl,
-      filename,
-      path: s3Key,
-      provider: 's3'
-    };
-  }
-  
-  /**
-   * Upload a file to local file system
-   * 
-   * @param {Buffer} fileBuffer File buffer
-   * @param {String} filename Filename
-   * @param {String} folder Folder path
-   * @returns {Promise<Object>} Upload result with file URL
-   */
-  async uploadToLocal(fileBuffer, filename, folder) {
-    const uploadPath = path.join(config.upload.basePath, folder);
-    
-    // Ensure the upload directory exists
-    if (!fs.existsSync(uploadPath)) {
-      await mkdirp(uploadPath);
-    }
-    
-    const filePath = path.join(uploadPath, filename);
-    const writeFile = promisify(fs.writeFile);
-    
-    await writeFile(filePath, fileBuffer);
-    
-    // Construct the URL path (relative to public directory)
-    const urlPath = `/${config.upload.basePath.replace('public/', '')}/${folder}/${filename}`;
-    
-    return {
-      url: urlPath,
-      filename,
-      path: filePath,
-      provider: 'local'
-    };
-  }
-  
-  /**
-   * Delete a file from the storage provider
-   * 
-   * @param {String} fileUrl URL or path of the file to delete
-   * @returns {Promise<boolean>} Success status
-   */
-  async deleteFile(fileUrl) {
     try {
-      if (this.provider === 's3') {
-        // Extract the key from the URL
-        const s3Key = fileUrl.replace(`${config.upload.s3.cdnUrl}/`, '');
-        
-        const params = {
-          Bucket: config.upload.s3.bucket,
-          Key: s3Key
-        };
-        
-        await s3.deleteObject(params).promise();
+      // Upload to Cloudinary directly
+      const uploadParams = {
+        folder: `voyageo-tours/${folder}`,
+        resource_type: 'image',
+        format: format,
+        transformation: [
+          { quality: quality }
+        ]
+      };
+      
+      // Add resize transformation if width or height is specified
+      if (width || height) {
+        uploadParams.transformation.push({
+          width: width || null,
+          height: height || null,
+          crop: 'limit'
+        });
+      }
+      
+      let result;
+      
+      if (file.buffer) {
+        // Upload from buffer using streamifier
+        const streamifier = require('streamifier');
+        result = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            uploadParams,
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result);
+            }
+          );
+          
+          streamifier.createReadStream(file.buffer).pipe(uploadStream);
+        });
       } else {
-        // For local storage, extract the path from the URL
-        const localPath = path.join(
-          process.cwd(), 
-          'public',
-          fileUrl.replace('/', '')
-        );
+        // Upload from file path
+        result = await cloudinary.uploader.upload(file.path, uploadParams);
         
-        if (fs.existsSync(localPath)) {
-          await promisify(fs.unlink)(localPath);
+        // Clean up local file after upload
+        try {
+          await promisify(fs.unlink)(file.path);
+        } catch (unlinkError) {
+          console.warn('Failed to delete temporary file:', unlinkError);
         }
       }
       
-      return true;
+      return {
+        url: result.secure_url,
+        publicId: result.public_id,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+        provider: 'cloudinary'
+      };
     } catch (error) {
-      console.error('Error deleting file:', error);
+      console.error('Error uploading to Cloudinary:', error);
+      throw new Error('Failed to upload file: ' + error.message);
+    }
+  }
+  
+  /**
+   * Delete a file from Cloudinary
+   * 
+   * @param {String} publicId Cloudinary public ID of the file to delete
+   * @returns {Promise<boolean>} Success status
+   */
+  async deleteFile(publicId) {
+    try {
+      if (!publicId) {
+        return false;
+      }
+      
+      // If full URL is provided, extract the public ID
+      if (publicId.startsWith('http')) {
+        // Extract public ID from Cloudinary URL
+        const urlParts = publicId.split('/');
+        const filename = urlParts[urlParts.length - 1];
+        const folderPath = urlParts.slice(urlParts.indexOf('upload') + 1, -1).join('/');
+        publicId = `${folderPath}/${filename.split('.')[0]}`;
+      }
+      
+      const result = await cloudinary.uploader.destroy(publicId);
+      return result.result === 'ok';
+    } catch (error) {
+      console.error('Error deleting file from Cloudinary:', error);
       return false;
     }
   }

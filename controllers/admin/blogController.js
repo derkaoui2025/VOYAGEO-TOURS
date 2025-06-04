@@ -5,8 +5,7 @@
  */
 
 const blogService = require('../../services/blogService');
-const uploadService = require('../../services/uploadService');
-const config = require('../../config');
+const { cloudinary } = require('../../config/cloudinary');
 const Blog = require('../../models/Blog'); // Add the direct Blog model import
 
 module.exports = {
@@ -212,7 +211,6 @@ module.exports = {
             console.log('Deleting image with public ID:', publicId);
             
             // Use Cloudinary's API directly for deletion
-            const { cloudinary } = require('../config/cloudinary');
             await cloudinary.uploader.destroy(publicId);
           } catch (deleteError) {
             console.error('Error deleting old image (non-critical):', deleteError);
@@ -299,7 +297,7 @@ module.exports = {
       
       if (post && post.image && post.image !== '/images/blog/default.jpg') {
         // Delete the image file
-        await uploadService.deleteFile(post.image);
+        await cloudinary.uploader.destroy(post.image);
       }
       
       // Delete the post
