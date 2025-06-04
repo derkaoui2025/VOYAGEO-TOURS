@@ -413,19 +413,23 @@
             right: 20px;
             background: white;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 4px;
             font-weight: 500;
+            font-size: 14px;
             cursor: pointer;
             z-index: 20;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         
         .gallery-view-all:hover {
-            background: #f8f8f8;
+            background: #B8860B;
+            color: white;
+            transform: translateY(-2px);
         }
         
         /* Gallery modal */
@@ -439,6 +443,8 @@
             z-index: 1000;
             display: flex;
             flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
         }
         
         .gallery-modal.hidden {
@@ -448,7 +454,8 @@
         .gallery-modal-header {
             display: flex;
             justify-content: flex-end;
-            padding: 20px;
+            padding: 10px 0;
+            width: 100%;
         }
         
         .gallery-modal-close {
@@ -459,7 +466,14 @@
             font-size: 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            padding: 5px 10px;
+        }
+        
+        .gallery-modal-close:hover {
+            opacity: 1;
         }
         
         .gallery-modal-content {
@@ -468,10 +482,11 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            margin: 20px 0;
         }
         
         .gallery-modal-main {
-            width: 80%;
+            max-width: 90%;
             max-height: 70vh;
             display: flex;
             align-items: center;
@@ -480,72 +495,71 @@
         
         .gallery-modal-main img {
             max-width: 100%;
-            max-height: 70vh;
+            max-height: 100%;
             object-fit: contain;
         }
         
         .gallery-modal-nav {
             position: absolute;
-            top: 0;
+            top: 50%;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            transform: translateY(-50%);
             display: flex;
             justify-content: space-between;
-            align-items: center;
             padding: 0 20px;
             pointer-events: none;
         }
         
         .gallery-modal-prev,
         .gallery-modal-next {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: rgba(0, 0, 0, 0.5);
             border: none;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            cursor: pointer;
             pointer-events: auto;
-            transition: background 0.2s ease;
+            transition: background 0.3s;
         }
         
         .gallery-modal-prev:hover,
         .gallery-modal-next:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(184, 134, 11, 0.8);
         }
         
         .gallery-modal-thumbs {
-            height: 100px;
             display: flex;
+            justify-content: center;
             gap: 10px;
-            padding: 20px;
             overflow-x: auto;
-            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 0;
+            max-width: 100%;
         }
         
         .gallery-modal-thumb {
+            width: 80px;
             height: 60px;
-            width: 100px;
-            flex-shrink: 0;
-            opacity: 0.6;
-            cursor: pointer;
             border: 2px solid transparent;
-            transition: all 0.2s ease;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s;
+            flex-shrink: 0;
         }
         
         .gallery-modal-thumb img {
-            height: 100%;
             width: 100%;
+            height: 100%;
             object-fit: cover;
         }
         
         .gallery-modal-thumb.active {
-            opacity: 1;
             border-color: #B8860B;
+            opacity: 1;
         }
         
         /* Media query for smaller screens */
@@ -595,7 +609,7 @@
             
             <!-- View all photos button -->
             <button class="gallery-view-all">
-                <i class="fas fa-th"></i> View all photos
+                <i class="fas fa-images"></i> View All Photos
             </button>
         </div>
         
@@ -1169,40 +1183,45 @@
             const galleryGridItems = document.querySelectorAll('.gallery-grid-img');
             
             // Click on grid items also opens modal
-            galleryGridItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    openGalleryModal();
+            if (galleryGridItems && galleryGridItems.length > 0) {
+                galleryGridItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        openGalleryModal();
+                    });
                 });
-            });
+            }
             
+            // Make sure the view all button works
             if (galleryViewAllBtn) {
-                galleryViewAllBtn.addEventListener('click', function() {
+                galleryViewAllBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     openGalleryModal();
                 });
             }
             
             if (galleryModalClose) {
                 galleryModalClose.addEventListener('click', function() {
-                    galleryModal.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
+                    closeGalleryModal();
                 });
             }
             
             // Add key event listener for ESC to close modal
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && !galleryModal.classList.contains('hidden')) {
-                    galleryModal.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
+                if (e.key === 'Escape' && galleryModal && !galleryModal.classList.contains('hidden')) {
+                    closeGalleryModal();
                 }
             });
             
             // Thumbnail navigation
-            galleryModalThumbs.forEach(thumb => {
-                thumb.addEventListener('click', function() {
-                    const index = parseInt(this.dataset.index);
-                    updateModalImage(index);
+            if (galleryModalThumbs && galleryModalThumbs.length > 0) {
+                galleryModalThumbs.forEach(thumb => {
+                    thumb.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        updateModalImage(index);
+                    });
                 });
-            });
+            }
             
             // Previous and Next buttons
             if (galleryModalPrev && galleryModalNext) {
@@ -1216,7 +1235,7 @@
                 
                 // Add key event listeners for arrow navigation
                 document.addEventListener('keydown', function(e) {
-                    if (galleryModal.classList.contains('hidden')) return;
+                    if (!galleryModal || galleryModal.classList.contains('hidden')) return;
                     
                     if (e.key === 'ArrowLeft') {
                         navigateGallery(-1);
@@ -1227,27 +1246,42 @@
             }
             
             function openGalleryModal() {
-                galleryModal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
+                if (galleryModal) {
+                    galleryModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                    console.log('Gallery modal opened');
+                }
+            }
+            
+            function closeGalleryModal() {
+                if (galleryModal) {
+                    galleryModal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                    console.log('Gallery modal closed');
+                }
             }
             
             function updateModalImage(index) {
                 const activeThumbs = document.querySelectorAll('.gallery-modal-thumb');
-                if (index >= 0 && index < activeThumbs.length) {
+                if (activeThumbs && index >= 0 && index < activeThumbs.length) {
                     // Update active thumb
-                    galleryModalThumbs.forEach(t => t.classList.remove('active'));
+                    if (galleryModalThumbs) {
+                        galleryModalThumbs.forEach(t => t.classList.remove('active'));
+                    }
                     activeThumbs[index].classList.add('active');
                     
                     // Update main image
-                    const imgSrc = activeThumbs[index].querySelector('img').src;
-                    galleryModalMain.src = imgSrc;
+                    if (galleryModalMain) {
+                        const imgSrc = activeThumbs[index].querySelector('img').src;
+                        galleryModalMain.src = imgSrc;
+                    }
                 }
             }
             
             function navigateGallery(direction) {
                 const activeThumbs = document.querySelectorAll('.gallery-modal-thumb');
                 const activeThumb = document.querySelector('.gallery-modal-thumb.active');
-                if (!activeThumb) return;
+                if (!activeThumb || !activeThumbs || activeThumbs.length === 0) return;
                 
                 const currentIndex = parseInt(activeThumb.dataset.index);
                 let newIndex = currentIndex + direction;
@@ -1262,23 +1296,25 @@
             // FAQ toggles
             const faqToggles = document.querySelectorAll('.faq-toggle');
             
-            faqToggles.forEach(toggle => {
-                toggle.addEventListener('click', function() {
-                    const content = this.nextElementSibling;
-                    const icon = this.querySelector('i');
-                    
-                    // Toggle display
-                    if (content.style.display === 'block') {
-                        content.style.display = 'none';
-                        icon.classList.remove('fa-chevron-up');
-                        icon.classList.add('fa-chevron-down');
-                    } else {
-                        content.style.display = 'block';
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-up');
-                    }
+            if (faqToggles && faqToggles.length > 0) {
+                faqToggles.forEach(toggle => {
+                    toggle.addEventListener('click', function() {
+                        const content = this.nextElementSibling;
+                        const icon = this.querySelector('i');
+                        
+                        // Toggle display
+                        if (content.style.display === 'block') {
+                            content.style.display = 'none';
+                            icon.classList.remove('fa-chevron-up');
+                            icon.classList.add('fa-chevron-down');
+                        } else {
+                            content.style.display = 'block';
+                            icon.classList.remove('fa-chevron-down');
+                            icon.classList.add('fa-chevron-up');
+                        }
+                    });
                 });
-            });
+            }
             
             // Mobile book button
             const mobileBookBtn = document.getElementById('mobile-book-btn');
