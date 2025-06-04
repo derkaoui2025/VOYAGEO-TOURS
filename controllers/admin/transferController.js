@@ -65,8 +65,16 @@ exports.createTransfer = async (req, res) => {
     
     // Handle image uploads from Cloudinary
     if (req.body.gallery && req.body.gallery.length > 0) {
-      transfer.gallery = req.body.gallery;
-      transfer.galleryPublicIds = req.body.galleryPublicIds;
+      // Ensure we have arrays even if only one image was uploaded
+      const galleryArray = Array.isArray(req.body.gallery) ? req.body.gallery : [req.body.gallery];
+      const galleryPublicIdsArray = req.body.galleryPublicIds ? 
+        (Array.isArray(req.body.galleryPublicIds) ? req.body.galleryPublicIds : [req.body.galleryPublicIds]) : [];
+      
+      console.log('Gallery images:', galleryArray);
+      console.log('Gallery public IDs:', galleryPublicIdsArray);
+      
+      transfer.gallery = galleryArray;
+      transfer.galleryPublicIds = galleryPublicIdsArray;
     }
     
     // Save transfer
@@ -119,6 +127,7 @@ exports.updateTransfer = async (req, res) => {
       endCity, 
       price, 
       duration, 
+      distance,
       maxPassengers, 
       vehicleType, 
       description, 
@@ -144,6 +153,7 @@ exports.updateTransfer = async (req, res) => {
     transfer.endCity = endCity;
     transfer.price = price;
     transfer.duration = duration;
+    transfer.distance = distance || 'Variable';
     transfer.maxPassengers = maxPassengers;
     transfer.vehicleType = vehicleType;
     transfer.description = description;

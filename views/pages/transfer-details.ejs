@@ -96,7 +96,7 @@
                 "price": "<%= transfer.price %>",
                 "priceCurrency": "$"
             },
-            "image": "<%= transfer.gallery && transfer.gallery.length > 0 ? transfer.gallery[0] : '/images/placeholder-transfer.jpg' %>"
+            "image": "<%= transfer.gallery && transfer.gallery.length > 0 ? transfer.gallery[0] : '/images/transfers/default-transfer.jpg' %>"
         }
     </script>
     
@@ -512,16 +512,37 @@
                 
                 <% if (transfer.gallery.length > 1) { %>
                     <div class="gallery-grid-layout">
-                        <% transfer.gallery.slice(1, 5).forEach((image, index) => { %>
+                        <% for(let i = 1; i < Math.min(5, transfer.gallery.length); i++) { %>
                             <div class="gallery-grid-item">
-                                <img src="<%= image %>" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer - <%= index + 2 %>" class="gallery-grid-img">
+                                <img src="<%= transfer.gallery[i] %>" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer - <%= i + 1 %>" class="gallery-grid-img">
                             </div>
-                        <% }) %>
+                        <% } %>
+                        
+                        <% for(let i = transfer.gallery.length; i < 5; i++) { %>
+                            <div class="gallery-grid-item">
+                                <img src="/images/headers/transfer-details-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer - Default" class="gallery-grid-img">
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else { %>
+                    <div class="gallery-grid-layout">
+                        <% for(let i = 0; i < 4; i++) { %>
+                            <div class="gallery-grid-item">
+                                <img src="/images/headers/transfer-details-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer - Default" class="gallery-grid-img">
+                            </div>
+                        <% } %>
                     </div>
                 <% } %>
             <% } else { %>
                 <div class="gallery-main-wrapper">
-                    <img src="/images/transfers/default-transfer.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer" class="gallery-main-img">
+                    <img src="/images/headers/transfer-details-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer" class="gallery-main-img">
+                </div>
+                <div class="gallery-grid-layout">
+                    <% for(let i = 0; i < 4; i++) { %>
+                        <div class="gallery-grid-item">
+                            <img src="/images/headers/transfer-details-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer - Default" class="gallery-grid-img">
+                        </div>
+                    <% } %>
                 </div>
             <% } %>
             
@@ -577,7 +598,7 @@
                 <% if (transfer.gallery && transfer.gallery.length > 0) { %>
                     <img src="<%= transfer.gallery[0] %>" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer">
                 <% } else { %>
-                    <img src="/images/transfers/default-transfer.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer">
+                    <img src="/images/headers/transfer-details-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer">
                 <% } %>
             </div>
             <div class="gallery-modal-nav">
@@ -598,7 +619,7 @@
                 <% }) %>
             <% } else { %>
                 <div class="gallery-modal-thumb active" data-index="0">
-                    <img src="/images/transfers/default-transfer.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer">
+                    <img src="/images/headers/transfer-details-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> Transfer">
                 </div>
             <% } %>
         </div>
@@ -930,6 +951,18 @@
             const galleryModalNext = document.querySelector('.gallery-modal-next');
             const galleryGridItems = document.querySelectorAll('.gallery-grid-img');
             
+            // Create an array of all available image sources
+            const galleryImages = [];
+            galleryModalThumbs.forEach(thumb => {
+                const imgSrc = thumb.querySelector('img').src;
+                if (imgSrc) galleryImages.push(imgSrc);
+            });
+            
+            // If no images found or only default images, use the banner as fallback
+            if (galleryImages.length === 0) {
+                galleryImages.push('/images/headers/transfer-details-banner.jpg');
+            }
+            
             // Click on grid items also opens modal
             galleryGridItems.forEach(item => {
                 item.addEventListener('click', function() {
@@ -991,6 +1024,9 @@
             function openGalleryModal() {
                 galleryModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
+                
+                // Ensure first image is selected when opening
+                updateModalImage(0);
             }
             
             function updateModalImage(index) {
@@ -1002,16 +1038,26 @@
                     
                     // Update main image
                     const imgSrc = activeThumbs[index].querySelector('img').src;
-                    galleryModalMain.src = imgSrc;
+                    if (imgSrc) {
+                        galleryModalMain.src = imgSrc;
+                    } else if (galleryImages.length > 0) {
+                        // Fallback to first image if current one is missing
+                        galleryModalMain.src = galleryImages[0];
+                    }
                 }
             }
             
             function navigateGallery(direction) {
                 const activeThumbs = document.querySelectorAll('.gallery-modal-thumb');
-                const activeThumb = document.querySelector('.gallery-modal-thumb.active');
-                if (!activeThumb) return;
+                if (activeThumbs.length === 0) return;
                 
-                const currentIndex = parseInt(activeThumb.dataset.index);
+                const activeThumb = document.querySelector('.gallery-modal-thumb.active');
+                let currentIndex = 0;
+                
+                if (activeThumb) {
+                    currentIndex = parseInt(activeThumb.dataset.index);
+                }
+                
                 let newIndex = currentIndex + direction;
                 
                 // Loop around if needed

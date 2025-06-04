@@ -532,22 +532,24 @@ const processTransferGallery = async (req, res, next) => {
         } else {
           // On local, upload from file path
           result = await cloudinary.uploader.upload(file.path, {
-          folder: 'voyageo-tours/transfers',
-          format: 'webp',
-          transformation: [
-            { quality: 'auto:good' },
-            { fetch_format: 'webp' }
-          ]
-        });
+            folder: 'voyageo-tours/transfers',
+            format: 'webp',
+            transformation: [
+              { quality: 'auto:good' },
+              { fetch_format: 'webp' }
+            ]
+          });
         
           // Clean up the temporary file after upload (local only)
-        try {
+          try {
             await unlinkAsync(file.path);
           } catch (unlinkError) {
             console.warn('Failed to delete temporary transfer image file:', unlinkError);
             // Non-fatal error, continue processing
+          }
         }
-        }
+
+        console.log('Successfully uploaded transfer image:', result.secure_url);
 
         // Add image URL and public ID to arrays
         galleryImages.push(result.secure_url);
@@ -559,7 +561,7 @@ const processTransferGallery = async (req, res, next) => {
     }
     
     // Add gallery image URLs and public IDs to request body
-    req.body.galleryImages = galleryImages;
+    req.body.gallery = galleryImages;
     req.body.galleryPublicIds = galleryPublicIds;
     
     next();

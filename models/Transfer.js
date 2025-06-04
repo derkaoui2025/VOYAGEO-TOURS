@@ -22,6 +22,12 @@ const transferSchema = new mongoose.Schema({
     required: [true, 'Duration is required'],
     trim: true
   },
+  distance: {
+    type: String,
+    required: [true, 'Distance is required'],
+    trim: true,
+    default: 'Variable'
+  },
   maxPassengers: {
     type: Number,
     required: [true, 'Maximum passengers is required'],
