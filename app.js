@@ -12,6 +12,9 @@ dotenv.config();
 // Create Express app
 const app = express();
 
+// Trust proxy for correctly identifying client IPs behind a proxy
+app.set('trust proxy', true);
+
 // Set up EJS as the view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
