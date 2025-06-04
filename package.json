@@ -5,10 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "deploy": "node deploy.js",
-    "test:cloudinary": "node test-cloudinary.js",
-    "prepare": "npm run deploy"
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

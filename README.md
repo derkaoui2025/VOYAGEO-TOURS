@@ -119,4 +119,59 @@ Use the credentials specified in your `.env` file to log in.
 
 ## Security Note
 
-⚠️ This implementation uses plain text credentials as per the requirements. In a production environment, it's strongly recommended to use proper password hashing (bcrypt) and more secure authentication methods. 
+⚠️ This implementation uses plain text credentials as per the requirements. In a production environment, it's strongly recommended to use proper password hashing (bcrypt) and more secure authentication methods.
+
+## Image Upload System
+
+This project uses Cloudinary for image uploading and storage. The system has been configured to handle image uploads for transfers, excursions, activities, and blog posts.
+
+### Cloudinary Setup
+
+For the image upload system to work properly, you need to set the following environment variables:
+
+```
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
+
+These can be added to your `.env` file for local development or set in your production environment.
+
+### Testing Image Uploads
+
+To test if your Cloudinary configuration is working correctly, run:
+
+```
+npm run test:cloudinary
+```
+
+This will attempt to connect to Cloudinary and perform test uploads using both file and buffer methods.
+
+### Deployment
+
+When deploying to production, use the deployment script to ensure all dependencies are correctly installed:
+
+```
+npm run deploy
+```
+
+This script will:
+1. Check for required environment variables
+2. Install all production dependencies
+3. Create necessary directories
+4. Verify the Cloudinary configuration
+
+## Troubleshooting Image Uploads
+
+If you encounter issues with image uploads:
+
+1. Make sure your Cloudinary credentials are correct
+2. Run the test script to verify connectivity
+3. Check server logs for detailed error messages
+4. Ensure the `mkdirp`, `streamifier`, and `multer-storage-cloudinary` packages are installed
+
+### Common Issues
+
+- **Module not found errors**: Run `npm run deploy` to ensure all dependencies are installed
+- **Upload errors**: Check Cloudinary account limits and permissions
+- **Image display issues**: Verify that the URLs stored in the database are correct and accessible 
