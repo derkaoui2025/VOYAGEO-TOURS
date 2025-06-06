@@ -408,7 +408,7 @@
         }
         
         .gallery-view-all {
-            position: absolute;
+            
             bottom: 20px;
             right: 20px;
             background: white;
@@ -418,8 +418,8 @@
             font-weight: 500;
             font-size: 14px;
             cursor: pointer;
-            z-index: 20;
-            display: flex;
+            z-index: 100;
+            display: block;
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
@@ -464,7 +464,7 @@
             color: white;
             cursor: pointer;
             font-size: 16px;
-            display: flex;
+            display: block;
             align-items: center;
             gap: 6px;
             opacity: 0.8;
@@ -607,10 +607,7 @@
                 </div>
             <% } %>
             
-            <!-- View all photos button -->
-            <button class="gallery-view-all">
-                <i class="fas fa-images"></i> View All Photos
-            </button>
+            
         </div>
         
         <!-- Gallery overlay with title -->
@@ -646,6 +643,10 @@
             </div>
         </div>
     </div>
+<!-- View all photos button -->
+            <button class="gallery-view-all">
+                <i class="fas fa-images"></i> View All Photos
+            </button>
 
     <!-- Gallery modal -->
     <div class="gallery-modal hidden">
