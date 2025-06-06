@@ -671,7 +671,11 @@
                         <div class="group relative bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-large transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 100) %>">
                             <!-- Image Container -->
                             <div class="relative h-64 overflow-hidden">
-                                <img src="/images/headers/activities-banner.jpg" alt="<%= activity.title %> - Voyageo Morocco" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% if (activity.gallery && activity.gallery.length > 0) { %>
+                                    <img src="<%= activity.gallery[0] %>" alt="<%= activity.title %> - Voyageo Morocco" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% } else { %>
+                                    <img src="/images/headers/activities-banner.jpg" alt="<%= activity.title %> - Voyageo Morocco" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% } %>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
                                 
                                 <!-- Category Badge -->
@@ -761,7 +765,11 @@
                         <div class="group relative bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-large transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 50) %>">
                             <!-- Image Container -->
                             <div class="relative h-64 overflow-hidden">
-                                <img src="/images/headers/excursion-details-banner.jpg" alt="<%= excursion.title %> - Voyageo Morocco" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% if (excursion.gallery && excursion.gallery.length > 0) { %>
+                                    <img src="<%= excursion.gallery[0] %>" alt="<%= excursion.title %> - Voyageo Morocco" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% } else { %>
+                                    <img src="/images/headers/excursion-details-banner.jpg" alt="<%= excursion.title %> - Voyageo Morocco" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% } %>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
                                 
                                 <!-- Category Badge -->
@@ -845,7 +853,11 @@
                         <div class="group relative bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-large transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 100) %>">
                             <!-- Image Container -->
                             <div class="relative h-64 overflow-hidden">
-                                <img src="/images/headers/transfers-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> - Voyageo Transfer" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% if (transfer.gallery && transfer.gallery.length > 0) { %>
+                                    <img src="<%= transfer.gallery[0] %>" alt="<%= transfer.startCity %> to <%= transfer.endCity %> - Voyageo Transfer" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% } else { %>
+                                    <img src="/images/headers/transfers-banner.jpg" alt="<%= transfer.startCity %> to <%= transfer.endCity %> - Voyageo Transfer" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% } %>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
                                 
                                 <!-- Category Badge -->
@@ -939,7 +951,11 @@
                         <div class="group relative bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-large transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="<%= 100 + (index * 100) %>">
                             <!-- Image Container -->
                             <div class="relative h-64 overflow-hidden">
-                                <img src="/images/headers/tour-details-banner.jpg" alt="<%= tour.title %> - Voyageo Morocco Tour" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% if (tour.gallery && tour.gallery.length > 0) { %>
+                                    <img src="<%= tour.gallery[0] %>" alt="<%= tour.title %> - Voyageo Morocco Tour" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% } else { %>
+                                    <img src="/images/headers/tour-details-banner.jpg" alt="<%= tour.title %> - Voyageo Morocco Tour" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <% } %>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
                                 
                                 <!-- Badges -->
