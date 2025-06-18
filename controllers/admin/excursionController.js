@@ -123,11 +123,18 @@ exports.updateExcursion = async (req, res) => {
     excursion.durationType = durationType || 'hours';
     excursion.excursionType = excursionType;
     
-    // Handle image uploads from Cloudinary
+    // Handle image uploads from Cloudinary, replacing the old gallery
     if (req.body.gallery && req.body.gallery.length > 0) {
-      // Add new images to the gallery
-      excursion.gallery = [...excursion.gallery, ...req.body.gallery];
-      excursion.galleryPublicIds = [...(excursion.galleryPublicIds || []), ...req.body.galleryPublicIds];
+      // If there's an old gallery, delete its images from Cloudinary first
+      if (excursion.galleryPublicIds && excursion.galleryPublicIds.length > 0) {
+        // This is an async operation, but we don't need to wait for it to complete
+        // to respond to the user. This is a "fire and forget" operation.
+        cloudinary.api.delete_resources(excursion.galleryPublicIds);
+      }
+      
+      // Replace the old gallery with the new one
+      excursion.gallery = req.body.gallery;
+      excursion.galleryPublicIds = req.body.galleryPublicIds;
     }
     
     // Save updated excursion
