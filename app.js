@@ -20,15 +20,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Import middlewares
-const { ipBlockerMiddleware } = require('./middleware/ipBlocker');
-const { generalRateLimiter } = require('./middleware/rateLimiter');
+// const { ipBlockerMiddleware } = require('./middleware/ipBlocker');
+// const { generalRateLimiter } = require('./middleware/rateLimiter');
 
 // Apply global middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
-app.use(ipBlockerMiddleware);
-app.use(generalRateLimiter);
+// app.use(ipBlockerMiddleware);
+// app.use(generalRateLimiter);
 
 // Session configuration
 app.use(session({
