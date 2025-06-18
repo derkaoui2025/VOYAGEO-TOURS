@@ -261,8 +261,11 @@ const excursionGalleryUpload = multer({
 const processExcursionGallery = async (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {
+      console.log('No files to process in excursion gallery');
       return next();
     }
+
+    console.log(`Processing ${req.files.length} excursion gallery images`);
 
     // Create array to store gallery image URLs and public IDs
     const galleryImages = [];
@@ -324,9 +327,14 @@ const processExcursionGallery = async (req, res, next) => {
       }
     }
 
+    console.log(`Successfully uploaded ${galleryImages.length} excursion gallery images`);
+
     // Add gallery image URLs and public IDs to request body
     req.body.galleryImages = galleryImages;
     req.body.galleryPublicIds = galleryPublicIds;
+    
+    // Also add with the name the frontend is using (for backward compatibility)
+    req.body.gallery = galleryImages;
     
     next();
   } catch (error) {

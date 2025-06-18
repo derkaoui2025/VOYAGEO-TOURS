@@ -367,8 +367,13 @@
             formData.append('description', description);
             
             // Add all selected files
-            for (let i = 0; i < selectedFiles.files.length; i++) {
-                formData.append('gallery', selectedFiles.files[i]);
+            if (selectedFiles.files.length > 0) {
+                console.log(`Adding ${selectedFiles.files.length} new gallery images to form data`);
+                for (let i = 0; i < selectedFiles.files.length; i++) {
+                    formData.append('gallery', selectedFiles.files[i]);
+                }
+            } else {
+                console.log('No new gallery images selected');
             }
             
             // Disable submit button during submission

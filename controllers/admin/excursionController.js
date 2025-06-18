@@ -42,6 +42,8 @@ exports.createExcursion = async (req, res) => {
   try {
     const { title, description, startLocation, duration, durationType, excursionType } = req.body;
     
+    console.log('Creating new excursion:', title);
+    
     // Create new excursion
     const excursion = new Excursion({
       title,
@@ -52,14 +54,24 @@ exports.createExcursion = async (req, res) => {
       excursionType
     });
     
-    // Handle image uploads from Cloudinary
-    if (req.body.gallery && req.body.gallery.length > 0) {
+    // Handle image uploads from Cloudinary - check both variable names
+    if (req.body.galleryImages && req.body.galleryImages.length > 0) {
+      console.log(`Adding ${req.body.galleryImages.length} gallery images from galleryImages`);
+      excursion.gallery = req.body.galleryImages;
+      excursion.galleryPublicIds = req.body.galleryPublicIds;
+    } else if (req.body.gallery && req.body.gallery.length > 0) {
+      console.log(`Adding ${req.body.gallery.length} gallery images from gallery`);
       excursion.gallery = req.body.gallery;
       excursion.galleryPublicIds = req.body.galleryPublicIds;
+    } else {
+      console.log('No gallery images provided');
+      excursion.gallery = [];
+      excursion.galleryPublicIds = [];
     }
     
     // Save excursion
     await excursion.save();
+    console.log('Excursion saved successfully with ID:', excursion._id);
     
     // Return JSON response for AJAX request
     return res.status(201).json({
@@ -124,16 +136,21 @@ exports.updateExcursion = async (req, res) => {
     excursion.excursionType = excursionType;
     
     // Handle image uploads from Cloudinary, replacing the old gallery
-    if (req.body.gallery && req.body.gallery.length > 0) {
+    if (req.body.galleryImages && req.body.galleryImages.length > 0) {
+      console.log('New gallery images received:', req.body.galleryImages.length);
+      
       // If there's an old gallery, delete its images from Cloudinary first
       if (excursion.galleryPublicIds && excursion.galleryPublicIds.length > 0) {
+        console.log('Deleting old gallery images:', excursion.galleryPublicIds.length);
         // This is an async operation, but we don't need to wait for it to complete
         // to respond to the user. This is a "fire and forget" operation.
-        cloudinary.api.delete_resources(excursion.galleryPublicIds);
+        cloudinary.api.delete_resources(excursion.galleryPublicIds)
+          .then(() => console.log('Old gallery images deleted successfully'))
+          .catch(err => console.error('Error deleting old gallery images:', err));
       }
       
       // Replace the old gallery with the new one
-      excursion.gallery = req.body.gallery;
+      excursion.gallery = req.body.galleryImages;
       excursion.galleryPublicIds = req.body.galleryPublicIds;
     }
     

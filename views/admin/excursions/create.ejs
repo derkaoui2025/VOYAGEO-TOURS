@@ -318,8 +318,14 @@
             formData.append('description', description);
             
             // Add all selected files
-            for (let i = 0; i < selectedFiles.files.length; i++) {
-                formData.append('gallery', selectedFiles.files[i]);
+            if (selectedFiles.files.length > 0) {
+                console.log(`Adding ${selectedFiles.files.length} gallery images to form data`);
+                for (let i = 0; i < selectedFiles.files.length; i++) {
+                    console.log(`Adding image: ${selectedFiles.files[i].name}`);
+                    formData.append('gallery', selectedFiles.files[i]);
+                }
+            } else {
+                console.log('No gallery images selected for upload');
             }
             
             // Disable submit button during submission
@@ -329,6 +335,7 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
             
             try {
+                console.log('Submitting excursion form...');
                 // Send AJAX request
                 const response = await fetch('/admin/excursions', {
                     method: 'POST',
@@ -336,6 +343,7 @@
                 });
                 
                 const data = await response.json();
+                console.log('Server response:', data);
                 
                 if (data.success) {
                     // Redirect to excursions list
